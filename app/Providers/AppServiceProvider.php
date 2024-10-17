@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Animal;
+use App\Policies\AnimalPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Gate::policy(Animal::class,AnimalPolicy::class);
     }
 }
