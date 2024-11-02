@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\VerificationEmailController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,10 @@ Route::get('/user/{id}', function($id){
     return $user;
 });
 
+Route::get('email/verify/{id}/{hash}', [VerificationEmailController::class, 'verify'])
+    ->name('verification.verify');
+//Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
 
-Route::post("/login", [AuthController::class,'login']);
+Route::post("/login", [AuthController::class,'login'])->name('login');
 Route::post("/register", [AuthController::class,'register']);
 Route::post("/logout", [AuthController::class,'logout'])->middleware("auth:sanctum");
