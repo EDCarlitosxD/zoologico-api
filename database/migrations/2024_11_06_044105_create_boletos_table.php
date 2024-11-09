@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipo_animales', function (Blueprint $table) {
+        Schema::create('boletos', function (Blueprint $table) {
             $table->id();
-            $table->char("nombre",255);
-            $table->boolean("activo")->default(true);
+            $table->string("titulo",length: 80);
+            $table->string("descripcion",length: 45);
+            $table->decimal("precio");
+
+            
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipo_animals');
+        Schema::dropIfExists('boletos');
     }
 };

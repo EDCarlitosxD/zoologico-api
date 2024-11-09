@@ -13,18 +13,23 @@ return new class extends Migration
     {
         Schema::create('animales', function (Blueprint $table) {
             $table->id();
-            $table->char("nombre",length: 255);
-            $table->char("nombre_cientifico",length: 255);
-            $table->char("slug",255)->unique();
+            $table->string("nombre",length: 80);
+            $table->string("nombre_cientifico",length: 150);
+            $table->string("slug", length: 255)->unique();
+            $table->string("imagen_principal", length:255);
+            $table->string("imagen_secundaria", length: 255);
             $table->text("caracteristicas_fisicas");
             $table->text("dieta");
             $table->text("datos_curiosos");
             $table->text("comportamiento");
-            $table->text("informacion");
-            $table->text("imagen_principal");
-            $table->text("imagen_secundaria");
-            $table->boolean("activo");
-            $table->foreignId("tipo_animal_id")->constrained('tipo_animales');
+            $table->string("peso", length: 45);
+            $table->string("altura", length: 45);
+            $table->enum('estado', ['activo','inactivo']);
+            $table->string('habitat', length: 255);
+            $table->text("descripcion");
+            $table->string('subtitulo', length:255);
+            $table->string('qr', length: 255);
+            $table->boolean('eliminado');
             
 
             $table->timestamps();
