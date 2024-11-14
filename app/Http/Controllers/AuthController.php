@@ -46,7 +46,8 @@ class AuthController extends AnimalController
         ]);
 
         $datos = $request->all();
-        $datos["id_rol"] = 1; // Set default role ID
+        // $datos["id_rol"] = 1; // Set default role ID
+        $datos["role"] = "cliente";
         $datos["password"] = Hash::make($request->password);
         $user = User::create($datos);
 

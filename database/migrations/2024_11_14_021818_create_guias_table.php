@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-
-        //ROLES
-        //Customer
-        //Admin-Full
-        //AdminTaquilla
-        //AdminAnimales
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('guias', function (Blueprint $table) {
             $table->id();
-            $table->char("role");
+            $table->string('nombre_completo', 200);
+            $table->boolean('disponible')->default(1);
+            $table->timestamps();
         });
     }
 
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('guias');
     }
 };

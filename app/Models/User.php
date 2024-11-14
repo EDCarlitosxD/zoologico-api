@@ -24,8 +24,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'email_verified_at',
-        'id_rol',
     ];
+
+    protected $table = 'usuarios';
 
     /**
      * The attributes that should be hidden for serialization.
@@ -50,7 +51,7 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function role(){
-        return $this->belongsTo(Roles::class, 'id_rol');
-    }
+    // public function role(){
+    //     return $this->belongsTo(Roles::class, 'id_rol');
+    // }
 }

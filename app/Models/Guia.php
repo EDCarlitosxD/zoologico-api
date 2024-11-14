@@ -5,9 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TipoAnimal extends Model
+class Guia extends Model
 {
+
     use HasFactory;
 
-    protected $table = "tipo_animales";
+    protected $fillable = [
+        'nombre_completo',
+        'disponible'
+    ];
 }

@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('subtitulo', length:255);
             $table->string('qr', length: 255);
             $table->boolean('eliminado');
-            
+            $table->enum("tipo",["acuático", "terrestre", "aéreo", "anfibio"]);       
 
             $table->timestamps();
         });
@@ -41,6 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('animals');
+        Schema::dropIfExists('animales');
     }
 };
