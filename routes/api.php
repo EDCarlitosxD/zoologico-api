@@ -9,7 +9,7 @@ use Ramsey\Uuid\Type\Integer;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 Route::get('/user', function (Request $request) {
-    return $request->user()->load('role');
+    return $request->user();
 })->middleware('auth:sanctum');
 
 Route::get('/user/{id}', function($id){
@@ -22,6 +22,9 @@ Route::get('/user/{id}', function($id){
 
     return $user;
 });
+
+
+
 
 Route::get('email/verify/{id}/{hash}', [VerificationEmailController::class, 'verify'])
     ->name('verification.verify');

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text("imagen_secundaria");
             $table->boolean("activo");
             $table->foreignId("tipo_animal_id")->constrained('tipo_animales');
-            
+
 
             $table->timestamps();
         });
