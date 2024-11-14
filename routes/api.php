@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\VentaBoletosController;
 use App\Http\Controllers\VerificationEmailController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,3 +43,5 @@ Route::post('/animales', [AnimalController::class, 'guardar']);
 Route::put('/animales/eliminar/{id}', [AnimalController::class, 'actualizarEstado']);
 
 Route::put('/animales/actualizar/{id}', [AnimalController::class,'actualizar']);
+
+Route::post('/boletos/guardardatos', [VentaBoletosController::class, 'guardar'])->middleware('auth:sanctum');

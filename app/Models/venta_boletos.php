@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class venta_boletos extends Model
 {
@@ -12,12 +13,14 @@ class venta_boletos extends Model
 
     protected $fillable = 
     [
+        'id_boleto',
+        'id_usuario',
         'fecha',
         'cantidad',
         'token',
         'email',
-        'id_usuario',
-        'id_boleto'
-
+        'recibo',
+        'precio_total'
     ];
+
 }
