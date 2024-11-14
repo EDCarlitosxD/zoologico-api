@@ -8,7 +8,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-class VerificationEmailController extends Controller
+class VerificationEmailController 
 {
     //
 
