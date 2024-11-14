@@ -24,8 +24,7 @@ return new class extends Migration
             $table->text("imagen_principal");
             $table->text("imagen_secundaria");
             $table->boolean("activo");
-            $table->foreignId("tipo_animal_id")->constrained('tipo_animales');
-
+            $table->enum("tipo",["acuático", "terrestre", "aéreo", "anfibio"]);
 
             $table->timestamps();
         });
@@ -36,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('animals');
+        Schema::dropIfExists('animales');
     }
 };
