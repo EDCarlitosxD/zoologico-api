@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-<<<<<<<< HEAD:database/migrations/2024_11_06_044105_create_boletos_table.php
         Schema::create('boletos', function (Blueprint $table) {
             $table->id();
             $table->string("titulo",length: 80);
@@ -19,14 +18,8 @@ return new class extends Migration
             $table->decimal("precio");
 
             
-========
-        Schema::create('guias', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre_completo', 200);
-            $table->boolean('disponible')->default(1);
->>>>>>>> dev_juan:database/migrations/2024_11_14_021818_create_guias_table.php
-            $table->timestamps();
-        });
+        
+    });
     }
 
     /**
@@ -34,10 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-<<<<<<<< HEAD:database/migrations/2024_11_06_044105_create_boletos_table.php
         Schema::dropIfExists('boletos');
-========
-        Schema::dropIfExists('guias');
->>>>>>>> dev_juan:database/migrations/2024_11_14_021818_create_guias_table.php
     }
 };

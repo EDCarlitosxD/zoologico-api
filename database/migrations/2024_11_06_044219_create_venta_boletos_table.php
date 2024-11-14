@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('cantidad');
             $table->string('token', length: 255);
             $table->string('email', length: 45);
-            $table->foreignId("id_usuario")->constrained('users');
+            $table->foreignId("id_usuario")->constrained('usuarios');
             $table->foreignId("id_boleto")->constrained('boletos');
 
             $table->timestamps();
