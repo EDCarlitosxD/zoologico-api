@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nombre_completo', 200);
             $table->boolean('disponible')->default(1);
+            $table->boolean('estado');
+        
             $table->timestamps();
         });
     }

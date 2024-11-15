@@ -17,7 +17,7 @@ return new class extends Migration
             $table->char("banco",255)->nullable(false);
             $table->char("numero_tarjeta",255)->nullable(false);
             $table->char("nombre_tarjeta",255)->nullable(false);
-            $table->char("cvv",5)->nullable(false);
+            $table->char("ccv",5)->nullable(false);
             $table->char("tipo_tarjeta",255)->nullable(false);
 
             $table->unsignedBigInteger('id_usuario')->nullable(false);

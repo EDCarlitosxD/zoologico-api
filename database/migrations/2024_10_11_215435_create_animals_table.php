@@ -24,13 +24,13 @@ return new class extends Migration
             $table->text("comportamiento");
             $table->string("peso", length: 45);
             $table->string("altura", length: 45);
-            $table->enum('estado', ['activo','inactivo']);
             $table->string('habitat', length: 255);
             $table->text("descripcion");
             $table->string('subtitulo', length:255);
             $table->string('qr', length: 255);
-            $table->boolean('eliminado');
-            $table->enum("tipo",["acuático", "terrestre", "aéreo", "anfibio"]);       
+            $table->boolean('estado');
+            $table->enum("tipo",["acuático", "terrestre", "aéreo", "anfibio"]);
+            $table->string("img_ubicacion", length:255);       
 
             $table->timestamps();
         });

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('descripcion')->nullable(false);
             $table->integer('duracion')->nullable(false);
             $table->integer('cantidad_personas')->nullable(false);
-            $table->integer('precio_persona_extra')->nullable(false);
+            $table->decimal('precio_persona_extra', 10, 2)->nullable(false);
 
 
             $table->timestamps();

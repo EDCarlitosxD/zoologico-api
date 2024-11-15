@@ -16,10 +16,8 @@ return new class extends Migration
             $table->string("titulo",length: 80);
             $table->string("descripcion",length: 45);
             $table->decimal("precio");
-
-            
-        
-    });
+            $table->boolean('estado');
+        });
     }
 
     /**

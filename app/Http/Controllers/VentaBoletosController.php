@@ -32,7 +32,7 @@ class VentaBoletosController
     {
         $token = Str::uuid();
         $email = Auth::user()->email;
-        $nombre = Auth::user()->name;
+        $nombre = Auth::user()->nombre_usuario;
         $fechaactual = date("Y-m-d");
 
         DB::beginTransaction();
