@@ -23,13 +23,13 @@ class Animal extends Model
         'comportamiento',
         'peso',
         'altura',
-        'estado',
         'habitat',
         'descripcion',
         'subtitulo',
         'qr',
-        'eliminado',
-        'tipo_animal_id'
+        'estado',
+        'tipo',
+        'img_ubicacion',
     ];
     
 }

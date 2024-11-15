@@ -10,6 +10,7 @@ class VentaService
 {
     public function procesarVenta($request, $token, $fechaactual, $email)
     {
+
         $boletos = [];
         $datos = $request->all();
 
@@ -26,13 +27,17 @@ class VentaService
                 ]);
             }
 
+            $precio = Boletos::findOrFail($dato['id_boleto'])->precio;
+            $precio_total = $precio * ($dato['cantidad']);
+
             venta_boletos::create([
                 'id_usuario' => $dato['id_usuario'],
                 'id_boleto' => $dato['id_boleto'],
                 'fecha' => $fechaactual,
                 'cantidad' => $dato['cantidad'],
                 'token' => $token,
-                'email' => $email
+                'email' => $email,
+                'precio_total' => $precio_total
             ]);
 
             $precio = Boletos::findOrFail($dato['id_boleto'])->precio;

@@ -12,6 +12,7 @@ class Guia extends Model
 
     protected $fillable = [
         'nombre_completo',
-        'disponible'
+        'disponible',
+        'estado',
     ];
 }

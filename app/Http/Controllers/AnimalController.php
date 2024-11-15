@@ -77,8 +77,8 @@ class AnimalController
             'descripcion' => 'required',
             'subtitulo' => 'required|max:255',
             'qr'=> 'required|max:255',
-            'eliminado' => 'required|boolean',
-            'tipo_animal_id' => 'required',
+            'estado' => 'required|boolean',
+            'img_ubicacion' => 'required|max:255',
 
             /*
             'nombre' => 'required|unique:animales|max:255',
@@ -109,12 +109,12 @@ class AnimalController
 
     public function actualizarEstado(Request $request, $id){
         $request->validate([
-            'activo'=>'required|boolean',
+            'estado'=>'required|boolean',
         ]);
 
         $animal = Animal::findOrFail($id);
 
-        $animal->activo = $request->input('activo');
+        $animal->estado = $request->input('0');
         $animal->save();
 
         return response()->json(['message' => 'Animal eliminado con exito']);
@@ -139,8 +139,8 @@ class AnimalController
             'descripcion' => 'required',
             'subtitulo' => 'required|max:255',
             'qr'=> 'required|max:255',
-            'eliminado' => 'required|boolean',
-            'tipo_animal_id' => 'required',
+            'estado' => 'required|boolean',
+            'img_ubicacion' => 'required|max:255',
 
             /*
             'nombre' => 'required|unique:animales|max:255',

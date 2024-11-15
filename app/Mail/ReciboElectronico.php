@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -41,6 +42,7 @@ class ReciboElectronico extends Mailable
      */
     public function content(): Content
     {
+        //$pdf = PDF::loadView('emails.Recibo');
         return new Content(
             view: 'emails.Recibo',
         );

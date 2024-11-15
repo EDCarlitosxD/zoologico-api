@@ -15,7 +15,7 @@ class Tarjeta extends Model
         'banco',
         'numero_tarjeta',
         'nombre_tarjeta',
-        'cvv',
+        'ccv',
         'tipo_tarjeta',
         'id_usuario'
     ];

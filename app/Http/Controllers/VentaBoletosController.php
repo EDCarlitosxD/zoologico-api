@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+Use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\ReciboElectronico;
 use App\Services\VentaService;
 use Illuminate\Support\Str;
@@ -28,26 +29,26 @@ class VentaBoletosController
     }
 
     public function guardar(Request $request)
-{
-    $token = Str::uuid();
-    $email = Auth::user()->email;
-    $nombre = Auth::user()->name;
-    $fechaactual = date("Y-m-d");
+    {
+        $token = Str::uuid();
+        $email = Auth::user()->email;
+        $nombre = Auth::user()->name;
+        $fechaactual = date("Y-m-d");
 
-    DB::beginTransaction();
-    try {
-        $boletos = $this->ventaService->procesarVenta($request, $token, $fechaactual, $email);
-        $total = $this->ventaService->calcularTotal($request);
+        DB::beginTransaction();
+        try {
+            $boletos = $this->ventaService->procesarVenta($request, $token, $fechaactual, $email);
+            $total = $this->ventaService->calcularTotal($request);
 
 
-        Mail::to($email)->send(new ReciboElectronico($boletos, $total, $fechaactual, $nombre, $email));
+            Mail::to($email)->send(new ReciboElectronico($boletos, $total, $fechaactual, $nombre, $email));
 
-        DB::commit();
-        return response()->json(['message' => 'Venta procesada correctamente'], 200);
-    } catch (\Exception $e) {
-        DB::rollback();
-        return response()->json(['error' => $e->getMessage()], 500);
+            DB::commit();
+            return response()->json(['message' => 'Venta procesada correctamente'], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
-}
     
 }
