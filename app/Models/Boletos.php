@@ -14,6 +14,7 @@ class Boletos extends Model
     [
         'titulo',
         'descripcion',
-        'precio'
+        'precio',
+        'estado',
     ];
 }
