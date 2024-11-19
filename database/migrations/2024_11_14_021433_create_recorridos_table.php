@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('duracion')->nullable(false);
             $table->integer('cantidad_personas')->nullable(false);
             $table->decimal('precio_persona_extra', 10, 2)->nullable(false);
-
+            $table->boolean("estado")->default(1);
 
             $table->timestamps();
         });
