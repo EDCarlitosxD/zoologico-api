@@ -10,11 +10,12 @@ class Boletos extends Model
     use HasFactory;
     protected $table = "boletos";
 
-    protected $fillable = 
+    protected $fillable =
     [
         'titulo',
         'descripcion',
         'precio',
         'estado',
+        'imagen',
     ];
 }

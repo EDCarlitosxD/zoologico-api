@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('boletos', function (Blueprint $table) {
             $table->id();
-            $table->string("titulo",length: 80);
-            $table->string("descripcion",length: 45);
-            $table->decimal("precio");
-            $table->boolean('estado');
+            $table->string("titulo",length: 80)->nullable(false);
+            $table->string("descripcion",length: 45)->nullable(false);
+            $table->decimal("precio")->nullable(false);
+            $table->boolean('estado')->nullable(false)->default(true);
+            $table->string("imagen", 255)->nullable(false);
+            $table->timestamps();
         });
     }
 

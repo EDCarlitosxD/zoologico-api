@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BoletosController;
 use App\Http\Controllers\VentaBoletosController;
 use App\Http\Controllers\VerificationEmailController;
 use App\Models\User;
@@ -48,3 +49,10 @@ Route::put('/animales/eliminar/{id}', [AnimalController::class, 'actualizarEstad
 Route::put('/animales/actualizar/{id}', [AnimalController::class,'actualizar']);
 
 Route::post('/boletos/guardardatos', [VentaBoletosController::class, 'guardar'])->middleware('auth:sanctum');
+
+
+
+Route::get('/boletos',[BoletosController::class,'all']);
+Route::get('/boletos/{id}',[BoletosController::class,'getById']);
+Route::post('/boletos',[BoletosController::class,'save']);
+Route::delete('/boletos/{id}',[BoletosController::class,'delete']);
