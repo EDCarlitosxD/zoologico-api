@@ -19,7 +19,9 @@ class AuthController
 
     public function login(Request $request){
 
-        $request->validate(['email' => 'email|required','password' => 'required|max:255']);
+        $request->validate(['email' => 'email|required',
+        'password' => 'required|max:255',
+    ]);
 
         $emailRe = $request->email;
         $passwordRe = $request->password;
@@ -34,15 +36,18 @@ class AuthController
                 "message" => "Las credenciales son incorrectas"
             ]);
         }
-        $token = $user->createToken($request->device_name)->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
         return response(["token" => $token, "user" =>  $user],Response::HTTP_OK);
     }
 
     public function register(Request $request){
         $request->validate([
             "email" => "required",
-            "password" => "max:255|required",
-            "name" => "required|max:255"
+            "name" => "required|max:255",
+            'apellido' => 'required|max:255',
+            'nombre' => 'required|max:255',
+            'password' => 'required|min:8',
+            'nombre_usuario' => 'required|max:40'
         ]);
 
         $datos = $request->all();
@@ -53,7 +58,7 @@ class AuthController
 
         $user->sendEmailVerificationNotification();
 
-        return $request;
+        return response([], Response::HTTP_OK);
     }
     public function logout(Request $request){
         $request->tokens()->delete();

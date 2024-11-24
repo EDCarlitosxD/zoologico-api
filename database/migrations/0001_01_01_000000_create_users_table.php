@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('apellido');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('contraseña');
-            $table->boolean('estado');
+            $table->string('password');
+            $table->boolean('estado')->default(true);
             $table->rememberToken();
             $table->enum("rol",["cliente","admin","empleado"]);
 
