@@ -12,7 +12,7 @@
 
         <div class="header">
             <h1>Recibo de Compra</h1>
-            <p><strong>ZooLogic</strong> | Calle del Zoológico, 123, Ciudad</p>
+            <p><strong>Zoo Logic</strong> | Calle del Zoológico, 123, Ciudad</p>
             <p><strong>Fecha:</strong> {{ $fechaactual}}</p>
         </div>
 

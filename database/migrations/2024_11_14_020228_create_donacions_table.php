@@ -16,8 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_usuario')->nullable(true);
             $table->decimal('monto', 10, 2)->nullable(false);
             $table->text('mensaje')->nullable(false);
-            $table->string('metodo_pago', 50)->nullable(false);
-            $table->string('correo', 255)->nullable(false);
+            $table->string('email', 255)->nullable(false);
             $table->string('recibo', 45);
 
 
