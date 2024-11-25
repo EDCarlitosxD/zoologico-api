@@ -17,8 +17,7 @@ class Donacion extends Model
         'id_usuario',
         'monto',
         'mensaje',
-        'metodo_pago',
-        'correo',
+        'email',
         'recibo'
     ];
 }

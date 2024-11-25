@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DonacionController;
+use App\Http\Controllers\TarjetaController;
 use App\Http\Controllers\BoletosController;
 use App\Http\Controllers\VentaBoletosController;
 use App\Http\Controllers\VerificationEmailController;
@@ -48,7 +50,21 @@ Route::put('/animales/eliminar/{id}', [AnimalController::class, 'actualizarEstad
 
 Route::put('/animales/actualizar/{id}', [AnimalController::class,'actualizar']);
 
+//Compra de boletos
+
 Route::post('/boletos/guardardatos', [VentaBoletosController::class, 'guardar'])->middleware('auth:sanctum');
+
+//Tarjeta
+
+Route::post('/tarjeta', [TarjetaController::class, 'guardar'])->middleware('auth:sanctum');
+
+Route::delete('/tarjeta/eliminar/{id}', [TarjetaController::class, 'eliminar'])->middleware('auth:sanctum');
+
+//Donacion
+
+Route:: post('/donaciones/guardar', [DonacionController::class, 'guardar'])->middleware('auth:sanctum');
+
+
 
 
 

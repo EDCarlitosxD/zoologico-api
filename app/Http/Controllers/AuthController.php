@@ -42,18 +42,18 @@ class AuthController
 
     public function register(Request $request){
         $request->validate([
+            "nombre_usuario" => "required|max:255",
+            "nombre" => "required|max:255",
+            "apellido" => "required|max:255",
             "email" => "required",
-            "name" => "required|max:255",
-            'apellido' => 'required|max:255',
-            'nombre' => 'required|max:255',
             'password' => 'required|min:8',
-            'nombre_usuario' => 'required|max:40'
         ]);
 
         $datos = $request->all();
         // $datos["id_rol"] = 1; // Set default role ID
-        $datos["role"] = "cliente";
+        $datos["rol"] = "cliente";
         $datos["password"] = Hash::make($request->password);
+        $datos["estado"] = 1;
         $user = User::create($datos);
 
         $user->sendEmailVerificationNotification();
