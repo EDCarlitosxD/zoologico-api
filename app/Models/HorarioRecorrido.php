@@ -16,6 +16,7 @@ class HorarioRecorrido extends Model
         'id_recorrido',
         'id_guia',
         'fecha',
-        'horario_fin'
+        'horario_fin',
+        'disponible'
     ];
 }
