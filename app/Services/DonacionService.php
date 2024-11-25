@@ -39,10 +39,6 @@ public function guardardatos($request, $id, $email, $nombre){
 
 }
 
-
-
-
 }
-
 
 ?>
