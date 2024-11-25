@@ -11,37 +11,32 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AnimalController
 {
-    public function ImgAnimal($dato){
-        
-        $datomin= strtolower($dato);
-        $animales = Animal::select('nombre', 'imagen_principal') //peso tipo altura nombrecientifico nombre imagen
-        ->where('nombre', 'LIKE', "{$datomin}%")
-        -> orWhere('nombre_cientifico', 'LIKE', "{$datomin}%")
-        ->orWhere('habitat', 'LIKE', "{$datomin}%")->get();
+    public function ImgAnimal(Request $request){
 
-        return response()->json($animales);
-        
-        /*$animal = Animal::select('nombre', 'imagen_principal')->where('nombre',$dato)
-        ->orWhere('nombre_cientifico', $dato)
-        ->first();*/
-        /*
-        $animales = Animal::all();
-        $resultado = null;
-    
-        foreach($animales as $animal) {
-            if($animal->nombre == $dato || $animal->nombre_cientifico == $dato || $animal->habitat == $dato || $animal->tipo == $dato) {
-                //$resultado = $animal;
-                return response()->json([
-                    'nombre' => $animal->nombre,
-                    'imagen_principal' => $animal->imagen_principal
+        // Crear un query base
+    $query = Animal::query();
 
-                ]);
-                break; 
-            }
-        }*/
-    
+    // Obtener el parámetro 'dato' (búsqueda general)
+    $datomin = strtolower($request->input('dato', ''));
 
-        //->simplePaginate(2)
+    if (!empty($datomin)) {
+        $query->where(function ($q) use ($datomin) {
+            $q->where('nombre', 'LIKE', "{$datomin}%")
+              ->orWhere('nombre_cientifico', 'LIKE', "{$datomin}%")
+              ->orWhere('habitat', 'LIKE', "{$datomin}%");
+        });
+    }
+
+    // Filtrar por tipo si el parámetro está presente
+    if ($request->filled('tipo')) {
+        $query->where('tipo', $request->input('tipo'));
+    }
+
+    // Aplicar paginación (10 por página por defecto)
+    $animales = $query->select('nombre', 'imagen_principal', 'tipo','peso','altura','nombre_cientifico','slug')
+                      ->paginate($request->input('per_page', 12));
+
+    return response()->json($animales);
     }
 
     public function animalslug($slug){
@@ -50,17 +45,17 @@ class AnimalController
 
         if(!$buscar){
             throw new NotFoundHttpException('No existe');
-            
+
         } else{
             return response()->json($buscar);
         }
 
-        
+
     }
 
     public function guardar(Request $request){
          $request->validate([
-            
+
             'nombre' => 'required|unique:animales|max:80',
             'nombre_cientifico' => 'required|max:150',
             'slug' => 'required|max:255',
@@ -94,7 +89,7 @@ class AnimalController
             'tipo_animal_id' => 'required',*/
             ]
         );
-        
+
         try{
             $datos = $request->except(['slug']);
             $datos['slug'] = Str::slug($request->nombre);
@@ -104,7 +99,7 @@ class AnimalController
         } catch (Exception $error){
             throw new BadRequestException("Datos llenados incorrectamente:" . $error->getMessage());
         }
-            
+
     }
 
     public function actualizarEstado(Request $request, $id){

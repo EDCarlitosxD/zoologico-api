@@ -39,7 +39,7 @@ Route::post("/register", [AuthController::class,'register']);
 Route::post("/logout", [AuthController::class,'logout'])->middleware("auth:sanctum");
 
 //Animales
-Route::get('/animales/imagen/{dato}', [AnimalController::class, 'ImgAnimal']);
+Route::get('/animales/card/', [AnimalController::class, 'ImgAnimal']);
 
 Route::get('/animales/{slug}', [AnimalController::class, 'animalslug']);
 
