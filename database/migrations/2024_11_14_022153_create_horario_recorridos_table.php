@@ -33,6 +33,7 @@ return new class extends Migration
                   ->onDelete('no action')
                   ->onUpdate('cascade');
 
+            $table->boolean("disponible");
             $table->timestamps();
         });
     }
