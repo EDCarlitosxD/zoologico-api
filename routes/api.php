@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DonacionController;
 use App\Http\Controllers\TarjetaController;
 use App\Http\Controllers\BoletosController;
+use App\Http\Controllers\HorarioRecorridoController;
 use App\Http\Controllers\VentaBoletosController;
 use App\Http\Controllers\VerificationEmailController;
 use App\Models\User;
@@ -41,6 +42,7 @@ Route::post("/logout", [AuthController::class,'logout'])->middleware("auth:sanct
 
 //Animales
 Route::get('/animales/card/', [AnimalController::class, 'ImgAnimal']);
+Route::get('/animales', [AnimalController::class, 'getAll']);
 
 Route::get('/animales/{slug}', [AnimalController::class, 'animalslug']);
 
@@ -65,7 +67,8 @@ Route::delete('/tarjeta/eliminar/{id}', [TarjetaController::class, 'eliminar'])-
 Route:: post('/donaciones/guardar', [DonacionController::class, 'guardar'])->middleware('auth:sanctum');
 
 
-
+//Horario Recorrido
+Route::get('horrario/recorrido/{id}',[HorarioRecorridoController::class,'getHorariosGroupByRecorridos']);
 
 
 Route::get('/boletos',[BoletosController::class,'all']);
