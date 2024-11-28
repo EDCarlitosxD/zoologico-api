@@ -5,9 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DonacionController;
 use App\Http\Controllers\TarjetaController;
 use App\Http\Controllers\BoletosController;
+use App\Http\Controllers\GuiaController;
 use App\Http\Controllers\HorarioRecorridoController;
+use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\VentaBoletosController;
 use App\Http\Controllers\VerificationEmailController;
+use App\Models\Recorrido;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -67,6 +70,9 @@ Route::delete('/tarjeta/eliminar/{id}', [TarjetaController::class, 'eliminar'])-
 Route:: post('/donaciones/guardar', [DonacionController::class, 'guardar'])->middleware('auth:sanctum');
 
 
+//Recorridos
+Route::get('/recorridos',[RecorridoController::class, 'getAllRecorridosActive']);
+
 //Horario Recorrido
 Route::get('horrario/recorrido/{id}',[HorarioRecorridoController::class,'getHorariosGroupByRecorridos']);
 
@@ -75,3 +81,13 @@ Route::get('/boletos',[BoletosController::class,'all']);
 Route::get('/boletos/{id}',[BoletosController::class,'getById']);
 Route::post('/boletos',[BoletosController::class,'save']);
 Route::delete('/boletos/{id}',[BoletosController::class,'delete']);
+
+
+
+
+// GUIA
+Route::get('/guias',[GuiaController::class,'getAll']);
+Route::get('/guias/{id}',[GuiaController::class,'getById']);
+Route::post('/guias',[GuiaController::class,'save']);
+Route::put('/guias/{id}',[GuiaController::class,'actualizar']);
+Route::put('/guias/actualizar/{id}', [AnimalController::class,'actualizarEstado']);

@@ -11,53 +11,74 @@ class GuiaController
 {
     //
 
-    // public function getAll(Request $request){
-    //     $query = Guia::query();
-    //     $activo = $request->input('estado','');
+    public function getAll(Request $request){
+        $query = Guia::query();
+        $activo = $request->input('estado','');
 
-    //     if($request->has('estado')){
-    //         $query->where('estado',$activo);
-    //     }
+        if($request->has('estado')){
+            $query->where('estado',$activo);
+        }
 
-    //     return response($query->get(),Response::HTTP_OK);
-    // }
-
-
-    // public function getById($id){
-    //     return Guia::findOrFail($id);
-    // }
+        return response($query->get(),Response::HTTP_OK);
+    }
 
 
-    // public function save(Request $request){
-    //     $request->validate([
-    //         'titulo' => 'required|max:80',
-    //         "descripcion" => 'required|max:45',
-    //         "precio" => 'required|numeric',
-    //         "imagen" => "required|file|mimes:png,jpg"
-    //     ]);
-
-    //     $datos = $request->all();
-    //     $datos['imagen']= $request->file('imagen')->store('Boletos', 'public');
-
-    //     $boleto = new boletos($datos);
-    //     $boleto->save();
-    //     $boleto->imagen = asset('storage/'.$boleto->imagen);
-    //     return response(["boleto" => $boleto],Response::HTTP_CREATED);
-    // }
+    public function getById($id){
+        return Guia::findOrFail($id);
+    }
 
 
-    // public function delete(Request $request, $id){
-    //     $request->validate([
-    //         'estado'=>'required|boolean',
-    //     ]);
+    public function save(Request $request){
+        $request->validate([
+            'nombre_completo' => 'required|max:200',
+            "estado" => "required|boolean",
+            "disponible" => "required|boolean"
+        ]);
 
-    //     $boleto = boletos::findOrFail($id);
+        $datos = $request->all();
 
-    //     $boleto->estado = $request->input('estado');
-    //     $boleto->save();
+        $boleto = new Guia($datos);
+        $boleto->save();
+        return response(["guia" => $boleto],Response::HTTP_CREATED);
+    }
 
-    //     return response(['message' => 'Animal eliminado con exito'],Response::HTTP_ACCEPTED);
 
-    // }
+    public function actualizar(Request $request,$id){
+        $request->validate([
+            'nombre_completo' => 'max:200',
+            "estado" => "boolean",
+            "disponible" => "boolean"
+        ]);
+
+        $guia = Guia::find($id);
+
+        // Verificar si el registro existe
+        if (!$guia) {
+            return response()->json(['mensaje' => 'Guía no encontrada'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Actualizar los campos del registro
+        $guia->fill($request->all());
+
+        // Guardar los cambios en la base de datos
+        $guia->save();
+
+        return response(["guia" => $guia],Response::HTTP_CREATED);
+    }
+
+
+    public function actualizarEstado(Request $request, $id){
+        $request->validate([
+            'estado'=>'required|boolean',
+        ]);
+
+        $guia = Guia::findOrFail($id);
+
+        $guia->estado = $request->input('estado');
+        $guia->save();
+
+        return response()->json(['message' => 'Guia estado actualizado con exito']);
+
+    }
 
 }
