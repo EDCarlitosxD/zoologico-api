@@ -11,7 +11,7 @@ public function guardardatos($request, $id, $email, $nombre){
     $datos = $request->all();
 
     $validar = Validator::make($datos, [
-        'monto' => 'required',
+        'monto' => 'required|numeric',
         'mensaje' => 'required'
     ]);
 

@@ -31,13 +31,14 @@ class VentaBoletosController
     public function guardar(Request $request)
     {
         $token = Str::uuid();
+        $id_usuario = Auth::user()->id;
         $email = Auth::user()->email;
         $nombre = Auth::user()->nombre_usuario;
         $fechaactual = date("Y-m-d");
 
         DB::beginTransaction();
         try {
-            $boletos = $this->ventaService->procesarVenta($request, $token, $fechaactual, $email);
+            $boletos = $this->ventaService->procesarVenta($request, $token, $fechaactual, $email, $id_usuario);
             $total = $this->ventaService->calcularTotal($request);
 
 
@@ -49,6 +50,10 @@ class VentaBoletosController
             DB::rollback();
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function ventasmayor (){
+        
     }
     
 }
