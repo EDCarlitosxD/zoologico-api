@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Animal;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -51,6 +52,10 @@ class AnimalController
         }
 
 
+    }
+
+    public function getAll(){
+        return Animal::all();
     }
 
     public function guardar(Request $request){
@@ -109,7 +114,7 @@ class AnimalController
 
         $animal = Animal::findOrFail($id);
 
-        $animal->estado = $request->input('0');
+        $animal->estado = $request->input('estado');
         $animal->save();
 
         return response()->json(['message' => 'Animal eliminado con exito']);
@@ -150,6 +155,7 @@ class AnimalController
             'activo' => 'required|boolean',
             'tipo_animal_id' => 'required',*/
         ]);
+
 
         $animal=Animal::findOrFail($id);
         $animal->save();
