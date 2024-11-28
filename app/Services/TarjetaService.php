@@ -13,9 +13,9 @@ class TarjetaService{
         $validar = Validator::make($datos,[
             'fecha_expiracion' => 'required|max:255',
             'banco' => 'required|max:255',
-            'numero_tarjeta' => 'required|max:255',
+            'numero_tarjeta' => 'required|max:255|numeric',
             'nombre_tarjeta' => 'required|max:255',
-            'ccv' => 'required|max:5',
+            'ccv' => 'required|max:5|numeric',
             'tipo_tarjeta' => 'required|max:255',
         ]);
 

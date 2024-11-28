@@ -8,7 +8,7 @@ use Illuminate\Validation\ValidationException;
 
 class VentaService
 {
-    public function procesarVenta($request, $token, $fechaactual, $email)
+    public function procesarVenta($request, $token, $fechaactual, $email, $id_usuario)
     {
 
         $boletos = [];
@@ -16,7 +16,6 @@ class VentaService
 
         foreach ($datos as $dato) {
             $validar = Validator::make($dato, [
-                'id_usuario' => 'required',
                 'id_boleto' => 'required',
                 'cantidad' => 'required|integer',
             ]);
@@ -31,7 +30,7 @@ class VentaService
             $precio_total = $precio * ($dato['cantidad']);
 
             venta_boletos::create([
-                'id_usuario' => $dato['id_usuario'],
+                'id_usuario' => $id_usuario,
                 'id_boleto' => $dato['id_boleto'],
                 'fecha' => $fechaactual,
                 'cantidad' => $dato['cantidad'],
@@ -61,6 +60,10 @@ class VentaService
             $total += $dato['cantidad'] * $precio;
         }
         return $total;
+    }
+    
+    public function ventaMasAlta(){
+        
     }
 }
 

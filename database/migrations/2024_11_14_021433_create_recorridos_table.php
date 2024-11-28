@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('titulo', 45)->nullable(false);
             $table->decimal('precio', 10, 2)->nullable(false);
             $table->text('descripcion')->nullable(false);
-            $table->integer('duracion')->nullable(false);
+            $table->time('duracion')->nullable(false);
             $table->integer('cantidad_personas')->nullable(false);
             $table->decimal('precio_persona_extra', 10, 2)->nullable(false);
+            $table->string("img_recorrido", length:255);   
             $table->boolean("estado")->default(1);
 
             $table->timestamps();

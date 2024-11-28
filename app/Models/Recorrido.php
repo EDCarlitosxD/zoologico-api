@@ -15,6 +15,7 @@ class Recorrido extends Model
         'descripcion',
         'duracion',
         'cantidad_personas',
-        'precio_persona_extra'
+        'precio_persona_extra',
+        'img_recorrido'
     ];
 }
