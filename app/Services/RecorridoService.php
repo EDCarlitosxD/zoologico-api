@@ -16,10 +16,10 @@ class RecorridoService{
         $validar = Validator::make($datos, [
             'titulo' => 'required|max:45',
             'precio' => 'required|numeric',
-            'descripcion' => 'required',
             'duracion' => 'required|date_format:H:i:s',
-            'cantidad_personas' => 'required|integer',
-            'precio_persona_extra' => 'required|numeric',
+            'descripcion' => 'required',
+            'descripcion_incluye' => 'required',
+            'descripcion_importante_reservar' => 'required',
             'img_recorrido' => 'required|max:255'
         ]);
 
@@ -30,13 +30,15 @@ class RecorridoService{
             ]);
         }
 
+        $datos['img_recorrido']= $request->file('img_recorrido')->store('Recorridos', 'public');
+
         $recorrido = Recorrido::create([
             'titulo' => $datos['titulo'],
             'precio' => $datos['precio'],
-            'descripcion' => $datos['descripcion'],
             'duracion' => $datos['duracion'],
-            'cantidad_personas' => $datos['cantidad_personas'],
-            'precio_persona_extra' => $datos['precio_persona_extra'],
+            'descripcion' => $datos['descripcion'],
+            'descripcion_incluye' => $datos['descripcion_incluye'],
+            'descripcion_importante_reservar' => $datos['descripcion_importante_reservar'],
             'img_recorrido' => $datos['img_recorrido']
         ]);
 

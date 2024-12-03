@@ -74,19 +74,6 @@ class AnimalController
             'qr'=> 'required|max:255',
             'estado' => 'required|boolean',
             'img_ubicacion' => 'required|max:255',
-
-            /*
-            'nombre' => 'required|unique:animales|max:255',
-            'nombre_cientifico' => 'required|max:255',
-            'caracteristicas_fisicas' => 'required',
-            'dieta' => 'required',
-            'datos_curiosos' => 'required',
-            'comportamiento' => 'required',
-            'informacion' => 'required',
-            'imagen_principal' => 'required',
-            'imagen_secundaria' => 'required',
-            'activo' => 'required|boolean',
-            'tipo_animal_id' => 'required',*/
             ]
         );
 
@@ -136,19 +123,6 @@ class AnimalController
             'qr'=> 'required|max:255',
             'estado' => 'required|boolean',
             'img_ubicacion' => 'required|max:255',
-
-            /*
-            'nombre' => 'required|unique:animales|max:255',
-            'nombre_cientifico' => 'required|max:255',
-            'caracteristicas_fisicas' => 'required',
-            'dieta' => 'required',
-            'datos_curiosos' => 'required',
-            'comportamiento' => 'required',
-            'informacion' => 'required',
-            'imagen_principal' => 'required',
-            'imagen_secundaria' => 'required',
-            'activo' => 'required|boolean',
-            'tipo_animal_id' => 'required',*/
         ]);
 
         $animal=Animal::findOrFail($id);

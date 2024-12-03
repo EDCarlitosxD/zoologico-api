@@ -22,7 +22,6 @@ class RecorridoController
         DB::beginTransaction();
         
         try{
-
             $registro = $this->recorridoService->crearRecorrido($request);
             DB::commit();
             return $registro;
@@ -35,10 +34,10 @@ class RecorridoController
         
     }
 
-    public function actualizar(Request $request){
+    public function actualizar(Request $request, $id){
 
 
 
-        
+
     }
 }
