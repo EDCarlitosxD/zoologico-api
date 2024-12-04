@@ -84,10 +84,10 @@ class RecorridoService{
             'descripcion_importante_reservar' => 'required',
             'img_recorrido' => 'required'
         ]);
-        
-        $registro=Recorrido::findOrFail($id);
 
-        $registro->update($validacion);
+        $recorrido=Recorrido::findOrFail($id);
+
+        $recorrido->update($validacion);
 
         HorarioRecorrido::where('id_recorrido', $id)->delete();
         
@@ -119,6 +119,16 @@ class RecorridoService{
         }
 
         return response()->json(['message' => 'Recorridos actualizados con sus horarios correctamente']);
+    }
+
+    public function eliminadoLogico($request, $id){
+        $request->validate([
+            "estado" => "required|boolean"
+        ]);
+
+        $recorrido = Recorrido::findOrFail($id);
+        $recorrido->estado = $request->input('estado');
+        $recorrido->save();
     }
 
     

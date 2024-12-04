@@ -36,8 +36,6 @@ class RecorridoController
 
     public function actualizar(Request $request, $id){
 
-
-
         DB::beginTransaction();
 
         try{
@@ -50,6 +48,12 @@ class RecorridoController
 
             return response()->json(['error' => $e->getMessage()],500);
         }
+
+    }
+
+    public function eliminar(Request $request, $id){
+
+        
 
 
     }

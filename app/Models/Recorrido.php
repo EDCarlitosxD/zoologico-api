@@ -16,6 +16,7 @@ class Recorrido extends Model
         'descripcion',
         'descripcion_incluye',
         'descripcion_importante_reservar',
-        'img_recorrido'
+        'img_recorrido',
+        'estado'
     ];
 }
