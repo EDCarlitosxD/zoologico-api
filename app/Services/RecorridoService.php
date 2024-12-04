@@ -138,14 +138,18 @@ class RecorridoService{
         return response()->json(['message' => 'Eliminado con exito']);
     }
 
-    
+    public function traerRecorridos ($request){
 
+        $recorridos = $request->input('active', '');
 
+        if ($recorridos != null) {
+
+           $rs =  Recorrido::where('estado', $recorridos)->get();
+
+           return $rs;   
+        }
+        
+    }
 }
-
-
-
-
-
 
 ?>

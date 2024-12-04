@@ -57,6 +57,12 @@ class RecorridoController
 
         return $eliminado;
 
+    }
+
+    public function seleccionarRecorrido (Request $request){
+        $select = $this->recorridoService->traerRecorridos($request);
+
+        return response()->json($select);
 
     }
 }
