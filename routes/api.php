@@ -69,6 +69,6 @@ Route::post('/donaciones/guardar', [DonacionController::class, 'guardar'])->midd
 
 Route::post('/recorridos/guardar', [RecorridoController::class, 'guardar'])->middleware('auth:sanctum');
 
-Route::put('/recorridos/guardar', [RecorridoController::class, 'guardar'])->middleware('auth:sanctum');
+Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualizar'])->middleware('auth:sanctum');
 
 

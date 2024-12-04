@@ -73,6 +73,55 @@ class RecorridoService{
         
     }
 
+    public function updateDatos($request, $id){
+ 
+        $validacion = $request->validate([
+            'titulo' => 'required|max:45',
+            'precio' => 'required|numeric',
+            'duracion' => 'required|date_format:H:i:s',
+            'descripcion' => 'required',
+            'descripcion_incluye' => 'required',
+            'descripcion_importante_reservar' => 'required',
+            'img_recorrido' => 'required'
+        ]);
+        
+        $registro=Recorrido::findOrFail($id);
+
+        $registro->update($validacion);
+
+        HorarioRecorrido::where('id_recorrido', $id)->delete();
+        
+
+        foreach($request->horarios as $dato){
+            $validar = Validator::make($dato,[
+                'horario_inicio' => 'required|date_format:H:i:s',
+                'id_guia' => 'required|integer',
+                'fecha' => 'required|date',
+                'horario_fin' => 'required|date_format:H:i:s'
+            ]);
+
+            if($validar->fails()){
+                throw ValidationException::withMessages([
+                    "message" => "Validación incorrecta de horario",
+                    "errors" => $validar->errors()->all(),
+                ]);
+            }
+
+            HorarioRecorrido::create([
+                'horario_inicio' => $dato['horario_inicio'],
+                'disponible' => 1,
+                'id_recorrido' => $id,
+                'id_guia' => $dato['id_guia'],
+                'fecha' => $dato['fecha'],
+                'horario_fin' => $dato['horario_fin']
+            ]);
+
+        }
+
+        return response()->json(['message' => 'Recorridos actualizados con sus horarios correctamente']);
+    }
+
+    
 
 
 }

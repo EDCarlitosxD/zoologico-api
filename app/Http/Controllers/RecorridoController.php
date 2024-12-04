@@ -38,6 +38,19 @@ class RecorridoController
 
 
 
+        DB::beginTransaction();
+
+        try{
+            $update = $this->recorridoService->updateDatos($request, $id);
+            DB::commit();
+            return $update;
+        }
+        catch (Exception $e){
+            DB::rollBack();
+
+            return response()->json(['error' => $e->getMessage()],500);
+        }
+
 
     }
 }
