@@ -53,7 +53,9 @@ class RecorridoController
 
     public function eliminar(Request $request, $id){
 
-        
+        $eliminado = $this->recorridoService->eliminadoLogico($request, $id);
+
+        return $eliminado;
 
 
     }

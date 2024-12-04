@@ -3,6 +3,8 @@ namespace App\Services;
 
 use App\Models\HorarioRecorrido;
 use App\Models\Recorrido;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -129,6 +131,11 @@ class RecorridoService{
         $recorrido = Recorrido::findOrFail($id);
         $recorrido->estado = $request->input('estado');
         $recorrido->save();
+
+
+        HorarioRecorrido::where('id_recorrido', $id)->update(['disponible' => $request->input('estado')]);
+
+        return response()->json(['message' => 'Eliminado con exito']);
     }
 
     
