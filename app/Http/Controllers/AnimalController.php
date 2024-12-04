@@ -14,29 +14,29 @@ class AnimalController
     public function ImgAnimal(Request $request){
 
         // Crear un query base
-    $query = Animal::query();
+        $query = Animal::query();
 
-    // Obtener el parámetro 'dato' (búsqueda general)
-    $datomin = strtolower($request->input('dato', ''));
+        // Obtener el parámetro 'dato' (búsqueda general)
+        $datomin = strtolower($request->input('dato', ''));
 
-    if (!empty($datomin)) {
-        $query->where(function ($q) use ($datomin) {
-            $q->where('nombre', 'LIKE', "{$datomin}%")
-              ->orWhere('nombre_cientifico', 'LIKE', "{$datomin}%")
-              ->orWhere('habitat', 'LIKE', "{$datomin}%");
-        });
-    }
+        if (!empty($datomin)) {
+            $query->where(function ($q) use ($datomin) {
+                $q->where('nombre', 'LIKE', "{$datomin}%")
+                ->orWhere('nombre_cientifico', 'LIKE', "{$datomin}%")
+                ->orWhere('habitat', 'LIKE', "{$datomin}%");
+            });
+        }
 
-    // Filtrar por tipo si el parámetro está presente
-    if ($request->filled('tipo')) {
-        $query->where('tipo', $request->input('tipo'));
-    }
+        // Filtrar por tipo si el parámetro está presente
+        if ($request->filled('tipo')) {
+            $query->where('tipo', $request->input('tipo'));
+        }
 
-    // Aplicar paginación (10 por página por defecto)
-    $animales = $query->select('nombre', 'imagen_principal', 'tipo','peso','altura','nombre_cientifico','slug')
-                      ->paginate($request->input('per_page', 12));
+        // Aplicar paginación (10 por página por defecto)
+        $animales = $query->select('nombre', 'imagen_principal', 'tipo','peso','altura','nombre_cientifico','slug')
+                        ->paginate($request->input('per_page', 12));
 
-    return response()->json($animales);
+        return response()->json($animales);
     }
 
     public function animalslug($slug){
@@ -96,16 +96,16 @@ class AnimalController
 
         $animal = Animal::findOrFail($id);
 
-        $animal->estado = $request->input('0');
+        $animal->estado = $request->input('estado');
         $animal->save();
 
         return response()->json(['message' => 'Animal eliminado con exito']);
     }
 
     public function actualizar(Request $request, $id){
-        $request->validate([
+        $validacion = $request->validate([
 
-            'nombre' => 'required|unique:animales|max:80',
+            'nombre' => 'required|unique:animales,nombre,' . $id . '|max:80',
             'nombre_cientifico' => 'required|max:150',
             'slug' => 'required|max:255',
             'imagen_principal' => 'required|max:255',
@@ -126,7 +126,7 @@ class AnimalController
         ]);
 
         $animal=Animal::findOrFail($id);
-        $animal->save();
+        $animal->update($validacion);
 
         return response()->json(['message'=>'Animal actualizado con exito']);
     }
