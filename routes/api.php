@@ -76,6 +76,8 @@ Route::post('/recorridos/guardar', [RecorridoController::class, 'guardar'])->mid
 
 Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualizar'])->middleware('auth:sanctum');
 
+Route::put('/recorridos/eliminar/{id}', [RecorridoController::class, 'eliminar'])->middleware('auth:sanctum') ;
+
 
 //Recorridos
 Route::get('/recorridos',[RecorridoController::class, 'getAllRecorridosActive']);
