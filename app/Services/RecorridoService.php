@@ -22,7 +22,7 @@ class RecorridoService{
             'descripcion' => 'required',
             'descripcion_incluye' => 'required',
             'descripcion_importante_reservar' => 'required',
-            'img_recorrido' => 'required|max:255'
+            'img_recorrido' => 'required|file|mimes:jpg,jpeg,png|max:255'
         ]);
 
         if($validar->fails()){
@@ -32,7 +32,9 @@ class RecorridoService{
             ]);
         }
 
-        $datos['img_recorrido']= $request->file('img_recorrido')->store('Recorridos', 'public');
+        if ($request->hasFile('img_recorrido')) {
+            $datos['img_recorrido'] = $request->file('img_recorrido')->store('Recorridos', 'public');
+        } 
 
         $recorrido = Recorrido::create([
             'titulo' => $datos['titulo'],
@@ -84,11 +86,15 @@ class RecorridoService{
             'descripcion' => 'required',
             'descripcion_incluye' => 'required',
             'descripcion_importante_reservar' => 'required',
-            'img_recorrido' => 'required'
+            'img_recorrido' => 'required|file|mimes:jpg,jpeg,png|max:255'
         ]);
 
-        $recorrido=Recorrido::findOrFail($id);
+        if ($request->hasFile('img_recorrido')) {
+            $rutaImagen = $request->file('img_recorrido')->store('Recorridos', 'public');
+            $validacion['img_recorrido'] = $rutaImagen; 
+        }
 
+        $recorrido = Recorrido::findOrFail($id);
         $recorrido->update($validacion);
 
         HorarioRecorrido::where('id_recorrido', $id)->delete();
