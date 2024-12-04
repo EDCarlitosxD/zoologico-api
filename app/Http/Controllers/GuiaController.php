@@ -47,7 +47,7 @@ class GuiaController
         $request->validate([
             'nombre_completo' => 'max:200',
             "estado" => "boolean",
-            "disponible" => "boolean"
+            // "disponible" => "boolean"
         ]);
 
         $guia = Guia::find($id);

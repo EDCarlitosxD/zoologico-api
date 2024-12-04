@@ -3,7 +3,6 @@
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DonacionController;
-use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\TarjetaController;
 use App\Http\Controllers\BoletosController;
 use App\Http\Controllers\GuiaController;
@@ -50,7 +49,7 @@ Route::get('/animales', [AnimalController::class, 'getAll']);
 
 Route::get('/animales/{slug}', [AnimalController::class, 'animalslug']);
 
-Route::post('/animales', [AnimalController::class, 'guardar']);
+Route::post('/animales', [AnimalController::class, 'guardar'])->middleware('auth:sanctum');
 
 Route::put('/animales/eliminar/{id}', [AnimalController::class, 'actualizarEstado']);
 

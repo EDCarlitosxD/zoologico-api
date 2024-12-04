@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 Use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\ReciboElectronico;
+use App\Models\venta_boletos;
 use App\Services\VentaService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
@@ -53,7 +54,9 @@ class VentaBoletosController
     }
 
     public function ventasmayor (){
-        
+
     }
-    
+
+
+
 }

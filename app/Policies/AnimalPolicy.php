@@ -31,12 +31,12 @@ class AnimalPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
-    {
-        //ROLE
-        //ADMIN O ANIMALES
-        return ($user->id_rol == 1 || $user->id_rol == 4) ? Response::allow() : Response::deny("No tienes acceso");
-    }
+    // public function create(User $user): Response
+    // {
+    //     //ROLE
+    //     //ADMIN O ANIMALES
+    //     // return ($user->id_rol == 1 || $user->id_rol == 4) ? Response::allow() : Response::deny("No tienes acceso");
+    // }
 
     /**
      * Determine whether the user can update the model.
