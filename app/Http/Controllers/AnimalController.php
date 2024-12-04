@@ -17,7 +17,10 @@ class AnimalController
 
         // Crear un query base
         $query = Animal::query();
+        $query = Animal::query();
 
+        // Obtener el parámetro 'dato' (búsqueda general)
+        $datomin = strtolower($request->input('dato', ''));
         // Obtener el parámetro 'dato' (búsqueda general)
         $datomin = strtolower($request->input('dato', ''));
 
@@ -29,6 +32,10 @@ class AnimalController
             });
         }
 
+        // Filtrar por tipo si el parámetro está presente
+        if ($request->filled('tipo')) {
+            $query->where('tipo', $request->input('tipo'));
+        }
         // Filtrar por tipo si el parámetro está presente
         if ($request->filled('tipo')) {
             $query->where('tipo', $request->input('tipo'));

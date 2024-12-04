@@ -12,10 +12,10 @@ class Recorrido extends Model
     protected $fillable = [
         'titulo',
         'precio',
-        'descripcion',
         'duracion',
-        'cantidad_personas',
-        'precio_persona_extra',
+        'descripcion',
+        'descripcion_incluye',
+        'descripcion_importante_reservar',
         'img_recorrido'
     ];
 }

@@ -24,7 +24,6 @@ class RecorridoController
         DB::beginTransaction();
 
         try{
-
             $registro = $this->recorridoService->crearRecorrido($request);
             DB::commit();
             return $registro;
@@ -37,8 +36,22 @@ class RecorridoController
 
     }
 
-    public function actualizar(Request $request){
+    public function actualizar(Request $request, $id){
 
+
+
+        DB::beginTransaction();
+
+        try{
+            $update = $this->recorridoService->updateDatos($request, $id);
+            DB::commit();
+            return $update;
+        }
+        catch (Exception $e){
+            DB::rollBack();
+
+            return response()->json(['error' => $e->getMessage()],500);
+        }
 
 
 
