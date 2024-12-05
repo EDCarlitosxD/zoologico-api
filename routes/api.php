@@ -78,6 +78,8 @@ Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualiz
 
 Route::put('/recorridos/eliminar/{id}', [RecorridoController::class, 'eliminar'])->middleware('auth:sanctum') ;
 
+Route::get('/recorridos/traer', [RecorridoController::class, 'seleccionarRecorrido'])->middleware('auth:sanctum');
+
 
 //Recorridos
 Route::get('/recorridos',[RecorridoController::class, 'getAllRecorridosActive']);
