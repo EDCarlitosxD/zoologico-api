@@ -84,7 +84,7 @@ Route::get('/recorridos',[RecorridoController::class, 'getAllRecorridosActive'])
 
 //Horario Recorrido
 Route::get('horrario/recorrido/{id}',[HorarioRecorridoController::class,'getHorariosGroupByRecorridos']);
-
+Route::get('horarrio/{id_horario}', [HorarioRecorridoController::class, 'getTourAndScheduleById']);
 
 Route::get('/boletos',[BoletosController::class,'all']);
 Route::get('/boletos/{id}',[BoletosController::class,'getById']);

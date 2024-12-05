@@ -49,4 +49,23 @@ class HorarioRecorridoController
 
         return response()->json($agrupadosPorDia);
     }
+
+
+    public function getTourAndScheduleById($id_horario)
+    {
+        // Obtener el horario por ID
+        $horario = HorarioRecorrido::with('recorrido') // Relación con el modelo Recorrido
+            ->where('id', $id_horario)
+            ->first();
+
+        if (!$horario) {
+            return response()->json(['error' => 'Horario no encontrado'], 404);
+        }
+
+        // Formatear la respuesta en JSON
+
+        return response()->json($horario, 200);
+    }
+
+
 }

@@ -19,4 +19,10 @@ class Recorrido extends Model
         'img_recorrido',
         'estado'
     ];
+
+
+    public function horarios()
+    {
+        return $this->hasMany(HorarioRecorrido::class, 'id_recorrido', 'id');
+    }
 }

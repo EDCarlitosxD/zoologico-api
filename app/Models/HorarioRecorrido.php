@@ -19,4 +19,10 @@ class HorarioRecorrido extends Model
         'horario_fin',
         'disponible'
     ];
+
+
+    public function recorrido()
+    {
+        return $this->belongsTo(Recorrido::class, 'id_recorrido', 'id');
+    }
 }
