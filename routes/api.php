@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BoletosController;
 use App\Http\Controllers\DonacionController;
 use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\TarjetaController;
 use App\Http\Controllers\VentaBoletosController;
 use App\Http\Controllers\VerificationEmailController;
+use App\Models\Boletos;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -74,5 +76,9 @@ Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualiz
 Route::put('/recorridos/eliminar/{id}', [RecorridoController::class, 'eliminar'])->middleware('auth:sanctum') ;
 
 Route::get('/recorridos/traer', [RecorridoController::class, 'seleccionarRecorrido'])->middleware('auth:sanctum');
+
+//Traer datos de compras de un usuario por fecha
+
+Route::get('/boletos/obtener', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
 
 

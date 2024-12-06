@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reservas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_usuario');
-            $table->integer('cantidad_personas')->nullable();
+            $table->integer('cantidad')->nullable();
             $table->unsignedBigInteger('id_horario_recorrido');
             $table->date('fecha');
             $table->decimal('precio_total', );
