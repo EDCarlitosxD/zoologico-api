@@ -8,10 +8,10 @@ use App\Services\TarjetaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TarjetaController 
+class TarjetaController
 {
     protected $tarjetaService;
-    
+
     public function __construct(TarjetaService $tarjetaService)
     {
         $this->tarjetaService = $tarjetaService;
@@ -21,7 +21,7 @@ class TarjetaController
     public function guardar (Request $request){
 
         $idusuario = Auth::user()->id;
-        
+
         $tarjeta = $this->tarjetaService->procesarTarjeta($request, $idusuario);
 
         return $tarjeta;
@@ -36,4 +36,9 @@ class TarjetaController
         return $eliminartarjeta;
 
     }
+
+    public function getTarjetas($id){
+        return Tarjeta::all();
+    }
+
 }

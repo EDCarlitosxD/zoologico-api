@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Services;
 
 use App\Models\Tarjeta;
@@ -10,22 +10,22 @@ class TarjetaService{
     public function procesarTarjeta($request, $idusuario){
         $datos = $request->all();
 
-        $validar = Validator::make($datos,[
+        $request->validate([
             'fecha_expiracion' => 'required|max:255',
             'banco' => 'required|max:255',
-            'numero_tarjeta' => 'required|max:255|numeric',
+            'numero_tarjeta' => 'required',
             'nombre_tarjeta' => 'required|max:255',
-            'ccv' => 'required|max:5|numeric',
+            'ccv' => 'required|max:5',
             'tipo_tarjeta' => 'required|max:255',
         ]);
 
-        if($validar->fails()){
-            throw ValidationException::withMessages([
-                "message" => "validacion incorrecta"
-            ]);
-        }
+        // if($validar->fails()){
+        //     throw ValidationException::withMessages([
+        //         "message" => "validacion incorrecta"
+        //     ]);
+        // }
 
-        Tarjeta::create([
+        $tarjeta = Tarjeta::create([
             'fecha_expiracion' => $datos['fecha_expiracion'],
             'banco' => $datos['banco'],
             'numero_tarjeta' => $datos['numero_tarjeta'],
@@ -35,7 +35,7 @@ class TarjetaService{
             'id_usuario' => $idusuario
         ]);
 
-        return response()->json(['message' => 'Tarjeta agregada con exito']);
+        return response()->json($tarjeta);
     }
 
     public function eliminarTarjeta($id){

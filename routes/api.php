@@ -61,6 +61,7 @@ Route::post('/boletos/guardardatos', [VentaBoletosController::class, 'guardar'])
 
 //Tarjeta
 
+Route::get('/tarjeta/{id}', [TarjetaController::class, 'getTarjetas'])->middleware('auth:sanctum');
 Route::post('/tarjeta', [TarjetaController::class, 'guardar'])->middleware('auth:sanctum');
 
 Route::delete('/tarjeta/eliminar/{id}', [TarjetaController::class, 'eliminar'])->middleware('auth:sanctum');
