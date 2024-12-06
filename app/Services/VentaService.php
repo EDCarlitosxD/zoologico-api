@@ -63,7 +63,7 @@ class VentaService
         foreach ($datos['recorridos'] as $dato){
             $validar = Validator::make($dato, [
                 'id_recorrido',
-                'cantidad_personas' => 'required|integer',
+                'cantidad' => 'required|integer',
                 'id_horario_recorrido' => 'required'
             ]);
 
@@ -72,11 +72,11 @@ class VentaService
             }
 
             $precio = Recorrido::findOrFail($dato['id_recorrido'])->precio;
-            $precio_total = $precio * ($dato['cantidad_personas']);
+            $precio_total = $precio * ($dato['cantidad']);
 
             Reserva::create([
                 'id_usuario' => $id_usuario,
-                'cantidad_personas' => $dato['cantidad_personas'],
+                'cantidad' => $dato['cantidad'],
                 'precio_total' => $precio_total,
                 'id_horario_recorrido' => $dato['id_horario_recorrido'],
                 'token' => $token,
@@ -87,7 +87,7 @@ class VentaService
 
             $recorridos [] = [
                 'tiporecorrido' => $tiporecorrido->titulo,
-                'cantidad_personas' => $dato['cantidad_personas'],
+                'cantidad' => $dato['cantidad'],
                 'precio' => $precio,
                 'token' => $token,
             ];
@@ -109,7 +109,7 @@ class VentaService
 
         foreach ($datos['recorridos'] as $dato) {
             $precio = Recorrido::findOrFail($dato['id_recorrido'])->precio;
-            $totalrecorridos += $dato['cantidad_personas'] * $precio;
+            $totalrecorridos += $dato['cantidad'] * $precio;
         }
 
         $totalcompra = $totalboletos+$totalrecorridos;

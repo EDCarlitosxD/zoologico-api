@@ -75,8 +75,8 @@ class VentaBoletosController
             foreach($recorridos as $recorrido){
                 $recorridosreturn [] = [
                     "tipo_recorrido" => $recorrido['tiporecorrido'],
-                    "cantidad_personas" => $recorrido['cantidad_personas'],
-                    "total_recorrido" => $recorrido['cantidad_personas'] * $recorrido['precio'],
+                    "cantidad" => $recorrido['cantidad'],
+                    "total_recorrido" => $recorrido['cantidad'] * $recorrido['precio'],
                     "token" => $recorrido['token']
                 ];
             }

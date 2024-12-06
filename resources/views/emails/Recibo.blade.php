@@ -44,7 +44,7 @@
                     <td>
                         <ul>
                             @foreach ($recorridos as $recorrido )
-                            <li>{{ $recorrido['tiporecorrido'] }} (cantidad: {{$recorrido['cantidad_personas']}}): ${{number_format(($recorrido['precio'])*($recorrido['cantidad_personas']),2)}} MXN</li>
+                            <li>{{ $recorrido['tiporecorrido'] }} (cantidad: {{$recorrido['cantidad']}}): ${{number_format(($recorrido['precio'])*($recorrido['cantidad']),2)}} MXN</li>
                             @endforeach
                         </ul>
                     </td>
