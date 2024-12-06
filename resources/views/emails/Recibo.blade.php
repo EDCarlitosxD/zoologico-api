@@ -40,6 +40,17 @@
                     
                 </tr>
                 <tr>
+                    <th>Tours Comprados</th>
+                    <td>
+                        <ul>
+                            @foreach ($recorridos as $recorrido )
+                            <li>{{ $recorrido['tiporecorrido'] }} (cantidad: {{$recorrido['cantidad_personas']}}): ${{number_format(($recorrido['precio'])*($recorrido['cantidad_personas']),2)}} MXN</li>
+                            @endforeach
+                        </ul>
+                    </td>
+                    
+                </tr>
+                <tr>
                     <th>Total</th>
                     <td>${{ number_format($total, 2) }} MXN</td>
                 </tr>
