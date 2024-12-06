@@ -15,16 +15,18 @@ class ReciboElectronico extends Mailable
     use Queueable, SerializesModels;
 
     public $boletos = [];
+    public $recorridos = [];
     public $total = 0;
     public $fechaactual, $nombre, $email;
 
-    public function __construct($boletos, $total, $fechaactual, $nombre, $email)
+    public function __construct($boletos, $total, $fechaactual, $nombre, $email, $recorridos)
     {
         $this->boletos = $boletos;
         $this->total = $total;
         $this->fechaactual = $fechaactual;
         $this->nombre = $nombre;
         $this->email = $email;
+        $this->recorridos = $recorridos;
     }
 
     /**

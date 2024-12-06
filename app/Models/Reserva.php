@@ -12,6 +12,8 @@ class Reserva extends Model
     protected $fillable = [
         'id_usuario',
         'cantidad_personas',
-        'id_horario_recorrido'
+        'id_horario_recorrido',
+        'fecha',
+        'token'
     ];
 }

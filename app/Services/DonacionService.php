@@ -12,7 +12,6 @@ public function guardardatos($request, $id, $email, $nombre){
 
     $validar = Validator::make($datos, [
         'monto' => 'required|numeric',
-        'mensaje' => 'required'
     ]);
 
     if($validar->fails()){
@@ -24,7 +23,6 @@ public function guardardatos($request, $id, $email, $nombre){
     Donacion::create([
         'id_usuario' => $id,
         'monto' => $datos['monto'],
-        'mensaje' => $datos['mensaje'],
         'email' => $email
     ]);
 

@@ -16,7 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_usuario');
             $table->integer('cantidad_personas')->nullable();
             $table->unsignedBigInteger('id_horario_recorrido');
+            $table->date('fecha');
             $table->boolean("estado")->default(1);
+            $table->string('token', length: 255);
 
             // Índices y claves foráneas
             $table->foreign('id_usuario')
