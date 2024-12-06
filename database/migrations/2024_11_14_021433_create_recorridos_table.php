@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('descripcion')->nullable(false);
             $table->text('descripcion_incluye')->nullable(false);
             $table->text('descripcion_importante_reservar')->nullable(false);
-            $table->string("img_recorrido", length:255);   
+            $table->string("img_recorrido", length:255);
             $table->boolean("estado")->default(1);
 
             $table->timestamps();

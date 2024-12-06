@@ -36,16 +36,17 @@ class HorarioRecorridoController
         $recorridos = HorarioRecorrido::where('id_recorrido',$id)
             ->get();
 
-        $agrupadosPorDia = $recorridos->groupBy('fecha')->map(function ($horarios, $fecha) {
-            return $horarios->map(function ($horario) {
-                return [
-                    'id' => $horario->id,
-                    'horario_inicio' => $horario->horario_inicio,
-                    'horario_fin' => $horario->horario_fin,
-                    'disponible' => $horario->disponible,
-                ];
+            $agrupadosPorDia = $recorridos->groupBy('fecha')->map(function ($horarios, $fecha) {
+                return $horarios->map(function ($horario) use ($fecha) {
+                    return [
+                        'id' => $horario->id,
+                        'horario_inicio' => $horario->horario_inicio,
+                        'horario_fin' => $horario->horario_fin,
+                        'disponible' => $horario->disponible,
+                        'fecha' => $fecha // Incluimos la fecha aquí
+                    ];
+                });
             });
-        });
 
         return response()->json($agrupadosPorDia);
     }

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('horario_recorridos', function (Blueprint $table) {
             $table->id();
             $table->time('horario_inicio');
-            $table->boolean('disponible')->default(1);
             $table->unsignedBigInteger('id_recorrido');
             $table->unsignedBigInteger('id_guia');
             $table->date('fecha');
