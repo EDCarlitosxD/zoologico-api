@@ -41,7 +41,6 @@ class VentaService
                 'precio_total' => $precio_total
             ]);
 
-            $precio = Boletos::findOrFail($dato['id_boleto'])->precio;
             $tipoboleto = Boletos::select('titulo')->where('id', $dato['id_boleto'])->first();
             
             $boletos[] = [
@@ -72,9 +71,13 @@ class VentaService
                 throw ValidationException::withMessages(['message' => 'La validacion fallo']);
             }
 
+            $precio = Recorrido::findOrFail($dato['id_recorrido'])->precio;
+            $precio_total = $precio * ($dato['cantidad_personas']);
+
             Reserva::create([
                 'id_usuario' => $id_usuario,
                 'cantidad_personas' => $dato['cantidad_personas'],
+                'precio_total' => $precio_total,
                 'id_horario_recorrido' => $dato['id_horario_recorrido'],
                 'token' => $token,
                 'fecha' => $fechaactual
@@ -82,13 +85,11 @@ class VentaService
 
             $tiporecorrido = Recorrido::select('titulo')->where('id', $dato['id_recorrido'])->first();
 
-            $precio = Recorrido::findOrFail($dato['id_recorrido'])->precio;
-
             $recorridos [] = [
                 'tiporecorrido' => $tiporecorrido->titulo,
                 'cantidad_personas' => $dato['cantidad_personas'],
                 'precio' => $precio,
-                'token' => $token
+                'token' => $token,
             ];
         }
 

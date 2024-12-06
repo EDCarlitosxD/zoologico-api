@@ -13,6 +13,7 @@ class Reserva extends Model
         'id_usuario',
         'cantidad_personas',
         'id_horario_recorrido',
+        'precio_total',
         'fecha',
         'token'
     ];
