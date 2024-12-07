@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VistaRecorridosVendidosGeneral extends Model
+class VistaRecorridosReservadosYear extends Model
 {
     public $timestamps = false;
 
 
-    protected $table = 'recorridos_vendidos_general';
+    protected $table = 'recorridos_vendidos_year';
 
 
     protected $fillable = [
         'titulo',
-        'ventas',
+        'ventas'
     ];
 }

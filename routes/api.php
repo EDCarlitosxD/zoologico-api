@@ -99,3 +99,11 @@ Route::get('/boletosmes', [VentaBoletosController::class,'boletosVendidosMes'])-
 //Traer venta de boletos por año (dashboard reportes grafica)
 Route::get('/boletosyear', [VentaBoletosController::class,'boletosVendidosYear'])->middleware('auth:sanctum');
 
+//Traer reserva de recorridos por semana (dashboard reportes grafica)
+Route::get('/recorridosemana', [RecorridoController::class,'recorridosReservadosSemana'])->middleware('auth:sanctum');
+
+//Traer reserva de recorridos por mes (dashboard reportes grafica)
+Route::get('/recorridosmes', [RecorridoController::class,'recorridosReservadosMes'])->middleware('auth:sanctum');
+
+//Traer reserva de recorridos por year (dashboard reportes grafica)
+Route::get('/recorridosyear', [RecorridoController::class,'recorridosReservadosYear'])->middleware('auth:sanctum');
