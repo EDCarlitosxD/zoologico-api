@@ -1,12 +1,14 @@
 <?php 
 namespace App\Services;
 
+use App\Models\Boletos;
 use App\Models\VistaUsuarioBoletos;
 use App\Models\VistaUsuarioRecorridos;
 
+
 class BoletoService {
 
-    public function TraerBoletosUsuario ($id_usuario){
+    public function TraerComprasUsuario ($id_usuario){
 
         $boletos = VistaUsuarioBoletos::select('titulo', 'fecha', 'cantidad', 'precio_total', 'token')
         ->where('id_usuario', $id_usuario )->get()->groupBy( 'token');
@@ -21,6 +23,12 @@ class BoletoService {
 
         return $compra;
     }
+
+    public function traerBoletosExistentes (){
+        $boletosExistentes = Boletos::select('id', 'titulo', 'precio')->where('estado', 1)->get();
+        return $boletosExistentes;
+    }
+
 
 
 }

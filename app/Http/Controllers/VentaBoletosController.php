@@ -99,8 +99,10 @@ class VentaBoletosController
         }
     }
 
-    public function ventasmayor (){
-        
+    public function traerVentasGeneral(){
+        $ventas = $this->ventaService->ventasGeneral();
+
+        return response()->json($ventas);
     }
     
 }

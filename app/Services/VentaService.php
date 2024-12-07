@@ -5,6 +5,7 @@ use App\Models\Boletos;
 use App\Models\Recorrido;
 use App\Models\Reserva;
 use App\Models\venta_boletos;
+use App\Models\VistaVentasGeneral;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -116,6 +117,11 @@ class VentaService
 
         return $totalcompra;
         
+    }
+
+    public function ventasGeneral(){
+        $ventasGeneral = VistaVentasGeneral::all();
+        return $ventasGeneral;
     }
 
 

@@ -20,10 +20,16 @@ class BoletosController
     public function boletosUsuario (){
         $id_usuario = Auth::user()->id;
         
-        $resultado = $this->boletoService->TraerBoletosUsuario($id_usuario);
+        $resultado = $this->boletoService->TraerComprasUsuario($id_usuario);
 
         return response()->json($resultado);
 
+    }
+
+    public function boletosExistentes(){
+        $boletosExistentes = $this->boletoService->traerBoletosExistentes();
+
+        return response()->json($boletosExistentes);
     }
 
     

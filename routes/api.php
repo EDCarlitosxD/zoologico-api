@@ -81,4 +81,9 @@ Route::get('/recorridos/traer', [RecorridoController::class, 'seleccionarRecorri
 
 Route::get('/boletos/obtener', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
 
+//Traer boletos existentes (Dashboard boletos)
+Route::get('/boletos', [BoletosController::class, 'boletosExistentes'])->middleware('auth:sanctum');
+
+//Traer ventas generales
+Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
 
