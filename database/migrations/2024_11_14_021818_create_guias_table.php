@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('guias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre_completo', 200);
-            //$table->boolean('disponible')->default(1);
+            $table->boolean('disponible')->default(1);
             $table->boolean('estado')->default(1);
 
             $table->timestamps();

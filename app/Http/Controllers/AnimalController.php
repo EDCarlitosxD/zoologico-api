@@ -142,8 +142,19 @@ class AnimalController
         }
     }
 
-    public function actualizarEstado(Request $request, $id) {}
+    public function actualizarEstado(Request $request, $id){
+        $request->validate([
+            'estado'=>'required|boolean',
+        ]);
 
+        $animal = Animal::findOrFail($id);
+
+        $animal->estado = $request->input('estado');
+        $animal->save();
+
+        return response()->json(['message' => 'animal estado actualizado con exito']);
+
+    }
     public function actualizar(Request $request, $id)
     {
         // Validar los datos del request

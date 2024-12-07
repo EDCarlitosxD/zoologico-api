@@ -4,12 +4,15 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoletosController;
 use App\Http\Controllers\DonacionController;
+use App\Http\Controllers\GuiaController;
 use App\Http\Controllers\HorarioRecorridoController;
 use App\Http\Controllers\RecorridoController;
+use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\TarjetaController;
 use App\Http\Controllers\VentaBoletosController;
 use App\Http\Controllers\VerificationEmailController;
 use App\Models\Boletos;
+use App\Models\Reserva;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -74,7 +77,7 @@ Route::post('/donaciones/guardar', [DonacionController::class, 'guardar'])->midd
 //Recorridos
 
 Route::get('recorridos', [RecorridoController::class,'getAllRecorridosActive']);
-Route::get('admin/recorridos', [RecorridoController::class,'getAllRecorridosActive']);
+Route::get('admin/recorridos', [RecorridoController::class,'getAllRecorridos']);
 Route::post('/recorridos/guardar', [RecorridoController::class, 'guardar'])->middleware('auth:sanctum');
 Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualizar'])->middleware('auth:sanctum');
 Route::put('/recorridos/eliminar/{id}', [RecorridoController::class, 'eliminar'])->middleware('auth:sanctum') ;
@@ -91,4 +94,10 @@ Route::get('admin/boletos', [BoletosController::class, 'boletosExistentes']);
 // Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
 Route::post('/venta', [VentaBoletosController::class, 'guardar'])->middleware('auth:sanctum');
 Route::get('/venta/usuario', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
+Route::get('reservas', [ReservaController::class, 'getReservas']);
 
+
+
+
+Route::get('guias',[GuiaController::class,'getAll']);
+Route::put('guias/eliminar/{id}', [GuiaController::class, 'actualizarEstado']);
