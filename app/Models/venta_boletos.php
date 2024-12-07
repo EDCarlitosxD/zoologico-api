@@ -19,7 +19,6 @@ class venta_boletos extends Model
         'cantidad',
         'token',
         'email',
-        'recibo',
         'precio_total'
     ];
 

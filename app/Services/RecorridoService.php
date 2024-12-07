@@ -163,19 +163,41 @@ class RecorridoService{
     public function rreservadosSemana(){
         $recorridosSemana = VistaRecorridosReservadosSemana::select('id', 'titulo', 'ventas')->get()->groupBy('id');
 
-        return $recorridosSemana;
+        $cantidad = VistaRecorridosReservadosSemana::sum('ventas');
+
+        $datos = [
+            "VentaSemana" => $recorridosSemana,
+            "cantidad_total" => $cantidad
+        ];
+
+        return $datos;
+
     }
 
     public function rreservadosMes(){
         $recorridosMes = VistaRecorridosReservadosMes::select('id', 'titulo', 'ventas')->get()->groupBy('id');
 
-        return $recorridosMes;
+        $cantidad = VistaRecorridosReservadosMes::sum('ventas');
+
+        $datos = [
+            "VentaMes" => $recorridosMes,
+            "cantidad_total" => $cantidad
+        ];
+
+        return $datos;
     }
 
     public function rreservadosYear(){
         $recorridosYear = VistaRecorridosReservadosYear::select('id', 'titulo', 'ventas')->get()->groupBy('id');
 
-        return $recorridosYear;
+        $cantidad = VistaRecorridosReservadosYear::sum('ventas');
+
+        $datos = [
+            "VentaYear" => $recorridosYear,
+            "cantidad_total" => $cantidad
+        ];
+
+        return $datos;
     }
 }
 

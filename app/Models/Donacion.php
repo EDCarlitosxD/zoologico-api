@@ -17,7 +17,6 @@ class Donacion extends Model
         'id_usuario',
         'monto',
         'email',
-        'recibo',
         'fecha'
     ];
 }
