@@ -91,7 +91,7 @@ class VentaService
                 'tiporecorrido' => $tiporecorrido->titulo,
                 'cantidad' => $dato['cantidad'],
                 'precio' => $precio,
-                'token' => $token,,
+                'token' => $token,
                 'hora_inicio' => $horarioRecorrido->horario_inicio,
                 'hora_fin' => $horarioRecorrido->horario_fin,
                 'fecha' => $horarioRecorrido->fecha
