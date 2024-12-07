@@ -17,7 +17,6 @@ return new class extends Migration
             $table->decimal('monto', 10, 2)->nullable(false);
             $table->string('email', 255)->nullable(false);
             $table->date('fecha');
-            $table->string('recibo', 45);
 
 
             // Índices y claves foráneas
