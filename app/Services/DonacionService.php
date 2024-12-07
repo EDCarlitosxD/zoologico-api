@@ -7,7 +7,7 @@ use Illuminate\Validation\ValidationException;
 
 class DonacionService{
 
-public function guardardatos($request, $id, $email, $nombre){
+public function guardardatos($request, $id, $email, $nombre, $fecha){
     $datos = $request->all();
 
     $validar = Validator::make($datos, [
@@ -23,7 +23,8 @@ public function guardardatos($request, $id, $email, $nombre){
     Donacion::create([
         'id_usuario' => $id,
         'monto' => $datos['monto'],
-        'email' => $email
+        'email' => $email,
+        'fecha' => $fecha
     ]);
 
     $datosrecibo = [

@@ -25,7 +25,7 @@ class DonacionController
         $fecha= date("Y-m-d");
 
 
-        $datos = $this->donacionService->guardardatos($request, $idusuario, $email, $nombre);
+        $datos = $this->donacionService->guardardatos($request, $idusuario, $email, $nombre, $fecha);
 
         Mail::to($email)->send(new ReciboElectronicoDonacion($datos, $email, $nombre, $fecha));
 
