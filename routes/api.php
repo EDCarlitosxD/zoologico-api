@@ -87,3 +87,15 @@ Route::get('/boletos', [BoletosController::class, 'boletosExistentes'])->middlew
 //Traer ventas generales
 Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
 
+//Traer venta de boletos (dashboard boletos grafica)
+Route::get('/boletosvendidos', [VentaBoletosController::class, 'boletosVendidos'])->middleware('auth:sanctum');
+
+//Traer venta de boletos por semana (dashboard reportes grafica)
+Route::get('/boletossemana', [VentaBoletosController::class,'boletosVendidosSemana'])->middleware('auth:sanctum');
+
+//Traer venta de boletos por mes (dashboard reportes grafica)
+Route::get('/boletosmes', [VentaBoletosController::class,'boletosVendidosMes'])->middleware('auth:sanctum');
+
+//Traer venta de boletos por año (dashboard reportes grafica)
+Route::get('/boletosyear', [VentaBoletosController::class,'boletosVendidosYear'])->middleware('auth:sanctum');
+
