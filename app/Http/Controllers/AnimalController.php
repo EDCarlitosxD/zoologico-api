@@ -36,10 +36,11 @@ class AnimalController
         if ($request->filled('tipo')) {
             $query->where('tipo', $request->input('tipo'));
         }
-        // Filtrar por tipo si el parámetro está presente
-        if ($request->filled('tipo')) {
-            $query->where('tipo', $request->input('tipo'));
+
+        if ($request->has('orden') && $request->input('orden') === 'A-Z') {
+            $query->orderBy('nombre', 'asc');
         }
+
 
         // Aplicar paginación (10 por página por defecto)
         $animales = $query->select('nombre', 'imagen_principal', 'tipo', 'peso', 'altura', 'nombre_cientifico', 'slug')
@@ -70,9 +71,15 @@ class AnimalController
         }
     }
 
-    public function getAll()
+    public function getAll(Request $request)
     {
-        $animales = Animal::all();
+        $animales = [];
+        if(empty($request->input('buscar'))){
+            $animales = Animal::all();
+        }else{
+            $animales = Animal::where('nombre', 'LIKE','%'.$request->input('buscar'). '%')->get();
+        }
+
 
         // Iteramos sobre los animales y agregamos la URL completa para las imágenes
         foreach ($animales as $animal) {
