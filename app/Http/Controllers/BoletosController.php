@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\boletos;
 use App\Http\Controllers\Controller;
+use App\Models\venta_boletos;
 use App\Services\BoletoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -91,6 +92,21 @@ class BoletosController
 
         return response(['message' => 'Animal eliminado con exito'],Response::HTTP_ACCEPTED);
 
+    }
+
+
+    public function boletosVendidos(){
+        $ventas = DB::table('venta_boletos as venta')
+        ->join('boletos', 'venta.id_boleto', '=', 'boletos.id')
+        ->select(
+            'venta.id as id',
+            'boletos.titulo as titulo',
+            'venta.precio_total as precio_total',
+            'venta.cantidad as cantidad'
+        )
+        ->paginate(20);
+
+    return response()->json($ventas);
     }
 
 }

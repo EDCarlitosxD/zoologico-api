@@ -73,5 +73,9 @@ class RecorridoController
         return response(Recorrido::where('estado',1)->get(), Response::HTTP_OK);
     }
 
+    public function getAllRecorridos(){
+        return response(Recorrido::all(), Response::HTTP_OK);
+    }
+
 
 }

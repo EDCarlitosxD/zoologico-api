@@ -38,7 +38,7 @@ class TarjetaController
     }
 
     public function getTarjetas($id){
-        return Tarjeta::all();
+        return Tarjeta::where('id_usuario',$id)->get();
     }
 
 }

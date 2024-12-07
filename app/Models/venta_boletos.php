@@ -11,7 +11,7 @@ class venta_boletos extends Model
     use HasFactory;
     protected $table = "venta_boletos";
 
-    protected $fillable = 
+    protected $fillable =
     [
         'id_boleto',
         'id_usuario',
@@ -23,4 +23,9 @@ class venta_boletos extends Model
         'precio_total'
     ];
 
+
+    public function venta_boletos()
+    {
+        return $this->hasMany(Boletos::class);
+    }
 }
