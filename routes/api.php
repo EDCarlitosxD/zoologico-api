@@ -109,10 +109,10 @@ Route::put('/guias/actualizar/{id}', [AnimalController::class,'actualizarEstado'
 
 //Traer datos de compras de un usuario por fecha
 
-Route::get('/boletos/obtener', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
+Route::get('/venta/usuario', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
 
 //Traer boletos existentes (Dashboard boletos)
-Route::get('/boletos', [BoletosController::class, 'boletosExistentes'])->middleware('auth:sanctum');
+// Route::get('/boletos', [BoletosController::class, 'boletosExistentes'])->middleware('auth:sanctum');
 
 //Traer ventas generales
 Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
