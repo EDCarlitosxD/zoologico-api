@@ -57,7 +57,7 @@ Route::put('/animales/actualizar/{id}', [AnimalController::class,'actualizar']);
 
 //Compra de boletos
 
-Route::post('/boletos/guardardatos', [VentaBoletosController::class, 'guardar'])->middleware('auth:sanctum');
+Route::post('/venta', [VentaBoletosController::class, 'guardar'])->middleware('auth:sanctum');
 
 //Tarjeta
 

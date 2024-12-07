@@ -34,6 +34,7 @@ class HorarioRecorridoController
     public function getHorariosGroupByRecorridos($id)
     {
         $recorridos = HorarioRecorrido::where('id_recorrido',$id)
+        ->where('disponible', '=',1)
             ->get();
 
             $agrupadosPorDia = $recorridos->groupBy('fecha')->map(function ($horarios, $fecha) {

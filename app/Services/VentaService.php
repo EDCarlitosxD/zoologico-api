@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Boletos;
+use App\Models\HorarioRecorrido;
 use App\Models\Recorrido;
 use App\Models\Reserva;
 use App\Models\venta_boletos;
@@ -23,9 +24,7 @@ class VentaService
             ]);
 
             if ($validar->fails()) {
-                throw ValidationException::withMessages([
-                    "message" => "Validación incorrecta"
-                ]);
+                throw ValidationException::withMessages($validar->errors()->toArray());
             }
 
             $precio = Boletos::findOrFail($dato['id_boleto'])->precio;
@@ -43,7 +42,7 @@ class VentaService
 
             $precio = Boletos::findOrFail($dato['id_boleto'])->precio;
             $tipoboleto = Boletos::select('titulo')->where('id', $dato['id_boleto'])->first();
-            
+
             $boletos[] = [
                 'tipoboleto' => $tipoboleto->titulo,
                 'cantidad' => $dato['cantidad'],
@@ -55,7 +54,7 @@ class VentaService
         return $boletos;
     }
 
-    
+
     public function reservarRecorrido($request, $id_usuario, $token, $fechaactual){
         $datos = $request->all();
         $recorridos= [];
@@ -69,7 +68,7 @@ class VentaService
             ]);
 
             if($validar->fails()){
-                throw ValidationException::withMessages(['message' => 'La validacion fallo']);
+                throw ValidationException::withMessages($validar->errors()->toArray());
             }
 
             Reserva::create([
@@ -81,14 +80,17 @@ class VentaService
             ]);
 
             $tiporecorrido = Recorrido::select('titulo')->where('id', $dato['id_recorrido'])->first();
-
+            $horarioRecorrido = HorarioRecorrido::where('id', $dato['id_horario_recorrido'])->first();
             $precio = Recorrido::findOrFail($dato['id_recorrido'])->precio;
 
             $recorridos [] = [
                 'tiporecorrido' => $tiporecorrido->titulo,
                 'cantidad_personas' => $dato['cantidad_personas'],
                 'precio' => $precio,
-                'token' => $token
+                'token' => $token,
+                'hora_inicio' => $horarioRecorrido->horario_inicio,
+                'hora_fin' => $horarioRecorrido->horario_fin,
+                'fecha' => $horarioRecorrido->fecha
             ];
         }
 
@@ -114,7 +116,7 @@ class VentaService
         $totalcompra = $totalboletos+$totalrecorridos;
 
         return $totalcompra;
-        
+
     }
 
 

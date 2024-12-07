@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-Use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\ReciboElectronico;
 use App\Models\venta_boletos;
 use App\Services\VentaService;
@@ -44,15 +44,14 @@ class VentaBoletosController
 
         DB::beginTransaction();
         try {
-            if($request->has('boletos')){
+            if ($request->has('boletos')) {
                 $boletos = $this->ventaService->procesarVenta($request, $token, $fechaactual, $email, $id_usuario);
-
             }
-            
-            if($request->has('recorridos')){
+
+            if ($request->has('recorridos')) {
                 $recorridos = $this->ventaService->reservarRecorrido($request, $id_usuario, $token, $fechaactual);
             }
-            
+
 
             $total = $this->ventaService->calcularTotal($request);
 
@@ -62,10 +61,10 @@ class VentaBoletosController
 
             DB::commit();
 
-            
 
-            foreach($boletos as $boleto){
-                $boletosreturn [] = [
+
+            foreach ($boletos as $boleto) {
+                $boletosreturn[] = [
                     "tipo_boleto" => $boleto['tipoboleto'],
                     "cantidad_boletos" => $boleto['cantidad'],
                     "total_boletos" => $boleto['cantidad'] * $boleto['precio'],
@@ -73,37 +72,37 @@ class VentaBoletosController
                 ];
             }
 
-            foreach($recorridos as $recorrido){
-                $recorridosreturn [] = [
+            foreach ($recorridos as $recorrido) {
+                $recorridosreturn[] = [
                     "tipo_recorrido" => $recorrido['tiporecorrido'],
                     "cantidad_personas" => $recorrido['cantidad_personas'],
                     "total_recorrido" => $recorrido['cantidad_personas'] * $recorrido['precio'],
-                    "token" => $recorrido['token']
+                    "token" => $recorrido['token'],
+                    'hora_inicio' => $recorrido['hora_inicio'],
+                    'hora_fin' => $recorrido['hora_fin'],
+                    'fecha' => $recorrido['fecha']
                 ];
             }
 
-            $boletosrecorridos = array_merge($boletosreturn, $recorridosreturn);
+            return $boletosrecorridos = [
+                "boletos" => $boletosreturn,
+                "recorridos" => $recorridosreturn,
+            ];
 
-            return $boletosrecorridos;
+
 
             /*
             $resultado = [
                 'boletos' => $boletosreturn,
                 'recorridos' => $recorridosreturn
             ];
-            
-            return response()->json($resultado);*/
 
+            return response()->json($resultado);*/
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
-    public function ventasmayor (){
-
-    }
-
-
-
+    public function ventasmayor() {}
 }
