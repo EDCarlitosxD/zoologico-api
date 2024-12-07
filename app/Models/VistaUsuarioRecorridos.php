@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Reserva extends Model
+class VistaUsuarioRecorridos extends Model
 {
+    public $timestamps = false;
 
-    use HasFactory;
+
+    protected $table = 'compra_usuario_recorridos';
+
+
     protected $fillable = [
         'id_usuario',
-        'cantidad',
-        'id_horario_recorrido',
-        'precio_total',
+        'titulo',
         'fecha',
+        'cantidad',
+        'precio_total',
         'token'
     ];
 }

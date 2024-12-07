@@ -10,6 +10,7 @@ use App\Http\Controllers\HorarioRecorridoController;
 use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\VentaBoletosController;
 use App\Http\Controllers\VerificationEmailController;
+use App\Models\Boletos;
 use App\Models\Recorrido;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -103,3 +104,16 @@ Route::get('/guias/{id}',[GuiaController::class,'getById']);
 Route::post('/guias',[GuiaController::class,'save']);
 Route::put('/guias/{id}',[GuiaController::class,'actualizar']);
 Route::put('/guias/actualizar/{id}', [AnimalController::class,'actualizarEstado']);
+
+
+
+//Traer datos de compras de un usuario por fecha
+
+Route::get('/boletos/obtener', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
+
+//Traer boletos existentes (Dashboard boletos)
+Route::get('/boletos', [BoletosController::class, 'boletosExistentes'])->middleware('auth:sanctum');
+
+//Traer ventas generales
+Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
+

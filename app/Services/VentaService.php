@@ -6,6 +6,7 @@ use App\Models\HorarioRecorrido;
 use App\Models\Recorrido;
 use App\Models\Reserva;
 use App\Models\venta_boletos;
+use App\Models\VistaVentasGeneral;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -40,7 +41,6 @@ class VentaService
                 'precio_total' => $precio_total
             ]);
 
-            $precio = Boletos::findOrFail($dato['id_boleto'])->precio;
             $tipoboleto = Boletos::select('titulo')->where('id', $dato['id_boleto'])->first();
 
             $boletos[] = [
@@ -63,7 +63,7 @@ class VentaService
         foreach ($datos['recorridos'] as $dato){
             $validar = Validator::make($dato, [
                 'id_recorrido',
-                'cantidad_personas' => 'required|integer',
+                'cantidad' => 'required|integer',
                 'id_horario_recorrido' => 'required'
             ]);
 
@@ -71,9 +71,13 @@ class VentaService
                 throw ValidationException::withMessages($validar->errors()->toArray());
             }
 
+            $precio = Recorrido::findOrFail($dato['id_recorrido'])->precio;
+            $precio_total = $precio * ($dato['cantidad']);
+
             Reserva::create([
                 'id_usuario' => $id_usuario,
-                'cantidad_personas' => $dato['cantidad_personas'],
+                'cantidad' => $dato['cantidad'],
+                'precio_total' => $precio_total,
                 'id_horario_recorrido' => $dato['id_horario_recorrido'],
                 'token' => $token,
                 'fecha' => $fechaactual
@@ -85,9 +89,9 @@ class VentaService
 
             $recorridos [] = [
                 'tiporecorrido' => $tiporecorrido->titulo,
-                'cantidad_personas' => $dato['cantidad_personas'],
+                'cantidad' => $dato['cantidad'],
                 'precio' => $precio,
-                'token' => $token,
+                'token' => $token,,
                 'hora_inicio' => $horarioRecorrido->horario_inicio,
                 'hora_fin' => $horarioRecorrido->horario_fin,
                 'fecha' => $horarioRecorrido->fecha
@@ -110,13 +114,18 @@ class VentaService
 
         foreach ($datos['recorridos'] as $dato) {
             $precio = Recorrido::findOrFail($dato['id_recorrido'])->precio;
-            $totalrecorridos += $dato['cantidad_personas'] * $precio;
+            $totalrecorridos += $dato['cantidad'] * $precio;
         }
 
         $totalcompra = $totalboletos+$totalrecorridos;
 
         return $totalcompra;
 
+    }
+
+    public function ventasGeneral(){
+        $ventasGeneral = VistaVentasGeneral::all();
+        return $ventasGeneral;
     }
 
 
