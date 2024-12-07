@@ -3,6 +3,9 @@ namespace App\Services;
 
 use App\Models\HorarioRecorrido;
 use App\Models\Recorrido;
+use App\Models\VistaRecorridosReservadosMes;
+use App\Models\VistaRecorridosReservadosSemana;
+use App\Models\VistaRecorridosReservadosYear;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -155,6 +158,24 @@ class RecorridoService{
            return $rs;   
         }
         
+    }
+
+    public function rreservadosSemana(){
+        $recorridosSemana = VistaRecorridosReservadosSemana::select('id', 'titulo', 'ventas')->get()->groupBy('id');
+
+        return $recorridosSemana;
+    }
+
+    public function rreservadosMes(){
+        $recorridosMes = VistaRecorridosReservadosMes::select('id', 'titulo', 'ventas')->get()->groupBy('id');
+
+        return $recorridosMes;
+    }
+
+    public function rreservadosYear(){
+        $recorridosYear = VistaRecorridosReservadosYear::select('id', 'titulo', 'ventas')->get()->groupBy('id');
+
+        return $recorridosYear;
     }
 }
 

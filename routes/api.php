@@ -101,3 +101,25 @@ Route::get('reservas', [ReservaController::class, 'getReservas']);
 
 Route::get('guias',[GuiaController::class,'getAll']);
 Route::put('guias/eliminar/{id}', [GuiaController::class, 'actualizarEstado']);
+Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
+
+//Traer venta de boletos (dashboard boletos grafica)
+Route::get('/boletosvendidos', [VentaBoletosController::class, 'boletosVendidos'])->middleware('auth:sanctum');
+
+//Traer venta de boletos por semana (dashboard reportes grafica)
+Route::get('/boletossemana', [VentaBoletosController::class,'boletosVendidosSemana'])->middleware('auth:sanctum');
+
+//Traer venta de boletos por mes (dashboard reportes grafica)
+Route::get('/boletosmes', [VentaBoletosController::class,'boletosVendidosMes'])->middleware('auth:sanctum');
+
+//Traer venta de boletos por año (dashboard reportes grafica)
+Route::get('/boletosyear', [VentaBoletosController::class,'boletosVendidosYear'])->middleware('auth:sanctum');
+
+//Traer reserva de recorridos por semana (dashboard reportes grafica)
+Route::get('/recorridosemana', [RecorridoController::class,'recorridosReservadosSemana'])->middleware('auth:sanctum');
+
+//Traer reserva de recorridos por mes (dashboard reportes grafica)
+Route::get('/recorridosmes', [RecorridoController::class,'recorridosReservadosMes'])->middleware('auth:sanctum');
+
+//Traer reserva de recorridos por year (dashboard reportes grafica)
+Route::get('/recorridosyear', [RecorridoController::class,'recorridosReservadosYear'])->middleware('auth:sanctum');

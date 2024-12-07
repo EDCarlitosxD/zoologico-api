@@ -16,8 +16,8 @@ class Donacion extends Model
     protected $fillable = [
         'id_usuario',
         'monto',
-        'mensaje',
         'email',
-        'recibo'
+        'recibo',
+        'fecha'
     ];
 }

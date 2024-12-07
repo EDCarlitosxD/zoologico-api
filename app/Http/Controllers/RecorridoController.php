@@ -66,8 +66,27 @@ class RecorridoController
 
         return response()->json($select);
 
-
     }
+
+    public function recorridosReservadosSemana (){
+        $recorridos = $this->recorridoService->rreservadosSemana();
+
+        return response()->json($recorridos);
+    }
+
+    public function recorridosReservadosMes (){
+        $recorridos = $this->recorridoService->rreservadosMes();
+
+        return response()->json($recorridos);
+    }
+
+    public function recorridosReservadosYear (){
+        $recorridos = $this->recorridoService->rreservadosYear();
+
+        return response()->json($recorridos);
+    }
+
+
     //
     public function getAllRecorridosActive(){
         return response(Recorrido::where('estado',1)->get(), Response::HTTP_OK);

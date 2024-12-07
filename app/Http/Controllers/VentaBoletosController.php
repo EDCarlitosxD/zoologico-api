@@ -110,5 +110,28 @@ class VentaBoletosController
         return response()->json($ventas);
     }
 
-    public function ventasmayor() {}
+    public function boletosVendidos(){
+        $boletosvendidos = $this->ventaService->traerVentasGeneral();
+
+        return response()->json($boletosvendidos);
+    }
+
+    public function boletosVendidosSemana(){
+        $boletosSemana = $this->ventaService->bvendidosSemana();
+
+        return response()->json($boletosSemana);
+    }
+
+    public function boletosVendidosMes(){
+        $boletosMes = $this->ventaService->bvendidosMes();
+
+        return response()->json($boletosMes);
+    }
+
+    public function boletosVendidosYear(){
+        $boletosyear = $this->ventaService->bvendidosYear();
+
+        return response()->json($boletosyear);
+    }
+
 }

@@ -6,7 +6,12 @@ use App\Models\HorarioRecorrido;
 use App\Models\Recorrido;
 use App\Models\Reserva;
 use App\Models\venta_boletos;
+use App\Models\VistaBoletosVendidosGeneral;
+use App\Models\VistaBoletosVendidosMes;
+use App\Models\VistaBoletosVendidosSemana;
+use App\Models\VistaBoletosVendidosYear;
 use App\Models\VistaVentasGeneral;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -126,6 +131,31 @@ class VentaService
     public function ventasGeneral(){
         $ventasGeneral = VistaVentasGeneral::all();
         return $ventasGeneral;
+    }
+
+    public function traerVentasGeneral(){
+        $boletosVendidos = VistaBoletosVendidosGeneral::select('id','titulo', 'cantidad')->get()->groupBy('id');
+        return $boletosVendidos;
+    }
+
+    public function bvendidosSemana(){
+
+
+        $bsemana = VistaBoletosVendidosSemana::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
+
+        return $bsemana;
+    }
+
+    public function bvendidosMes(){
+        $bmes = VistaBoletosVendidosMes::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
+
+        return $bmes;
+    }
+
+    public function bvendidosYear(){
+        $byear = VistaBoletosVendidosYear::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
+
+        return $byear;
     }
 
 

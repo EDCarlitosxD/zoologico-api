@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_usuario')->nullable(true);
             $table->decimal('monto', 10, 2)->nullable(false);
-            $table->text('mensaje')->nullable(false);
             $table->string('email', 255)->nullable(false);
+            $table->date('fecha');
             $table->string('recibo', 45);
 
 
