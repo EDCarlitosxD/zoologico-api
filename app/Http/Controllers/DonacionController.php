@@ -32,4 +32,22 @@ class DonacionController
         return response()->json(['message' => 'Venta procesada correctamente'], 200);
 
     }
+
+    public function donacionesSemana(){
+        $donacion = $this->donacionService->donacionesUltimaSemana();
+
+        return response()->json($donacion);
+    }
+
+    public function donacionesMes(){
+        $donacion = $this->donacionService->donacionesUltimoMes();
+
+        return response()->json($donacion);
+    }
+
+    public function donacionesYear(){
+        $donacion = $this->donacionService->donacionesUltimoYear();
+
+        return response()->json($donacion);
+    }
 }

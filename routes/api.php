@@ -107,3 +107,12 @@ Route::get('/recorridosmes', [RecorridoController::class,'recorridosReservadosMe
 
 //Traer reserva de recorridos por year (dashboard reportes grafica)
 Route::get('/recorridosyear', [RecorridoController::class,'recorridosReservadosYear'])->middleware('auth:sanctum');
+
+//Traer donaciones por semana (dashboard reportes grafica)
+Route::get('/donacionsemana', [DonacionController::class,'donacionesSemana'])->middleware('auth:sanctum');
+
+//Traer donaciones por mes (dashboard reportes grafica)
+Route::get('/donacionmes', [DonacionController::class,'donacionesMes'])->middleware('auth:sanctum');
+
+//Traer donaciones por year en curso (dashboard reportes grafica)
+Route::get('/donacionyear', [DonacionController::class,'donacionesYear'])->middleware('auth:sanctum');

@@ -11,6 +11,7 @@ use App\Models\VistaBoletosVendidosSemana;
 use App\Models\VistaBoletosVendidosYear;
 use App\Models\VistaVentasGeneral;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -139,19 +140,39 @@ class VentaService
 
         $bsemana = VistaBoletosVendidosSemana::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
 
-        return $bsemana;
+        $cantidad = VistaBoletosVendidosSemana::sum('cantidad');
+
+        $datos = [
+            "VentaSemana" => $bsemana,
+            "cantidad_total" => $cantidad
+        ];
+
+        return $datos;
     }
 
     public function bvendidosMes(){
         $bmes = VistaBoletosVendidosMes::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
+        $cantidad = VistaBoletosVendidosMes::sum('cantidad');
 
-        return $bmes;
+        $datos = [
+            "VentaMes" => $bmes,
+            "cantidad_total" => $cantidad
+        ];
+
+        return $datos;
     }
 
     public function bvendidosYear(){
         $byear = VistaBoletosVendidosYear::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
 
-        return $byear;
+        $cantidad = VistaBoletosVendidosYear::sum('cantidad');
+
+        $datos = [
+            "VentaYear" => $byear,
+            "cantidad_total" => $cantidad
+        ];
+
+        return $datos;
     }
 
 
