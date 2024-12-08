@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\CuentaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AuthController
 {
-    //
-    public function __construct() {
+    protected $cuentaService;
+
+    public function __construct(CuentaService $cuentaService) {
+        $this->cuentaService = $cuentaService;
+
     }
 
     public function login(Request $request){
@@ -62,5 +66,13 @@ class AuthController
     public function logout(Request $request){
         $request->tokens()->delete();
         return response(["message" => "tokens removed"], Response::HTTP_OK);
+    }
+
+    public function EditarDatos(Request $request){
+        $idusuario = Auth::user()->id;
+
+        $editardatos = $this->cuentaService->update($request, $idusuario);
+
+        return $editardatos;
     }
 }

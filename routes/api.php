@@ -41,6 +41,9 @@ Route::post("/login", [AuthController::class,'login'])->name('login');
 Route::post("/register", [AuthController::class,'register']);
 Route::post("/logout", [AuthController::class,'logout'])->middleware("auth:sanctum");
 
+//Editar datos de la cuenta del usuario
+Route::put('/cuenta', [AuthController::class, 'EditarDatos'])->middleware("auth:sanctum");
+
 //Animales
 Route::get('/animales/card/', [AnimalController::class, 'ImgAnimal']);
 
