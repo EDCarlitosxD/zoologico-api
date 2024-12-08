@@ -17,7 +17,7 @@ return new class extends Migration
         // Vista: historial_reservas
         DB::statement("
             CREATE VIEW historial_reservas AS
-            SELECT re.titulo, re.duracion, r.cantidad_personas
+            SELECT re.titulo, re.duracion, r.cantidad
             FROM reservas r
             INNER JOIN horario_recorridos h ON r.id_horario_recorrido = h.id
             INNER JOIN recorridos re ON h.id_recorrido = re.id;
@@ -156,3 +156,4 @@ return new class extends Migration
         DB::statement("DROP VIEW IF EXISTS recorridos_vendidos_year;");
     }
 };
+
