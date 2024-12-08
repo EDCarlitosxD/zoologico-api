@@ -43,6 +43,26 @@ return new class extends Migration
             ORDER BY v.fecha DESC;
         ");
 
+        // Vista: compras_usuario_recorridos
+        DB::statement("
+            CREATE VIEW compras_usuario_recorridos AS
+            SELECT
+                res.id_usuario,
+                rec.titulo,
+                res.fecha,
+                res.cantidad,
+                res.precio_total,
+                res.token
+                
+            FROM
+                recorridos rec
+            INNER JOIN
+                horario_recorridos h ON rec.id = h.id_recorrido
+            INNER JOIN
+                reservas res ON h.id = res.id_horario_recorrido
+            ORDER BY res.fecha DESC;
+        ");
+
         // Vista: recorridos_usuario
         DB::statement("
             CREATE VIEW recorridos_usuario AS
@@ -145,6 +165,7 @@ return new class extends Migration
         DB::statement("DROP VIEW IF EXISTS historial_reservas;");
         DB::statement("DROP VIEW IF EXISTS recorridos_mas_vendidos;");
         DB::statement("DROP VIEW IF EXISTS compras_usuario_boletos;");
+        DB::statement("DROP VIEW IF EXISTS compras_usuario_recorridos");
         DB::statement("DROP VIEW IF EXISTS recorridos_usuario;");
         DB::statement("DROP VIEW IF EXISTS ventas_generales;");
         DB::statement("DROP VIEW IF EXISTS boletos_vendidos_general;");
