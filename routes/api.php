@@ -4,6 +4,7 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoletosController;
 use App\Http\Controllers\DonacionController;
+use App\Http\Controllers\FormularioContactoController;
 use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\TarjetaController;
 use App\Http\Controllers\VentaBoletosController;
@@ -119,3 +120,6 @@ Route::get('/donacionmes', [DonacionController::class,'donacionesMes'])->middlew
 
 //Traer donaciones por year en curso (dashboard reportes grafica)
 Route::get('/donacionyear', [DonacionController::class,'donacionesYear'])->middleware('auth:sanctum');
+
+//Mensaje enviado por el usuario
+Route::post('/mensajeusuario', [FormularioContactoController::class, 'mensajeusuario']);

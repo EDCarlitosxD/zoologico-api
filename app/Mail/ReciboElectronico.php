@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,7 +36,7 @@ class ReciboElectronico extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Recibo Electronico',
+            subject: 'Recibo Electrónico',
         );
     }
 
@@ -44,9 +45,9 @@ class ReciboElectronico extends Mailable
      */
     public function content(): Content
     {
-        //$pdf = PDF::loadView('emails.Recibo');
+
         return new Content(
-            view: 'emails.Recibo',
+            view: 'emails.Vistavacia'
         );
     }
 
@@ -57,6 +58,18 @@ class ReciboElectronico extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        $pdf = FacadePdf::loadView('emails.Recibo', [
+            'boletos' => $this->boletos,
+            'total' => $this->total,
+            'fechaactual' => $this->fechaactual,
+            'nombre' => $this->nombre,
+            'email' => $this->email,
+            'recorridos' => $this->recorridos
+        ]);
+
+        $path = storage_path('app/descargas/recibo_electronico.pdf');
+        $pdf->save($path);
+
+        return [$path];
     }
 }
