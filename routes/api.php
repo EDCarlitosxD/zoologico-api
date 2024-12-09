@@ -4,6 +4,7 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoletosController;
 use App\Http\Controllers\DonacionController;
+use App\Http\Controllers\FormularioContactoController;
 use App\Http\Controllers\GuiaController;
 use App\Http\Controllers\HorarioRecorridoController;
 use App\Http\Controllers\RecorridoController;
@@ -45,8 +46,11 @@ Route::post("/login", [AuthController::class,'login'])->name('login');
 Route::post("/register", [AuthController::class,'register']);
 Route::post("/logout", [AuthController::class,'logout'])->middleware("auth:sanctum");
 
+//Editar datos de la cuenta del usuario
+Route::put('/cuenta', [AuthController::class, 'EditarDatos'])->middleware("auth:sanctum");
+
 //Animales
-Route::get('/animales/card/', [AnimalController::class, 'ImgAnimal']);
+Route::get('/animales/card/', [AnimalController::class, 'FiltraAnimal']);
 
 Route::get('/animales/{slug}', [AnimalController::class, 'animalslug']);
 
@@ -132,3 +136,6 @@ Route::get('/donacionmes', [DonacionController::class,'donacionesMes'])->middlew
 
 //Traer donaciones por year en curso (dashboard reportes grafica)
 Route::get('/donacionyear', [DonacionController::class,'donacionesYear'])->middleware('auth:sanctum');
+
+//Mensaje enviado por el usuario
+Route::post('/mensajeusuario', [FormularioContactoController::class, 'mensajeusuario']);

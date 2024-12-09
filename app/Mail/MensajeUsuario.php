@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,18 +9,14 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ReciboElectronicoDonacion extends Mailable
+class MensajeUsuario extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $datos = [];
-    public $email, $nombre, $fecha;
-    public function __construct($datos, $email, $nombre, $fecha)
+    public function __construct($datos)
     {
         $this->datos = $datos;
-        $this->email = $email;
-        $this->nombre = $nombre;
-        $this->fecha = $fecha;
     }
 
     /**
@@ -30,7 +25,7 @@ class ReciboElectronicoDonacion extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Recibo Electrónico',
+            subject: 'Mensaje de un usuario',
         );
     }
 
@@ -40,7 +35,7 @@ class ReciboElectronicoDonacion extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.Vistavacia', 
+            view: 'emails.Mensaje',
         );
     }
 
@@ -51,18 +46,6 @@ class ReciboElectronicoDonacion extends Mailable
      */
     public function attachments(): array
     {
-        $pdf = Pdf::loadView('emails.ReciboDona', [
-            "datos" => $this->datos,
-            "email" => $this->email,
-            "nombre" => $this->nombre,
-            "fecha" => $this->fecha
-        ]);
-
-        $path = storage_path('app/descargas/recibo_electronicodonacion.pdf');
-
-        $pdf->save($path);
-
-
-        return [$path];
+        return [];
     }
 }

@@ -25,7 +25,7 @@ class RecorridoService{
             'descripcion' => 'required',
             'descripcion_incluye' => 'required',
             'descripcion_importante_reservar' => 'required',
-            'img_recorrido' => 'required|file|mimes:jpg,jpeg,png|max:255'
+            'img_recorrido' => 'nullable|file|mimes:jpg,jpeg,png|max:255'
         ]);
 
         if($validar->fails()){

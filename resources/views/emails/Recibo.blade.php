@@ -4,7 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recibo de Compra</title>
-    <link rel="stylesheet" href="{{ asset('css/recibodesign.css') }}">
+    <style>
+            body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            }
+            .container {
+                width: 80%;
+                margin: 20px auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .header h1 {
+                font-size: 24px;
+                color: #333;
+            }
+            .header p {
+                font-size: 14px;
+                color: #777;
+            }
+            .details {
+                margin-bottom: 20px;
+            }
+            .details table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .details th, .details td {
+                padding: 8px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+            .details th {
+                background-color: #f7f7f7;
+            }
+            .total {
+                text-align: right;
+                font-size: 18px;
+                margin-top: 20px;
+                font-weight: bold;
+            }
+            .footer {
+                text-align: center;
+                margin-top: 40px;
+                font-size: 12px;
+                color: #888;
+            }
+            .footer a {
+                color: #888;
+                text-decoration: none;
+            }
+    </style>
 </head>
 <body>
 
