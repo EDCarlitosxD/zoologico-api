@@ -89,7 +89,12 @@ class RecorridoController
 
     //
     public function getAllRecorridosActive(){
-        return response(Recorrido::where('estado',1)->get(), Response::HTTP_OK);
+        $recorridos = Recorrido::where('estado',1)->get();
+
+        foreach ($recorridos as $recorrido) {
+            $recorrido->img_recorrido = asset('storage') . '/' . ($recorrido->img_recorrido);
+        }
+        return $recorridos;
     }
 
     public function getAllRecorridos(){
