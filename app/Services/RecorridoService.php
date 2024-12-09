@@ -25,14 +25,12 @@ class RecorridoService{
             'descripcion' => 'required',
             'descripcion_incluye' => 'required',
             'descripcion_importante_reservar' => 'required',
-            'img_recorrido' => 'nullable|file|mimes:jpg,jpeg,png|max:255'
+            'img_recorrido' => 'nullable|file|mimes:jpg,jpeg,png'
         ]);
 
         if($validar->fails()){
-            throw ValidationException::withMessages([
-                "message" => "Validación incorrecta",
-                "errors" => $validar->errors()->all(),
-            ]);
+            throw ValidationException::withMessages($validar->errors()->toArray(),
+            );
         }
 
         if ($request->hasFile('img_recorrido')) {
@@ -49,32 +47,37 @@ class RecorridoService{
             'img_recorrido' => $datos['img_recorrido']
         ]);
 
-
-        foreach($datos['horarios'] as $dato){
-            $validar = Validator::make($dato,[
-                'horario_inicio' => 'required|date_format:H:i:s',
-                'id_guia' => 'required|integer',
-                'fecha' => 'required|date',
-                'horario_fin' => 'required|date_format:H:i:s'
-            ]);
-
-            if($validar->fails()){
-                throw ValidationException::withMessages([
-                    "message" => "Validación incorrecta",
-                    "errors" => $validar->errors()->all(),
+        if (isset($datos['horarios'])) {
+            $datos['horarios'] = json_decode($datos['horarios'], true);
+            foreach($datos['horarios'] as $dato){
+                $validar = Validator::make($dato,[
+                    'horario_inicio' => 'required|date_format:H:i:s',
+                    'id_guia' => 'required|integer',
+                    'fecha' => 'required|date',
+                    'horario_fin' => 'required|date_format:H:i:s'
                 ]);
+
+                if($validar->fails()){
+                    throw ValidationException::withMessages([
+                        "message" => "Validación incorrecta",
+                        "errors" => $validar->errors()->toArray(),
+                    ]);
+                }
+
+                HorarioRecorrido::create([
+                    'horario_inicio' => $dato['horario_inicio'],
+                    'disponible' => 1,
+                    'id_recorrido' => $recorrido->id,
+                    'id_guia' => $dato['id_guia'],
+                    'fecha' => $dato['fecha'],
+                    'horario_fin' => $dato['horario_fin']
+                ]);
+
             }
-
-            HorarioRecorrido::create([
-                'horario_inicio' => $dato['horario_inicio'],
-                'disponible' => 1,
-                'id_recorrido' => $recorrido->id,
-                'id_guia' => $dato['id_guia'],
-                'fecha' => $dato['fecha'],
-                'horario_fin' => $dato['horario_fin']
-            ]);
-
         }
+
+
+
 
         return response()->json(['message' => 'recorrido y horarios agregados correctamente']);
 
