@@ -104,6 +104,7 @@ Route::get('reservas', [ReservaController::class, 'getReservas']);
 
 
 Route::get('guias',[GuiaController::class,'getAll']);
+Route::put('guias/{id}',[GuiaController::class,'actualizar']);
 Route::put('guias/eliminar/{id}', [GuiaController::class, 'actualizarEstado']);
 Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
 
