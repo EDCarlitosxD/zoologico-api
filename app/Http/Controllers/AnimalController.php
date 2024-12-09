@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AnimalController
 {
-    public function ImgAnimal(Request $request){
+    public function FiltraAnimal(Request $request){
 
         // Crear un query base
         $query = Animal::query();

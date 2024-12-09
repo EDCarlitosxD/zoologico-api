@@ -46,7 +46,7 @@ Route::post("/logout", [AuthController::class,'logout'])->middleware("auth:sanct
 Route::put('/cuenta', [AuthController::class, 'EditarDatos'])->middleware("auth:sanctum");
 
 //Animales
-Route::get('/animales/card/', [AnimalController::class, 'ImgAnimal']);
+Route::get('/animales/card/', [AnimalController::class, 'FiltraAnimal']);
 
 Route::get('/animales/{slug}', [AnimalController::class, 'animalslug']);
 
