@@ -142,3 +142,6 @@ Route::get('/donacionyear', [DonacionController::class,'donacionesYear'])->middl
 
 //Mensaje enviado por el usuario
 Route::post('/mensajeusuario', [FormularioContactoController::class, 'mensajeusuario']);
+
+//eliminado logico horario_recorrido
+Route::put('/horario/{id}', [RecorridoController::class, 'estado']);
