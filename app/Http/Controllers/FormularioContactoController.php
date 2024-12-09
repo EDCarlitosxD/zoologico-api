@@ -22,8 +22,8 @@ class FormularioContactoController
             "mensaje" => 'required|max:400'
         ]);
 
-        if($validar->fails()){
-            throw ValidationException::withMessages(["message" => "validacion incorrecta"]);
+        if ($validar->fails()) {
+            throw ValidationException::withMessages($validar->errors()->toArray());
         }
 
         $datos = [
@@ -34,7 +34,7 @@ class FormularioContactoController
         ];
 
         Mail::to($emailzoologic)->send(new MensajeUsuario($datos));
-        
+
         return response()->json(["message" => "Mensaje enviado con exito"]);
 
     }
