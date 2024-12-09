@@ -33,7 +33,7 @@ class VerificationEmailController
             $user->save();
         }
 
-        return response()->json(['message' => 'Correo electrónico verificado exitosamente'], 200);
+        return view('verification.verificacion');
     }
 
 }
