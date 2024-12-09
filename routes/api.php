@@ -81,6 +81,7 @@ Route::post('/donaciones/guardar', [DonacionController::class, 'guardar'])->midd
 //Recorridos
 
 Route::get('recorridos', [RecorridoController::class,'getAllRecorridosActive']);
+Route::get('recorridos/{id}', [RecorridoController::class,'getById']);
 Route::get('admin/recorridos', [RecorridoController::class,'getAllRecorridos']);
 Route::post('/recorridos/guardar', [RecorridoController::class, 'guardar'])->middleware('auth:sanctum');
 Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualizar'])->middleware('auth:sanctum');

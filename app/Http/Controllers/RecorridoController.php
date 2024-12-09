@@ -97,4 +97,8 @@ class RecorridoController
     }
 
 
+    public function getById($id){
+        return Recorrido::findOrFail($id);
+    }
+
 }
