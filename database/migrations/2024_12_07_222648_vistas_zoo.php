@@ -104,7 +104,7 @@ return new class extends Migration
         // Vista: recorridos_vendidos_semana
         DB::statement("
             CREATE VIEW recorridos_vendidos_semana AS
-            SELECT rec.id, rec.titulo, SUM(res.cantidad) AS ventas
+            SELECT rec.id, rec.titulo, SUM(res.cantidad) AS cantidad
             FROM recorridos rec
             INNER JOIN horario_recorridos h ON rec.id = h.id_recorrido
             INNER JOIN reservas res ON h.id = res.id_horario_recorrido
@@ -115,7 +115,7 @@ return new class extends Migration
         // Vista: recorridos_vendidos_mes
         DB::statement("
             CREATE VIEW recorridos_vendidos_mes AS
-            SELECT rec.id, rec.titulo, SUM(res.cantidad) AS ventas
+            SELECT rec.id, rec.titulo, SUM(res.cantidad) AS cantidad
             FROM recorridos rec
             INNER JOIN horario_recorridos h ON rec.id = h.id_recorrido
             INNER JOIN reservas res ON h.id = res.id_horario_recorrido
@@ -126,7 +126,7 @@ return new class extends Migration
         // Vista: recorridos_vendidos_year
         DB::statement("
             CREATE VIEW recorridos_vendidos_year AS
-            SELECT rec.id, rec.titulo, SUM(res.cantidad) AS ventas
+            SELECT rec.id, rec.titulo, SUM(res.cantidad) AS cantidad
             FROM recorridos rec
             INNER JOIN horario_recorridos h ON rec.id = h.id_recorrido
             INNER JOIN reservas res ON h.id = res.id_horario_recorrido

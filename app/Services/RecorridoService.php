@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Services;
 
 use App\Models\HorarioRecorrido;
@@ -17,7 +17,7 @@ class RecorridoService{
     public function crearRecorrido($request){
 
         $datos = $request->all();
- 
+
         $validar = Validator::make($datos, [
             'titulo' => 'required|max:45',
             'precio' => 'required|numeric',
@@ -37,7 +37,7 @@ class RecorridoService{
 
         if ($request->hasFile('img_recorrido')) {
             $datos['img_recorrido'] = $request->file('img_recorrido')->store('Recorridos', 'public');
-        } 
+        }
 
         $recorrido = Recorrido::create([
             'titulo' => $datos['titulo'],
@@ -77,11 +77,11 @@ class RecorridoService{
         }
 
         return response()->json(['message' => 'recorrido y horarios agregados correctamente']);
-        
+
     }
 
     public function updateDatos($request, $id){
- 
+
         $validacion = $request->validate([
             'titulo' => 'required|max:45',
             'precio' => 'required|numeric',
@@ -94,14 +94,14 @@ class RecorridoService{
 
         if ($request->hasFile('img_recorrido')) {
             $rutaImagen = $request->file('img_recorrido')->store('Recorridos', 'public');
-            $validacion['img_recorrido'] = $rutaImagen; 
+            $validacion['img_recorrido'] = $rutaImagen;
         }
 
         $recorrido = Recorrido::findOrFail($id);
         $recorrido->update($validacion);
 
         HorarioRecorrido::where('id_recorrido', $id)->delete();
-        
+
 
         foreach($request->horarios as $dato){
             $validar = Validator::make($dato,[
@@ -155,15 +155,15 @@ class RecorridoService{
 
            $rs =  Recorrido::where('estado', $recorridos)->get();
 
-           return $rs;   
+           return $rs;
         }
-        
+
     }
 
     public function rreservadosSemana(){
-        $recorridosSemana = VistaRecorridosReservadosSemana::select('id', 'titulo', 'ventas')->get()->groupBy('id');
+        $recorridosSemana = VistaRecorridosReservadosSemana::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
 
-        $cantidad = VistaRecorridosReservadosSemana::sum('ventas');
+        $cantidad = VistaRecorridosReservadosSemana::sum('cantidad');
 
         $datos = [
             "VentaSemana" => $recorridosSemana,
@@ -175,9 +175,9 @@ class RecorridoService{
     }
 
     public function rreservadosMes(){
-        $recorridosMes = VistaRecorridosReservadosMes::select('id', 'titulo', 'ventas')->get()->groupBy('id');
+        $recorridosMes = VistaRecorridosReservadosMes::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
 
-        $cantidad = VistaRecorridosReservadosMes::sum('ventas');
+        $cantidad = VistaRecorridosReservadosMes::sum('cantidad');
 
         $datos = [
             "VentaMes" => $recorridosMes,
@@ -188,9 +188,9 @@ class RecorridoService{
     }
 
     public function rreservadosYear(){
-        $recorridosYear = VistaRecorridosReservadosYear::select('id', 'titulo', 'ventas')->get()->groupBy('id');
+        $recorridosYear = VistaRecorridosReservadosYear::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
 
-        $cantidad = VistaRecorridosReservadosYear::sum('ventas');
+        $cantidad = VistaRecorridosReservadosYear::sum('cantidad');
 
         $datos = [
             "VentaYear" => $recorridosYear,

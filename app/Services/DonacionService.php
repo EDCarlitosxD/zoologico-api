@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Services;
 
 use App\Models\Donacion;
@@ -38,7 +38,7 @@ class DonacionService{
 
 
     }
-    
+
     public function donacionesUltimaSemana(){
         $haceUnaSemana = Carbon::now()->subDays(7);
 
@@ -49,7 +49,7 @@ class DonacionService{
         $promedioDonaciones = $donacion->avg('monto');
 
         $datos = [
-            "donacionSemana" => $donacion,
+            "donacion" => $donacion,
             "total" => $totalDonaciones,
             "promedio" => $promedioDonaciones
         ];
@@ -67,7 +67,7 @@ class DonacionService{
         $promedioDonaciones = $donacion->avg('monto');
 
         $datos = [
-            "donacionMes" => $donacion,
+            "donacion" => $donacion,
             "total" => $totalDonaciones,
             "promedio" => $promedioDonaciones
         ];
@@ -85,7 +85,7 @@ class DonacionService{
         $promedioDonaciones = $donacion->avg('monto');
 
         $datos = [
-            "donacionYear" => $donacion,
+            "donacion" => $donacion,
             "total" => $totalDonaciones,
             "promedio" => $promedioDonaciones
         ];
