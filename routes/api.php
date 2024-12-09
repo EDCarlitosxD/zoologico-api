@@ -123,3 +123,6 @@ Route::get('/donacionyear', [DonacionController::class,'donacionesYear'])->middl
 
 //Mensaje enviado por el usuario
 Route::post('/mensajeusuario', [FormularioContactoController::class, 'mensajeusuario']);
+
+//Boletos vendidos en fecha especifica
+Route::get('/boletosfecha', [BoletosController::class, 'boletosvendidosfecha']);

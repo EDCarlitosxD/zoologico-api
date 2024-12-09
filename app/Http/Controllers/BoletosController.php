@@ -32,5 +32,40 @@ class BoletosController
         return response()->json($boletosExistentes);
     }
 
+    public function boletosvendidosfecha(Request $request){
+        
+        $request->validate([
+            'fecha' => 'required|date'
+        ]);
+
+        $fecha = $request->input('fecha');
+
+        try {
+            
+            DB::statement('SET @totalVentas = 0');
+
+            
+            DB::statement('CALL TotalBoletos(?, @totalVentas)', [$fecha]);
+
+            
+            $result = DB::select('SELECT @totalVentas AS totalVentas');
+
+            
+            $totalVentas = $result[0]->totalVentas ?? 0;
+
+            
+            return response()->json([
+                'totalVentas' => $totalVentas,
+            ]);
+
+        } catch (\Exception $e) {
+            
+            return response()->json([
+                'error' => 'Hubo un problema al consultar el total de ventas.',
+                'mensaje' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     
 }
