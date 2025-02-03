@@ -67,7 +67,9 @@ class BoletosController
             'titulo' => 'required|max:80',
             "descripcion" => 'required|max:45',
             "precio" => 'required|numeric',
-            "imagen" => "required|file|mimes:png,jpg"
+            "imagen" => "required|file|mimes:png,jpg",
+            'descripcion_card' => 'required',
+            "advertencias" => 'required',
         ]);
 
         $datos = $request->all();

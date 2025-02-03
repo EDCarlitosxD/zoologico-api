@@ -20,15 +20,15 @@ class AnimalController
         $query = Animal::query();
 
         // Obtener el parámetro 'dato' (búsqueda general)
-        $datomin = strtolower($request->input('dato', ''));
+        $datomin = strtolower($request->input('datomin', ''));
         // Obtener el parámetro 'dato' (búsqueda general)
-        $datomin = strtolower($request->input('dato', ''));
+        $datomin = strtolower($request->input('datomin', ''));
 
         if (!empty($datomin)) {
             $query->where(function ($q) use ($datomin) {
-                $q->where('nombre', 'LIKE', "{$datomin}%")
-                    ->orWhere('nombre_cientifico', 'LIKE', "{$datomin}%")
-                    ->orWhere('habitat', 'LIKE', "{$datomin}%");
+                $q->where('nombre', 'LIKE', "%{$datomin}%")
+                    ->orWhere('nombre_cientifico', 'LIKE', "%{$datomin}%")
+                    ->orWhere('tipo', 'LIKE', "{$datomin}%");
             });
         }
 
@@ -202,7 +202,7 @@ class AnimalController
             }
 
             // Guardar la nueva imagen
-            $path = $request->file('imagen_principal')->store('public/Animales');
+            $path = $request->file('imagen_principal')->store('Animales','public');
             $animal->imagen_principal = $path;
         }
 
@@ -214,7 +214,7 @@ class AnimalController
             }
 
             // Guardar la nueva imagen
-            $path = $request->file('imagen_secundaria')->store('public/Animales');
+            $path = $request->file('imagen_secundaria')->store('Animales','public');
             $animal->imagen_secundaria = $path;
         }
 
@@ -224,7 +224,7 @@ class AnimalController
                 Storage::delete($animal->img_ubicacion);
             }
             // Guardar la nueva imagen
-            $path = $request->file('img_ubicacion')->store('public/Animales');
+            $path = $request->file('img_ubicacion')->store('Animales','public');
             $animal->img_ubicacion = $path;
         }
 

@@ -17,5 +17,7 @@ class Boletos extends Model
         'precio',
         'estado',
         'imagen',
+        "descripcion_card",
+        "advertencias"
     ];
 }

@@ -70,4 +70,8 @@ class HorarioRecorridoController
     }
 
 
+    public function getById($id){
+        return HorarioRecorrido::where('id_recorrido','=',$id)->get();
+    }
+
 }

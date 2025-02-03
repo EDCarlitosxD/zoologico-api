@@ -47,8 +47,8 @@ class AuthController
     public function register(Request $request){
         $request->validate([
             "nombre_usuario" => "required|max:255",
+            "apellido" => "required",
             "nombre" => "required|max:255",
-            "apellido" => "required|max:255",
             "email" => "required",
             'password' => 'required|min:8',
         ]);

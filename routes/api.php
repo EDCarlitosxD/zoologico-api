@@ -13,6 +13,7 @@ use App\Http\Controllers\TarjetaController;
 use App\Http\Controllers\VentaBoletosController;
 use App\Http\Controllers\VerificationEmailController;
 use App\Models\Boletos;
+use App\Models\HorarioRecorrido;
 use App\Models\Reserva;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -65,7 +66,7 @@ Route::put('/animales/actualizar/{id}', [AnimalController::class,'actualizar']);
 // Horarrio
 Route::get('horrario/recorrido/{id}', [HorarioRecorridoController::class,'getHorariosGroupByRecorridos']);
 
-
+Route::get('horarrios/{id}', [HorarioRecorridoController::class, 'getById']);
 
 
 //Tarjeta
@@ -84,14 +85,14 @@ Route::get('recorridos', [RecorridoController::class,'getAllRecorridosActive']);
 Route::get('recorridos/{id}', [RecorridoController::class,'getById']);
 Route::get('admin/recorridos', [RecorridoController::class,'getAllRecorridos']);
 Route::post('/recorridos/guardar', [RecorridoController::class, 'guardar'])->middleware('auth:sanctum');
-Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualizar'])->middleware('auth:sanctum');
+Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualizar']);
 Route::put('/recorridos/eliminar/{id}', [RecorridoController::class, 'eliminar'])->middleware('auth:sanctum') ;
 // Route::get('/recorridos', [RecorridoController::class, 'seleccionarRecorrido'])->middleware('auth:sanctum');
-
+Route::post('boletos',[BoletosController::class, 'save']);
 
 Route::get('/boletos/obtener', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
 Route::get('venta/boletos', [BoletosController::class, 'boletosVendidos']);
-
+Route::get('boletos',[BoletosController::class, 'all']);
 //Traer boletos existentes (Dashboard boletos)
 Route::get('admin/boletos', [BoletosController::class, 'boletosExistentes']);
 

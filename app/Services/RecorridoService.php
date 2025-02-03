@@ -58,10 +58,7 @@ class RecorridoService{
                 ]);
 
                 if($validar->fails()){
-                    throw ValidationException::withMessages([
-                        "message" => "Validación incorrecta",
-                        "errors" => $validar->errors()->toArray(),
-                    ]);
+                    throw ValidationException::withMessages($validar->errors()->toArray());
                 }
 
                 HorarioRecorrido::create([
@@ -96,7 +93,7 @@ class RecorridoService{
         ]);
 
         if ($request->hasFile('img_recorrido')) {
-            $rutaImagen = $request->file('img_recorrido')->store('Recorridos', 'public');
+            $rutaImagen = $request->file('img_recorrido')->store('Recorridos','public');
             $validacion['img_recorrido'] = $rutaImagen;
         }
 

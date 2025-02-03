@@ -103,7 +103,9 @@ class RecorridoController
 
 
     public function getById($id){
-        return Recorrido::findOrFail($id);
-    }
+         $reco = Recorrido::findOrFail($id);
+        $reco->img_recorrido = asset('storage'). '/' . ($reco->img_recorrido);
+        return $reco;
+        }
 
 }
