@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\HorarioRecorrido;
 use App\Services\RecorridoService;
 use Exception;
 use App\Models\Recorrido;
@@ -107,5 +108,17 @@ class RecorridoController
         $reco->img_recorrido = asset('storage'). '/' . ($reco->img_recorrido);
         return $reco;
         }
+
+    public function estado (Request $request, $id){
+        $request->validate([
+            "active" => 'required|bool'
+        ]);
+
+        $registro = HorarioRecorrido::findOrFail($id);
+        $registro->disponible = $request->input('active');
+        $registro->save();
+
+        return response()->json(["message" => "actualizado correctamente"]);
+    }
 
 }
