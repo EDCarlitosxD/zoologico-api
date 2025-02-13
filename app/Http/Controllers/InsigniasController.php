@@ -12,11 +12,9 @@ class InsigniasController
     public function getAll(Request $request){
         $query = Insignias::query();
         $activo = $request->input('estado','');
-
-    if($request->has('estado')){
-        $query->where('estado',$activo);
-    }
-
-    return response($query->get(),Response::HTTP_OK);
+        if($request->has('estado')){
+            $query->where('estado',$activo);
+        }
+        return response($query->get(),Response::HTTP_OK);
     }
 }

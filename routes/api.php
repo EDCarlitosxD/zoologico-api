@@ -149,4 +149,4 @@ Route::post('/mensajeusuario', [FormularioContactoController::class, 'mensajeusu
 Route::put('/horario/{id}', [RecorridoController::class, 'estado']);
 
 //!Insignias
-Route::get('/insignias', [InsigniasController::class,'getAllInsignias']);
+Route::get('/insignias', [InsigniasController::class,'getAll']);
