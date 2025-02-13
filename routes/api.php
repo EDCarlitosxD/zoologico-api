@@ -7,6 +7,7 @@ use App\Http\Controllers\DonacionController;
 use App\Http\Controllers\FormularioContactoController;
 use App\Http\Controllers\GuiaController;
 use App\Http\Controllers\HorarioRecorridoController;
+use App\Http\Controllers\InsigniasController;
 use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\TarjetaController;
@@ -50,7 +51,7 @@ Route::post("/logout", [AuthController::class,'logout'])->middleware("auth:sanct
 //Editar datos de la cuenta del usuario
 Route::put('/cuenta', [AuthController::class, 'EditarDatos'])->middleware("auth:sanctum");
 
-//Animales
+//!Animales
 Route::get('/animales/card/', [AnimalController::class, 'imgAnimal']);
 
 Route::get('/animales/{slug}', [AnimalController::class, 'animalslug']);
@@ -63,23 +64,23 @@ Route::put('/animales/eliminar/{id}', [AnimalController::class, 'actualizarEstad
 Route::put('/animales/actualizar/{id}', [AnimalController::class,'actualizar']);
 
 
-// Horarrio
+//! Horarrio
 Route::get('horrario/recorrido/{id}', [HorarioRecorridoController::class,'getHorariosGroupByRecorridos']);
 
 Route::get('horarrios/{id}', [HorarioRecorridoController::class, 'getById']);
 
 
-//Tarjeta
+//!Tarjeta
 Route::get('tarjeta/{id}', [TarjetaController::class,'getTarjetas']);
 Route::post('/tarjeta', [TarjetaController::class, 'guardar'])->middleware('auth:sanctum');
 Route::delete('/tarjeta/eliminar/{id}', [TarjetaController::class, 'eliminar'])->middleware('auth:sanctum');
 
-//Donacion
+//!Donacion
 
 Route::post('/donaciones/guardar', [DonacionController::class, 'guardar'])->middleware('auth:sanctum');
 
 
-//Recorridos
+//!Recorridos
 
 Route::get('recorridos', [RecorridoController::class,'getAllRecorridosActive']);
 Route::get('recorridos/{id}', [RecorridoController::class,'getById']);
@@ -146,3 +147,6 @@ Route::post('/mensajeusuario', [FormularioContactoController::class, 'mensajeusu
 
 //eliminado logico horario_recorrido
 Route::put('/horario/{id}', [RecorridoController::class, 'estado']);
+
+//!Insignias
+Route::get('/insignias', [InsigniasController::class,'getAllInsignias']);
