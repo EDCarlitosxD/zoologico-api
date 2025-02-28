@@ -1,0 +1,578 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Zoológico",
+        "description": "API para gestionar recursos del zoológico, incluyendo insignias y otros elementos",
+        "contact": {
+            "name": "Equipo de Soporte",
+            "email": "contacto@zoologico.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Servidor Local"
+        }
+    ],
+    "paths": {
+        "/api/insignias": {
+            "get": {
+                "tags": [
+                    "Insignias"
+                ],
+                "summary": "Lista todas las insignias",
+                "description": "Obtiene todas las insignias disponibles. Puede filtrar por estado (1=Activo, 0=Inactivo).",
+                "operationId": "a4f5a11e3f47a5c8d7683c61388b4615",
+                "parameters": [
+                    {
+                        "name": "estado",
+                        "in": "query",
+                        "description": "Filtrar insignias por estado (1=Activo, 0=Inactivo)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de insignias obtenida con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Insignia"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Insignias"
+                ],
+                "summary": "Crea una nueva insignia",
+                "operationId": "c1b9778e7c4ada87a8711c9d27f853ca",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "imagen",
+                                    "cantidad"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Explorador"
+                                    },
+                                    "imagen": {
+                                        "type": "string",
+                                        "example": "url_de_imagen"
+                                    },
+                                    "cantidad": {
+                                        "type": "integer",
+                                        "example": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Insignia creada con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Insignia"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en la validación o en la creación"
+                    }
+                }
+            }
+        },
+        "/api/insignias/{id}": {
+            "get": {
+                "tags": [
+                    "Insignias"
+                ],
+                "summary": "Obtiene una insignia por su ID",
+                "operationId": "10c3c6f0e3e4492a6164ded37ed75e21",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la insignia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Insignia obtenida con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Insignia"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Insignia no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/insignias/actualizar/{id}": {
+            "put": {
+                "tags": [
+                    "Insignias"
+                ],
+                "summary": "Actualiza los datos de una insignia existente",
+                "description": "Actualizar una insignia por ID",
+                "operationId": "94e4abe3e699246306e02546c2c231f6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la insignia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "imagen",
+                                    "cantidad"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Aventurero"
+                                    },
+                                    "imagen": {
+                                        "type": "string",
+                                        "example": "url_de_imagen"
+                                    },
+                                    "cantidad": {
+                                        "type": "integer",
+                                        "example": 20
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Insignia actualizada con éxito"
+                    },
+                    "404": {
+                        "description": "Insignia no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/insignias/eliminar/{id}": {
+            "put": {
+                "tags": [
+                    "Insignias"
+                ],
+                "summary": "Actualiza el estado de una insignia",
+                "description": "Cambiar el estado de una insignia (activar/desactivar)",
+                "operationId": "0a59a66967af448a68ebf463bbd95bd2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la insignia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "estado"
+                                ],
+                                "properties": {
+                                    "estado": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Estado de la insignia actualizado con éxito"
+                    },
+                    "404": {
+                        "description": "Insignia no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/membresias": {
+            "get": {
+                "tags": [
+                    "Membresias"
+                ],
+                "summary": "Lista todas las membresías",
+                "description": "Obtiene todas las membresías disponibles. Puede filtrar por estado (1=Activo, 0=Inactivo).",
+                "operationId": "bb86cef30d7093d2b50fafe0fd7fbac6",
+                "parameters": [
+                    {
+                        "name": "estado",
+                        "in": "query",
+                        "description": "Filtrar membresías por estado (1=Activo, 0=Inactivo)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de membresías obtenida con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Membresia"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Membresias"
+                ],
+                "summary": "Crea una nueva membresía",
+                "description": "Crear una nueva membresía",
+                "operationId": "5ebad6e34c5124e424eaed531464e188",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "precio",
+                                    "descripcion",
+                                    "imagen"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "VIP"
+                                    },
+                                    "precio": {
+                                        "type": "number",
+                                        "example": 99.99
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Acceso ilimitado por un año"
+                                    },
+                                    "imagen": {
+                                        "type": "string",
+                                        "example": "https://example.com/membresia.jpg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Membresía creada con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Membresia"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en la validación o en la creación"
+                    }
+                }
+            }
+        },
+        "/api/membresias/{id}": {
+            "get": {
+                "tags": [
+                    "Membresias"
+                ],
+                "summary": "Obtiene una membresía por su ID",
+                "description": "Obtener una membresía por ID",
+                "operationId": "d005be9249a3c55fcff14ac138d7a401",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la membresía",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Membresía obtenida con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Membresia"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Membresía no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/membresias/actualizar/{id}": {
+            "put": {
+                "tags": [
+                    "Membresias"
+                ],
+                "summary": "Actualiza los datos de una membresía existente",
+                "description": "Actualizar una membresía por ID",
+                "operationId": "8f1a559c6e28f9221134bb2846533f7a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la membresía",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "precio",
+                                    "descripcion",
+                                    "imagen"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Premium"
+                                    },
+                                    "precio": {
+                                        "type": "number",
+                                        "example": 149.99
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Acceso premium por un año"
+                                    },
+                                    "imagen": {
+                                        "type": "string",
+                                        "example": "https://example.com/membresia_premium.jpg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Membresía actualizada con éxito"
+                    },
+                    "404": {
+                        "description": "Membresía no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/membresias/eliminar/{id}": {
+            "put": {
+                "tags": [
+                    "Membresias"
+                ],
+                "summary": "Actualiza el estado de una membresía",
+                "description": "Cambiar el estado de una membresía (activar/desactivar)",
+                "operationId": "6726eb8bd745060e6d1134230445de2c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la membresía",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "estado"
+                                ],
+                                "properties": {
+                                    "estado": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Estado de la membresía actualizado con éxito"
+                    },
+                    "404": {
+                        "description": "Membresía no encontrada"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Insignia": {
+                "title": "Insignia",
+                "description": "Modelo de Insignia",
+                "required": [
+                    "nombre",
+                    "imagen",
+                    "cantidad"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Aventurero"
+                    },
+                    "imagen": {
+                        "type": "string",
+                        "example": "https://example.com/insignia.jpg"
+                    },
+                    "cantidad": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "estado": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "Membresia": {
+                "title": "Membresia",
+                "description": "Modelo de Membresía",
+                "required": [
+                    "nombre",
+                    "precio",
+                    "descripcion",
+                    "imagen"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Premium"
+                    },
+                    "precio": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 99.99
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "example": "Acceso premium por un año"
+                    },
+                    "imagen": {
+                        "type": "string",
+                        "example": "https://example.com/membresia_premium.jpg"
+                    },
+                    "estado": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Membresias",
+            "description": "APIs para gestionar membresías"
+        },
+        {
+            "name": "Insignias",
+            "description": "Insignias"
+        }
+    ]
+}

@@ -1,27 +1,108 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Membresia;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *     name="Membresias",
+ *     description="APIs para gestionar membresías"
+ * )
+ */
 class MembresiaController
 {
-    //*RUTAS
+    /**
+     * Obtener todas las membresías (opcionalmente filtradas por estado)
+     * 
+     * @OA\Get(
+     *     path="/api/membresias",
+     *     tags={"Membresias"},
+     *     summary="Lista todas las membresías",
+     *     description="Obtiene todas las membresías disponibles. Puede filtrar por estado (1=Activo, 0=Inactivo).",
+     *     @OA\Parameter(
+     *         name="estado",
+     *         in="query",
+     *         description="Filtrar membresías por estado (1=Activo, 0=Inactivo)",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de membresías obtenida con éxito",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Membresia")
+     *         )
+     *     )
+     * )
+     */
     public function getAll(Request $request){
         $query = Membresia::query();
-        $activo = $request->input('estado','');
-        if($request->has('estado')){
-            $query->where('estado',$activo);
+        if ($request->has('estado')) {
+            $query->where('estado', $request->input('estado'));
         }
-        return response($query->get(),Response::HTTP_OK);
+        return response($query->get(), Response::HTTP_OK);
     }
 
+    /**
+     * Obtener una membresía por ID
+     * 
+     * @OA\Get(
+     *     path="/api/membresias/{id}",
+     *     tags={"Membresias"},
+     *     summary="Obtiene una membresía por su ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la membresía",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Membresía obtenida con éxito",
+     *         @OA\JsonContent(ref="#/components/schemas/Membresia")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Membresía no encontrada"
+     *     )
+     * )
+     */
     public function getById($id){
         return response(Membresia::findOrFail($id), Response::HTTP_OK);
     }
 
+    /**
+     * Crear una nueva membresía
+     * 
+     * @OA\Post(
+     *     path="/api/membresias",
+     *     tags={"Membresias"},
+     *     summary="Crea una nueva membresía",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"nombre", "precio", "descripcion", "imagen"},
+     *             @OA\Property(property="nombre", type="string", example="VIP"),
+     *             @OA\Property(property="precio", type="number", example=99.99),
+     *             @OA\Property(property="descripcion", type="string", example="Acceso ilimitado por un año"),
+     *             @OA\Property(property="imagen", type="string", example="https://example.com/membresia.jpg")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Membresía creada con éxito",
+     *         @OA\JsonContent(ref="#/components/schemas/Membresia")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error en la validación o en la creación"
+     *     )
+     * )
+     */
     public function guardar(Request $request){
         $validatedData = $request->validate([
             "nombre" => "required|max:255",
@@ -29,54 +110,104 @@ class MembresiaController
             "descripcion" => "required",
             "imagen" => "required"
         ]);
-        try {
-            // Procesar las imágenes
-            //*$validatedData['imagen'] = $request->file('imagen')->store('Animales', 'public');
-            $membresia = Membresia::create($validatedData);
 
-            return response()->json(['message' => 'Membresia guardada con éxito', 'Membresia' => $membresia], 201);
+        try {
+            $membresia = Membresia::create($validatedData);
+            return response()->json(['message' => 'Membresía guardada con éxito', 'Membresia' => $membresia], 201);
         } catch (\Exception $error) {
-            return response()->json(['error' => 'Error al guardar la membresia: ' . $error->getMessage()], 400);
+            return response()->json(['error' => 'Error al guardar la membresía: ' . $error->getMessage()], 400);
         }
     }
 
+    /**
+     * Actualizar una membresía por ID
+     * 
+     * @OA\Put(
+     *     path="/api/membresias/actualizar/{id}",
+     *     tags={"Membresias"},
+     *     summary="Actualiza los datos de una membresía existente",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la membresía",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"nombre", "precio", "descripcion", "imagen"},
+     *             @OA\Property(property="nombre", type="string", example="Premium"),
+     *             @OA\Property(property="precio", type="number", example=149.99),
+     *             @OA\Property(property="descripcion", type="string", example="Acceso premium por un año"),
+     *             @OA\Property(property="imagen", type="string", example="https://example.com/membresia_premium.jpg")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Membresía actualizada con éxito"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Membresía no encontrada"
+     *     )
+     * )
+     */
     public function actualizar(Request $request, $id){
-        $validatedData = $this->validateData($request);
+        $validatedData = $request->validate([
+            "nombre" => "required|max:255",
+            "precio" => "required|numeric",
+            "descripcion" => "required",
+            "imagen" => "required"
+        ]);
 
         $membresia = Membresia::findOrFail($id);
         $membresia->fill($validatedData);
+        $membresia->update();
 
-        
-        $membresia->update($request->all());
         return response($membresia, Response::HTTP_OK);
     }
 
+    /**
+     * Cambiar el estado de una membresía (activar/desactivar)
+     * 
+     * @OA\Put(
+     *     path="/api/membresias/eliminar/{id}",
+     *     tags={"Membresias"},
+     *     summary="Actualiza el estado de una membresía",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la membresía",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"estado"},
+     *             @OA\Property(property="estado", type="boolean", example=false)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Estado de la membresía actualizado con éxito"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Membresía no encontrada"
+     *     )
+     * )
+     */
     public function actualizarEstado(Request $request, $id){
         $request->validate([
             'estado'=>'required|boolean',
         ]);
 
         $membresia = Membresia::findOrFail($id);
-
         $membresia->estado = $request->input('estado');
         $membresia->save();
 
-        return response()->json(['message' => 'Membresia estado actualizado con exito']);
+        return response()->json(['message' => 'Estado de la membresía actualizado con éxito']);
     }
-
-
-
-    //!funciones privadas
-    private function validateData(Request $request){
-        $validatedData = $request->validate([
-            "nombre" => "required|max:255",
-            "precio" => "required",
-            "descripcion" => "required",
-            "imagen" => "required"
-        ]);
-
-        return $validatedData;
-    }
-
-    
 }
