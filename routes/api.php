@@ -8,6 +8,7 @@ use App\Http\Controllers\FormularioContactoController;
 use App\Http\Controllers\GuiaController;
 use App\Http\Controllers\HorarioRecorridoController;
 use App\Http\Controllers\InsigniasController;
+use App\Http\Controllers\MembresiaController;
 use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\TarjetaController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\VentaBoletosController;
 use App\Http\Controllers\VerificationEmailController;
 use App\Models\Boletos;
 use App\Models\HorarioRecorrido;
+use App\Models\Insignias;
 use App\Models\Reserva;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -105,7 +107,7 @@ Route::get('reservas', [ReservaController::class, 'getReservas']);
 
 
 
-
+//!Guias
 Route::get('guias',[GuiaController::class,'getAll']);
 Route::put('guias/{id}',[GuiaController::class,'actualizar']);
 Route::get('guias/{id}',[GuiaController::class,'getById']);
@@ -149,4 +151,22 @@ Route::post('/mensajeusuario', [FormularioContactoController::class, 'mensajeusu
 Route::put('/horario/{id}', [RecorridoController::class, 'estado']);
 
 //!Insignias
-Route::get('/insignias', [InsigniasController::class,'getAll']);
+Route::get('/insignias', [InsigniasController::class,'getAll']); //*
+Route::get('/insignias/{id}', [InsigniasController::class,'getById']); //*
+Route::post('/insignias', [InsigniasController::class,'guardar']); //*
+
+Route::put('/insignias/actualizar/{id}', [InsigniasController::class,'actualizar']); //*
+
+Route::put('insignias/eliminar/{id}', [InsigniasController::class, 'actualizarEstado']); //*
+
+
+//!Membresias
+Route::get('/membresias', [MembresiaController::class,'getAll']); //*
+Route::get('/membresias/{id}', [MembresiaController::class,'getById']); //*
+Route::post('/membresias', [MembresiaController::class,'guardar']); //!
+
+Route::put('/membresias/actualizar/{id}', [MembresiaController::class,'actualizar']); //*
+
+Route::put('membresias/eliminar/{id}', [MembresiaController::class, 'actualizarEstado']); //*
+
+

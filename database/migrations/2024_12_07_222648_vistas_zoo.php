@@ -15,6 +15,8 @@ return new class extends Migration
     public function up(){
 
     }
+
+    //!CODIGO DE VISTAS COMENTADO
     // {
     //     // Vista: historial_reservas
     //     DB::statement("
@@ -163,8 +165,10 @@ return new class extends Migration
      * @return void
      */
     public function down(){
-        
+
     }
+    
+    //!CODIGO DE VISTAS COMENTADO
     // {
     //     DB::statement("DROP VIEW IF EXISTS historial_reservas;");
     //     DB::statement("DROP VIEW IF EXISTS recorridos_mas_vendidos;");
