@@ -55,22 +55,22 @@ Route::get('/animales/card/', [AnimalController::class, 'imgAnimal']);
 
 Route::get('/animales/{slug}', [AnimalController::class, 'animalslug']);
 
-Route::post('/animales', [AnimalController::class, 'guardar']);
 Route::get('/animales', [AnimalController::class, 'getAll']);
+Route::post('/animales', [AnimalController::class, 'guardar'])->middleware("auth:sanctum");;
 
-Route::put('/animales/eliminar/{id}', [AnimalController::class, 'actualizarEstado']);
+Route::put('/animales/eliminar/{id}', [AnimalController::class, 'actualizarEstado'])->middleware("auth:sanctum");;
 
-Route::put('/animales/actualizar/{id}', [AnimalController::class,'actualizar']);
+Route::put('/animales/actualizar/{id}', [AnimalController::class,'actualizar'])->middleware("auth:sanctum");;
 
 
 // Horarrio
-Route::get('horrario/recorrido/{id}', [HorarioRecorridoController::class,'getHorariosGroupByRecorridos']);
+Route::get('horrario/recorrido/{id}', [HorarioRecorridoController::class,'getHorariosGroupByRecorridos'])->middleware("auth:sanctum");;
 
-Route::get('horarrios/{id}', [HorarioRecorridoController::class, 'getById']);
+Route::get('horarrios/{id}', [HorarioRecorridoController::class, 'getById'])->middleware("auth:sanctum");;
 
 
 //Tarjeta
-Route::get('tarjeta/{id}', [TarjetaController::class,'getTarjetas']);
+Route::get('tarjeta/{id}', [TarjetaController::class,'getTarjetas'])->middleware("auth:sanctum");;
 Route::post('/tarjeta', [TarjetaController::class, 'guardar'])->middleware('auth:sanctum');
 Route::delete('/tarjeta/eliminar/{id}', [TarjetaController::class, 'eliminar'])->middleware('auth:sanctum');
 
@@ -81,34 +81,34 @@ Route::post('/donaciones/guardar', [DonacionController::class, 'guardar'])->midd
 
 //Recorridos
 
-Route::get('recorridos', [RecorridoController::class,'getAllRecorridosActive']);
-Route::get('recorridos/{id}', [RecorridoController::class,'getById']);
-Route::get('admin/recorridos', [RecorridoController::class,'getAllRecorridos']);
+Route::get('recorridos', [RecorridoController::class,'getAllRecorridosActive'])->middleware("auth:sanctum");;
+Route::get('recorridos/{id}', [RecorridoController::class,'getById'])->middleware("auth:sanctum");;
+Route::get('admin/recorridos', [RecorridoController::class,'getAllRecorridos'])->middleware("auth:sanctum");;
 Route::post('/recorridos/guardar', [RecorridoController::class, 'guardar'])->middleware('auth:sanctum');
-Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualizar']);
+Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualizar'])->middleware("auth:sanctum");;
 Route::put('/recorridos/eliminar/{id}', [RecorridoController::class, 'eliminar'])->middleware('auth:sanctum') ;
 // Route::get('/recorridos', [RecorridoController::class, 'seleccionarRecorrido'])->middleware('auth:sanctum');
-Route::post('boletos',[BoletosController::class, 'save']);
+Route::post('boletos',[BoletosController::class, 'save'])->middleware("auth:sanctum");;
 
 Route::get('/boletos/obtener', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
-Route::get('venta/boletos', [BoletosController::class, 'boletosVendidos']);
-Route::get('boletos',[BoletosController::class, 'all']);
+Route::get('venta/boletos', [BoletosController::class, 'boletosVendidos'])->middleware("auth:sanctum");;
+Route::get('boletos',[BoletosController::class, 'all'])->middleware("auth:sanctum");;
 //Traer boletos existentes (Dashboard boletos)
-Route::get('admin/boletos', [BoletosController::class, 'boletosExistentes']);
+Route::get('admin/boletos', [BoletosController::class, 'boletosExistentes'])->middleware("auth:sanctum");;
 
 //Traer ventas generales
 // Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
 Route::post('/venta', [VentaBoletosController::class, 'guardar'])->middleware('auth:sanctum');
 Route::get('/venta/usuario', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
-Route::get('reservas', [ReservaController::class, 'getReservas']);
+Route::get('reservas', [ReservaController::class, 'getReservas'])->middleware("auth:sanctum");;
 
 
 
 
-Route::get('guias',[GuiaController::class,'getAll']);
-Route::put('guias/{id}',[GuiaController::class,'actualizar']);
-Route::get('guias/{id}',[GuiaController::class,'getById']);
-Route::put('guias/eliminar/{id}', [GuiaController::class, 'actualizarEstado']);
+Route::get('guias',[GuiaController::class,'getAll'])->middleware("auth:sanctum");;
+Route::put('guias/{id}',[GuiaController::class,'actualizar'])->middleware("auth:sanctum");;
+Route::get('guias/{id}',[GuiaController::class,'getById'])->middleware("auth:sanctum");;
+Route::put('guias/eliminar/{id}', [GuiaController::class, 'actualizarEstado'])->middleware("auth:sanctum");;
 Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
 
 //Traer venta de boletos (dashboard boletos grafica)
@@ -142,7 +142,6 @@ Route::get('/donacionmes', [DonacionController::class,'donacionesMes'])->middlew
 Route::get('/donacionyear', [DonacionController::class,'donacionesYear'])->middleware('auth:sanctum');
 
 //Mensaje enviado por el usuario
-Route::post('/mensajeusuario', [FormularioContactoController::class, 'mensajeusuario']);
-
+Route::post('/mensajeusuario', [FormularioContactoController::class, 'mensajeusuario'])->middleware("auth:sanctum");;
 //eliminado logico horario_recorrido
-Route::put('/horario/{id}', [RecorridoController::class, 'estado']);
+Route::put('/horario/{id}', [RecorridoController::class, 'estado'])->middleware("auth:sanctum");;
