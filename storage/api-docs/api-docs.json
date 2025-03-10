@@ -20,6 +20,97 @@
         }
     ],
     "paths": {
+        "/animales/{slug}": {
+            "get": {
+                "tags": [
+                    "Animales"
+                ],
+                "summary": "Obtener información de un animal por su slug",
+                "description": "Retorna la información de un animal basado en su slug único.",
+                "operationId": "getAnimalBySlug",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug único del animal",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Datos del animal encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Animal"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Animal no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No existe"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/animales": {
+            "get": {
+                "tags": [
+                    "Animales"
+                ],
+                "summary": "Obtiene todos los animales o filtra por nombre",
+                "description": "Devuelve una lista de animales. Si se proporciona un parámetro de búsqueda, filtra los resultados por el nombre del animal.",
+                "operationId": "getAllAnimales",
+                "parameters": [
+                    {
+                        "name": "buscar",
+                        "in": "query",
+                        "description": "Parámetro opcional para filtrar los animales por nombre",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de animales obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Animal"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parámetro de búsqueda incorrecto"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        },
         "/api/insignias": {
             "get": {
                 "tags": [
@@ -493,6 +584,41 @@
     },
     "components": {
         "schemas": {
+            "Animal": {
+                "title": "Animal",
+                "description": "Modelo de un Animal",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "León Africano"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "leon-africano"
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "example": "El león africano es una especie de mamífero carnívoro de la familia de los félidos."
+                    },
+                    "imagen_principal": {
+                        "type": "string",
+                        "example": "https://tudominio.com/storage/leon.jpg"
+                    },
+                    "imagen_secundaria": {
+                        "type": "string",
+                        "example": "https://tudominio.com/storage/leon2.jpg"
+                    },
+                    "img_ubicacion": {
+                        "type": "string",
+                        "example": "https://tudominio.com/storage/mapa_leon.jpg"
+                    }
+                },
+                "type": "object"
+            },
             "Insignia": {
                 "title": "Insignia",
                 "description": "Modelo de Insignia",
@@ -569,6 +695,10 @@
         {
             "name": "Membresias",
             "description": "APIs para gestionar membresías"
+        },
+        {
+            "name": "Animales",
+            "description": "Animales"
         },
         {
             "name": "Insignias",
