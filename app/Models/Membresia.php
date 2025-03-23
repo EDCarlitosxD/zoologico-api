@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  *     @OA\Property(property="nombre", type="string", example="Premium"),
  *     @OA\Property(property="precio", type="number", format="float", example=99.99),
  *     @OA\Property(property="descripcion", type="string", example="Acceso premium por un año"),
- *     @OA\Property(property="imagen", type="string", example="https://example.com/membresia_premium.jpg"),
+ *     @OA\Property(property="imagen", type="string", example="http://example.com/membresia_premium.jpg"),
  *     @OA\Property(property="estado", type="boolean", example=true)
  * )
  */

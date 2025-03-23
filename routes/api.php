@@ -91,15 +91,20 @@ Route::post('/recorridos/guardar', [RecorridoController::class, 'guardar'])->mid
 Route::put('/recorridos/actualizar/{id}', [RecorridoController::class, 'actualizar']);
 Route::put('/recorridos/eliminar/{id}', [RecorridoController::class, 'eliminar'])->middleware('auth:sanctum') ;
 // Route::get('/recorridos', [RecorridoController::class, 'seleccionarRecorrido'])->middleware('auth:sanctum');
-Route::post('boletos',[BoletosController::class, 'save']);
 
+//!Boletos
+Route::post('boletos',[BoletosController::class, 'save']);
 Route::get('/boletos/obtener', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
 Route::get('venta/boletos', [BoletosController::class, 'boletosVendidos']);
 Route::get('boletos',[BoletosController::class, 'all']);
+Route::get('boletos/{id}',[BoletosController::class, 'getById']);
+Route::put('boletos/actualizar/{id}',[BoletosController::class, 'actualizar']);
+
 //Traer boletos existentes (Dashboard boletos)
 Route::get('admin/boletos', [BoletosController::class, 'boletosExistentes']);
+Route::put('boletos/eliminar/{id}', [BoletosController::class, 'delete']);
 
-//Traer ventas generales
+//!Ventas
 // Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
 Route::post('/venta', [VentaBoletosController::class, 'guardar'])->middleware('auth:sanctum');
 Route::get('/venta/usuario', [BoletosController::class, 'boletosUsuario'])->middleware('auth:sanctum');
@@ -109,11 +114,13 @@ Route::get('reservas', [ReservaController::class, 'getReservas']);
 
 //!Guias
 Route::get('guias',[GuiaController::class,'getAll']);
+Route::post('guias',[GuiaController::class,'save']);
 Route::put('guias/{id}',[GuiaController::class,'actualizar']);
 Route::get('guias/{id}',[GuiaController::class,'getById']);
 Route::put('guias/eliminar/{id}', [GuiaController::class, 'actualizarEstado']);
 Route::get('/ventas', [VentaBoletosController::class, 'traerVentasGeneral'])->middleware('auth:sanctum');
 
+//!Reportes FECHAS
 //Traer venta de boletos (dashboard boletos grafica)
 Route::get('/boletosvendidos', [VentaBoletosController::class, 'boletosVendidos'])->middleware('auth:sanctum');
 
@@ -154,19 +161,14 @@ Route::put('/horario/{id}', [RecorridoController::class, 'estado']);
 Route::get('/insignias', [InsigniasController::class,'getAll']); //*
 Route::get('/insignias/{id}', [InsigniasController::class,'getById']); //*
 Route::post('/insignias', [InsigniasController::class,'guardar']); //*
-
 Route::put('/insignias/actualizar/{id}', [InsigniasController::class,'actualizar']); //*
-
 Route::put('insignias/eliminar/{id}', [InsigniasController::class, 'actualizarEstado']); //*
-
 
 //!Membresias
 Route::get('/membresias', [MembresiaController::class,'getAll']); //*
 Route::get('/membresias/{id}', [MembresiaController::class,'getById']); //*
 Route::post('/membresias', [MembresiaController::class,'guardar']); //!
-
 Route::put('/membresias/actualizar/{id}', [MembresiaController::class,'actualizar']); //*
-
 Route::put('membresias/eliminar/{id}', [MembresiaController::class, 'actualizarEstado']); //*
 
 

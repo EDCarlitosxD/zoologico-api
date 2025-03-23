@@ -25,7 +25,7 @@ class RecorridoService{
             'descripcion' => 'required',
             'descripcion_incluye' => 'required',
             'descripcion_importante_reservar' => 'required',
-            'img_recorrido' => 'nullable|file|mimes:jpg,jpeg,png'
+            'img_recorrido' => 'nullable'
         ]);
 
         if($validar->fails()){
@@ -89,13 +89,13 @@ class RecorridoService{
             'descripcion' => 'required',
             'descripcion_incluye' => 'required',
             'descripcion_importante_reservar' => 'required',
-            'img_recorrido' => 'required|file|mimes:jpg,jpeg,png|max:255'
+            'img_recorrido' => 'required'
         ]);
 
-        if ($request->hasFile('img_recorrido')) {
-            $rutaImagen = $request->file('img_recorrido')->store('Recorridos','public');
-            $validacion['img_recorrido'] = $rutaImagen;
-        }
+        // if ($request->hasFile('img_recorrido')) {
+        //     $rutaImagen = $request->file('img_recorrido')->store('Recorridos','public');
+        //     $validacion['img_recorrido'] = $rutaImagen;
+        // }
 
         $recorrido = Recorrido::findOrFail($id);
         $recorrido->update($validacion);

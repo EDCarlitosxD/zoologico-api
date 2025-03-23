@@ -17,7 +17,7 @@ class MembresiaController
      * Obtener todas las membresías (opcionalmente filtradas por estado)
      * 
      * @OA\Get(
-     *     path="/api/membresias",
+     *     path="/membresias",
      *     tags={"Membresias"},
      *     summary="Lista todas las membresías",
      *     description="Obtiene todas las membresías disponibles. Puede filtrar por estado (1=Activo, 0=Inactivo).",
@@ -50,7 +50,7 @@ class MembresiaController
      * Obtener una membresía por ID
      * 
      * @OA\Get(
-     *     path="/api/membresias/{id}",
+     *     path="/membresias/{id}",
      *     tags={"Membresias"},
      *     summary="Obtiene una membresía por su ID",
      *     @OA\Parameter(
@@ -79,7 +79,7 @@ class MembresiaController
      * Crear una nueva membresía
      * 
      * @OA\Post(
-     *     path="/api/membresias",
+     *     path="/membresias",
      *     tags={"Membresias"},
      *     summary="Crea una nueva membresía",
      *     @OA\RequestBody(
@@ -123,7 +123,7 @@ class MembresiaController
      * Actualizar una membresía por ID
      * 
      * @OA\Put(
-     *     path="/api/membresias/actualizar/{id}",
+     *     path="/membresias/actualizar/{id}",
      *     tags={"Membresias"},
      *     summary="Actualiza los datos de una membresía existente",
      *     @OA\Parameter(
@@ -172,7 +172,7 @@ class MembresiaController
      * Cambiar el estado de una membresía (activar/desactivar)
      * 
      * @OA\Put(
-     *     path="/api/membresias/eliminar/{id}",
+     *     path="/membresias/eliminar/{id}",
      *     tags={"Membresias"},
      *     summary="Actualiza el estado de una membresía",
      *     @OA\Parameter(
