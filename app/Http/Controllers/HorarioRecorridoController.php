@@ -30,6 +30,17 @@ class HorarioRecorridoController
         return response(['data' => $horarioRecorrido], Response::HTTP_CREATED);
     }
 
+    public function updateEstadoHorario(Request $request, $id){
+        $request->validate([
+            'disponible' => 'required|boolean'
+        ]);
+        $horarioRecorrido = HorarioRecorrido::findOrFail($id);
+        $horarioRecorrido->disponible = $request->input('disponible');
+        $horarioRecorrido->save();
+        return response(['data' => $horarioRecorrido,
+            'message' => 'Estado actualizado correctamente'], Response::HTTP_CREATED);
+    }
+
 
     public function getHorariosGroupByRecorridos($id)
     {

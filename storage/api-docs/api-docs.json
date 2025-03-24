@@ -129,12 +129,14 @@
                 "tags": [
                     "Animales"
                 ],
-                "summary": "Obtener información de un animal por slug",
-                "operationId": "7e789e1048ff514bdb0a8a6197147267",
+                "summary": "Obtener información de un animal por su slug",
+                "description": "Retorna la información de un animal basado en su slug único.",
+                "operationId": "getAnimalBySlug",
                 "parameters": [
                     {
                         "name": "slug",
                         "in": "path",
+                        "description": "Slug único del animal",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -143,17 +145,32 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Información del animal obtenida con éxito"
+                        "description": "Datos del animal encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Animal"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Animal no encontrado"
+                        "description": "Animal no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No existe"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/animales": {
@@ -161,105 +178,140 @@
                 "tags": [
                     "Animales"
                 ],
-                "summary": "Obtener la lista de todos los animales",
-                "operationId": "2e3af7bb8dc947f56ed0a4839af7879c",
+                "summary": "Obtiene todos los animales o filtra por nombre",
+                "description": "Devuelve una lista de animales. Si se proporciona un parámetro de búsqueda, filtra los resultados por el nombre del animal.",
+                "operationId": "getAllAnimales",
                 "responses": {
                     "200": {
-                        "description": "Lista de animales obtenida con éxito"
+                        "description": "Lista de animales obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Animal"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parámetro de búsqueda incorrecto"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/animales/guardar": {
+                }
+            },
             "post": {
                 "tags": [
                     "Animales"
                 ],
-                "summary": "Registrar un nuevo animal",
-                "operationId": "65ef16090e75059483ce2f140c99f27e",
+                "summary": "Guarda un nuevo animal en la base de datos",
+                "description": "Este endpoint permite guardar un nuevo animal en la base de datos con la información proporcionada, incluyendo imágenes y otros detalles.",
+                "operationId": "guardarAnimal",
                 "requestBody": {
+                    "description": "Datos del animal a guardar",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "nombre",
                                     "nombre_cientifico",
+                                    "imagen_principal",
+                                    "imagen_secundaria",
+                                    "caracteristicas_fisicas",
+                                    "dieta",
+                                    "datos_curiosos",
+                                    "comportamiento",
+                                    "peso",
+                                    "altura",
                                     "tipo",
-                                    "imagen_principal"
+                                    "habitat",
+                                    "descripcion",
+                                    "subtitulo",
+                                    "img_ubicacion"
                                 ],
                                 "properties": {
                                     "nombre": {
+                                        "description": "Nombre común del animal",
                                         "type": "string",
-                                        "example": "Tigre de Bengala"
+                                        "maxLength": 80,
+                                        "example": "León"
                                     },
                                     "nombre_cientifico": {
+                                        "description": "Nombre científico del animal",
                                         "type": "string",
-                                        "example": "Panthera tigris tigris"
+                                        "maxLength": 150,
+                                        "example": "Panthera leo"
                                     },
                                     "imagen_principal": {
+                                        "description": "Imagen principal del animal",
                                         "type": "string",
-                                        "format": "binary",
-                                        "example": "https://example.com/image.jpg"
+                                        "format": "binary"
                                     },
                                     "imagen_secundaria": {
+                                        "description": "Imagen secundaria del animal",
                                         "type": "string",
-                                        "format": "binary",
-                                        "example": "https://example.com/image.jpg"
+                                        "format": "binary"
                                     },
                                     "caracteristicas_fisicas": {
+                                        "description": "Características físicas del animal",
                                         "type": "string",
-                                        "example": "Características físicas del tigre de Bengala..."
+                                        "example": "Gran felino con melena en los machos, cuerpo musculoso y pelaje amarillo dorado."
                                     },
                                     "dieta": {
+                                        "description": "Dieta del animal",
                                         "type": "string",
-                                        "example": "Dieta del tigre de Bengala..."
+                                        "example": "Carnívoro, se alimenta de cebras, antílopes y otros mamíferos."
                                     },
                                     "datos_curiosos": {
+                                        "description": "Datos curiosos sobre el animal",
                                         "type": "string",
-                                        "example": "Datos curiosos del tigre de Bengala..."
+                                        "example": "Los leones pueden dormir hasta 20 horas al día."
                                     },
                                     "comportamiento": {
+                                        "description": "Comportamiento del animal",
                                         "type": "string",
-                                        "example": "Comportamiento del tigre de Bengala..."
+                                        "example": "Viven en manadas lideradas por hembras y un macho dominante."
                                     },
                                     "peso": {
+                                        "description": "Peso del animal",
                                         "type": "string",
-                                        "example": "Peso del tigre de Bengala..."
+                                        "example": "190 kg (machos), 130 kg (hembras)"
                                     },
                                     "altura": {
+                                        "description": "Altura del animal",
                                         "type": "string",
-                                        "example": "Altura del tigre de Bengala..."
+                                        "example": "1.2 metros en la cruz"
                                     },
                                     "tipo": {
+                                        "description": "Tipo de animal",
                                         "type": "string",
                                         "example": "Terrestre"
                                     },
                                     "habitat": {
+                                        "description": "Hábitat del animal",
                                         "type": "string",
-                                        "example": "Habitat del tigre de Bengala..."
+                                        "maxLength": 255,
+                                        "example": "Sabana africana y pastizales abiertos."
                                     },
                                     "descripcion": {
+                                        "description": "Descripción del animal",
                                         "type": "string",
-                                        "example": "Descripcion del tigre de Bengala..."
+                                        "example": "El león es uno de los felinos más grandes y poderosos, conocido por su melena y su vida en manada."
                                     },
                                     "subtitulo": {
+                                        "description": "Subtítulo del animal",
                                         "type": "string",
-                                        "example": "Subtitulo del tigre de Bengala..."
-                                    },
-                                    "qr": {
-                                        "type": "string",
-                                        "example": "qr.png"
+                                        "maxLength": 255,
+                                        "example": "El rey de la selva"
                                     },
                                     "img_ubicacion": {
+                                        "description": "Imagen de la ubicación del animal",
                                         "type": "string",
-                                        "format": "binary",
-                                        "example": "https://example.com/image.jpg"
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -269,37 +321,66 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Animal guardado con éxito"
+                        "description": "Animal guardado con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Animal guardado con éxito"
+                                        },
+                                        "animal": {
+                                            "description": "Datos del animal guardado",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Error en la validación"
+                        "description": "Error al guardar el animal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error al guardar el animal: Mensaje de error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
-        "/animales/eliminar/{id}": {
+        "/animales/{id}/actualizar-estado": {
             "put": {
                 "tags": [
                     "Animales"
                 ],
-                "summary": "Desactivar un animal",
-                "operationId": "0fe5e3804b7416a47981c2b39ca27d5a",
+                "summary": "Actualiza el estado de un animal",
+                "description": "Este endpoint permite actualizar el estado (activo/inactivo) de un animal específico en la base de datos.",
+                "operationId": "actualizarEstadoAnimal",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID del animal cuyo estado se desea actualizar",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
                 "requestBody": {
+                    "description": "Datos para actualizar el estado del animal",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -309,8 +390,8 @@
                                 ],
                                 "properties": {
                                     "estado": {
-                                        "type": "boolean",
-                                        "example": false
+                                        "description": "Nuevo estado del animal (true para activo, false para inactivo)",
+                                        "type": "boolean"
                                     }
                                 },
                                 "type": "object"
@@ -320,68 +401,228 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Estado actualizado con éxito"
+                        "description": "Estado del animal actualizado con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "animal estado actualizado con exito"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Animal no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Animal no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El campo estado es requerido."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "estado": [
+                                                    "El campo estado es requerido."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
-        "/animales/actualizar/{id}": {
+        "/animales/{id}": {
             "put": {
                 "tags": [
                     "Animales"
                 ],
-                "summary": "Actualizar los datos de un animal",
-                "operationId": "7ddd6c7590dafc8c74432ac399e0a1e6",
+                "summary": "Actualiza un animal existente",
+                "description": "Este endpoint permite actualizar la información de un animal existente, incluyendo sus imágenes y otros detalles.",
+                "operationId": "actualizarAnimal",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID del animal que se desea actualizar",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
                 "requestBody": {
+                    "description": "Datos del animal a actualizar",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "type": "object",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Animal"
+                                "properties": {
+                                    "nombre": {
+                                        "description": "Nombre común del animal",
+                                        "type": "string",
+                                        "maxLength": 80
                                     },
-                                    {
-                                        "properties": {
-                                            "id": {
-                                                "not": {
-                                                    "property": null
-                                                }
-                                            }
-                                        },
-                                        "type": "object"
+                                    "nombre_cientifico": {
+                                        "description": "Nombre científico del animal",
+                                        "type": "string",
+                                        "maxLength": 150
+                                    },
+                                    "imagen_principal": {
+                                        "description": "Imagen principal del animal (opcional)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "imagen_secundaria": {
+                                        "description": "Imagen secundaria del animal (opcional)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "caracteristicas_fisicas": {
+                                        "description": "Características físicas del animal",
+                                        "type": "string"
+                                    },
+                                    "dieta": {
+                                        "description": "Dieta del animal",
+                                        "type": "string"
+                                    },
+                                    "datos_curiosos": {
+                                        "description": "Datos curiosos sobre el animal",
+                                        "type": "string"
+                                    },
+                                    "comportamiento": {
+                                        "description": "Comportamiento del animal",
+                                        "type": "string"
+                                    },
+                                    "peso": {
+                                        "description": "Peso del animal",
+                                        "type": "string",
+                                        "maxLength": 45
+                                    },
+                                    "altura": {
+                                        "description": "Altura del animal",
+                                        "type": "string",
+                                        "maxLength": 45
+                                    },
+                                    "tipo": {
+                                        "description": "Tipo de animal",
+                                        "type": "string"
+                                    },
+                                    "habitat": {
+                                        "description": "Hábitat del animal",
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "descripcion": {
+                                        "description": "Descripción del animal",
+                                        "type": "string"
+                                    },
+                                    "subtitulo": {
+                                        "description": "Subtítulo del animal",
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "img_ubicacion": {
+                                        "description": "Imagen de la ubicación del animal (opcional)",
+                                        "type": "string",
+                                        "format": "binary"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Animal actualizado con éxito"
+                        "description": "Animal actualizado con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Animal actualizado con éxito"
+                                        },
+                                        "animal": {
+                                            "description": "Datos del animal actualizado",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Animal no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Animal no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El campo nombre es requerido."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "nombre": [
+                                                    "El campo nombre es requerido."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/login": {
@@ -646,8 +887,7 @@
                                     },
                                     "imagen": {
                                         "type": "string",
-                                        "format": "binary",
-                                        "example": "https://example.com/boleto.jpg"
+                                        "format": "binary"
                                     },
                                     "descripcion_card": {
                                         "type": "string",
@@ -2347,7 +2587,7 @@
     "tags": [
         {
             "name": "Animales",
-            "description": "APIs para la gestión de animales en el zoológico"
+            "description": "APIs para gestionar Animales"
         },
         {
             "name": "Autenticación",

@@ -101,7 +101,7 @@ class BoletosController
      *             @OA\Property(property="titulo", type="string", example="Boleto VIP"),
      *             @OA\Property(property="descripcion", type="string", example="Acceso exclusivo"),
      *             @OA\Property(property="precio", type="number", format="float", example=99.99),
-     *             @OA\Property(property="imagen", type="string", format="binary", example="https://example.com/boleto.jpg"),
+     *             @OA\Property(property="imagen", type="string", format="binary"),
      *             @OA\Property(property="descripcion_card", type="string", example="Acceso VIP"),
      *             @OA\Property(property="advertencias", type="string", example="No incluye alimentos"),
      *         )

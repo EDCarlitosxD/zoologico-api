@@ -70,6 +70,7 @@ Route::put('/animales/actualizar/{id}', [AnimalController::class,'actualizar']);
 Route::get('horrario/recorrido/{id}', [HorarioRecorridoController::class,'getHorariosGroupByRecorridos']);
 
 Route::get('horarrios/{id}', [HorarioRecorridoController::class, 'getById']);
+Route::put('/horarios/estado/{id}', [HorarioRecorridoController::class,'updateEstadoHorario']);
 
 
 //!Tarjeta

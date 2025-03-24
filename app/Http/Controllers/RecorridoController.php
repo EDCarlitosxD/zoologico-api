@@ -10,6 +10,7 @@ use App\Models\Recorrido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Tag(
@@ -85,11 +86,14 @@ class RecorridoController
      */
     public function actualizar(Request $request, $id)
     {
+        Log::info("🔍 Datos completos recibidos en Laravel:", $request->all());
+
         $request->validate([
             'titulo' => 'sometimes|string|max:255',
             'precio' => 'sometimes|numeric',
             'duracion' => 'sometimes|string',
             'descripcion' => 'sometimes|string',
+            'horarios' => 'sometimes|array'
         ]);
 
         DB::beginTransaction();
