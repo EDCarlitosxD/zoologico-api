@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @OA\Tag(
@@ -84,29 +85,59 @@ class RecorridoController
      *     @OA\Response(response=500, description="Error en el servidor")
      * )
      */
+    // public function actualizar(Request $request, $id)
+    // {
+        
+    //     $validatedData = $request->validate([
+    //         'titulo' => 'sometimes|string|max:255',
+    //         'precio' => 'sometimes|numeric',
+    //         'duracion' => 'sometimes|string',
+    //         //'img_recorrido' => 'nullable',
+    //         'descripcion_incluye' => 'sometimes|string',
+    //         'descripcion_importante_reservar' => 'sometimes|string',
+    //         'descripcion' => 'sometimes|string',
+    //         'horarios' => 'sometimes|array'
+    //     ]);
+
+        
+    //     $recorrido = Recorrido::findOrFail($id);
+    //     $recorrido->fill($validatedData);
+
+    //     if ($request->hasFile('img_recorrido')) {
+    //         if ($recorrido->img_recorrido && Storage::exists($recorrido->img_recorrido)) {
+    //             Storage::delete($recorrido->img_recorrido);
+    //         }
+            
+    //         $path = $request->file('img_recorrido')->store('Recorridos', 'public');
+    //         $recorrido->img_recorrido = $path;
+    //     }
+    //     Log::alert("RECORRIDO: ".$recorrido);
+
+    //     $recorrido->save();
+
+    //     DB::beginTransaction();
+    //     try {
+    //         $update = $this->recorridoService->updateDatos($request, $id);
+    //         DB::commit();
+    //         return response()->json(["message" => "Recorrido actualizado correctamente"], 200);
+    //     } catch (Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(["error" => $e->getMessage()], 500);
+    //     }
+    // }
     public function actualizar(Request $request, $id)
     {
-        Log::info("🔍 Datos completos recibidos en Laravel:", $request->all());
-
-        $request->validate([
-            'titulo' => 'sometimes|string|max:255',
-            'precio' => 'sometimes|numeric',
-            'duracion' => 'sometimes|string',
-            'descripcion' => 'sometimes|string',
-            'horarios' => 'sometimes|array'
-        ]);
-
-        DB::beginTransaction();
-        try {
-            $update = $this->recorridoService->updateDatos($request, $id);
-            DB::commit();
-            return response()->json(["message" => "Recorrido actualizado correctamente"], 200);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json(["error" => $e->getMessage()], 500);
-        }
-    }
-
+        
+         try {
+             $update = $this->recorridoService->updateDatos($request, $id);
+             DB::commit();
+             return response()->json(["message" => "Recorrido actualizado correctamente"], 200);
+         } catch (Exception $e) {
+             DB::rollBack();
+             return response()->json(["error" => $e->getMessage()], 500);
+         }
+     }
+        //return response()->json(['mensaje' => 'Recorrido actualizado correctamente']);
     /**
      * Eliminar un recorrido (eliminación lógica)
      * 

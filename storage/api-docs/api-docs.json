@@ -359,7 +359,7 @@
                 }
             }
         },
-        "/animales/{id}/actualizar-estado": {
+        "/animales/eliminar/{id}/": {
             "put": {
                 "tags": [
                     "Animales"

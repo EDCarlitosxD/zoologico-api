@@ -9,6 +9,7 @@ use App\Models\VistaRecorridosReservadosYear;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -237,29 +238,40 @@ class RecorridoService{
             })
             ->toArray(); // 🔥 Convertir a array para evitar problemas con Log
     
-        Log::info("Horarios anteriores: ", $horariosAnteriores);
+            $validatedData = $request->validate([
+                'titulo' => 'sometimes|string|max:255',
+                'precio' => 'sometimes|numeric',
+                'duracion' => 'sometimes|string',
+                'img_recorrido' => 'nullable|string', // Ahora puede recibir Base64
+                'descripcion_incluye' => 'sometimes|string',
+                'descripcion_importante_reservar' => 'sometimes|string',
+                'descripcion' => 'sometimes|string',
+                'horarios' => 'sometimes|array'
+            ]);
+        
+            // Si la imagen es Base64, conviértela a archivo y guárdala
+            if (!empty($validatedData['img_recorrido']) && str_starts_with($validatedData['img_recorrido'], 'data:image')) {
+                $imageData = explode(',', $validatedData['img_recorrido'])[1];
+                $imagePath = 'imagenes/recorridos/' . uniqid() . '.png';
+                Storage::disk('public')->put($imagePath, base64_decode($imageData));
+                $validatedData['img_recorrido'] = $imagePath;
+            }
+            if($validatedData['img_recorrido'] == null || $validatedData['img_recorrido'] == ""){
+                $validatedData['img_recorrido'] = Recorrido::findOrFail($id)->img_recorrido;
+            }
+        
+            $recorrido = Recorrido::findOrFail($id);
+            $recorrido->fill($validatedData);
+            $recorrido->save();
+        
     
-        // ✅ Validar los datos del recorrido
-        $validacion = $request->validate([
-            'titulo' => 'required|max:45',
-            'precio' => 'required|numeric',
-            'duracion' => 'required|date_format:H:i:s',
-            'descripcion' => 'required',
-            'descripcion_incluye' => 'required',
-            'descripcion_importante_reservar' => 'required',
-            'img_recorrido' => '',
-            'horarios' => 'sometimes|array'
-        ]);
+            DB::beginTransaction();
     
-        // ✅ Guardar imagen si se actualiza
-        if ($request->hasFile('img_recorrido')) {
-            $rutaImagen = $request->file('img_recorrido')->store('Recorridos', 'public');
-            $validacion['img_recorrido'] = $rutaImagen;
-        }
+
     
         // ✅ Actualizar el recorrido
         $recorrido = Recorrido::findOrFail($id);
-        $recorrido->update($validacion);
+        $recorrido->update($validatedData);
     
         // ✅ Procesar cada horario (ACTUALIZAR si existe, CREAR si es nuevo)
         foreach ($request->horarios as $dato) {
