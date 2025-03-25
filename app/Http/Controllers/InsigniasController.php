@@ -5,11 +5,17 @@ use Illuminate\Http\Request;
 use App\Models\Insignias;
 use Illuminate\Http\Response;
 
+/**
+ * @OA\Tag(
+ *     name="Insignias",
+ *     description="APIs para gestionar insignias"
+ * )
+ */
 class InsigniasController
 {
     /**
      * @OA\Get(
-     *     path="/api/insignias",
+     *     path="/insignias",
      *     tags={"Insignias"},
      *     summary="Lista todas las insignias",
      *     description="Obtiene todas las insignias disponibles. Puede filtrar por estado (1=Activo, 0=Inactivo).",
@@ -41,7 +47,7 @@ class InsigniasController
 
     /**
      * @OA\Get(
-     *     path="/api/insignias/{id}",
+     *     path="/insignias/{id}",
      *     tags={"Insignias"},
      *     summary="Obtiene una insignia por su ID",
      *     @OA\Parameter(
@@ -69,7 +75,7 @@ class InsigniasController
 
     /**
      * @OA\Post(
-     *     path="/api/insignias",
+     *     path="/insignias",
      *     tags={"Insignias"},
      *     summary="Crea una nueva insignia",
      *     @OA\RequestBody(
@@ -113,7 +119,7 @@ class InsigniasController
      * Actualizar una insignia por ID
      * 
      * @OA\Put(
-     *     path="/api/insignias/actualizar/{id}",
+     *     path="/insignias/actualizar/{id}",
      *     tags={"Insignias"},
      *     summary="Actualiza los datos de una insignia existente",
      *     @OA\Parameter(
@@ -159,7 +165,7 @@ class InsigniasController
      * Cambiar el estado de una insignia (activar/desactivar)
      * 
      * @OA\Put(
-     *     path="/api/insignias/eliminar/{id}",
+     *     path="/insignias/eliminar/{id}",
      *     tags={"Insignias"},
      *     summary="Actualiza el estado de una insignia",
      *     @OA\Parameter(

@@ -25,7 +25,7 @@ class BoletoService {
     }
 
     public function traerBoletosExistentes (){
-        $boletosExistentes = Boletos::select('id', 'titulo', 'precio')->where('estado', 1)->get();
+        $boletosExistentes = Boletos::select('id', 'titulo', 'precio', 'estado')->get();
         return $boletosExistentes;
     }
 

@@ -12,7 +12,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
+/**
+ * @OA\Tag(
+ *     name="Ventas",
+ *     description="APIs para la gestión de ventas de boletos"
+ * )
+ */
 class VentaBoletosController
 {
 
@@ -28,7 +33,31 @@ class VentaBoletosController
     {
         //
     }
-
+    /**
+     * @OA\Post(
+     *     path="/venta",
+     *     summary="Procesar una venta de boletos o recorridos",
+     *     tags={"Ventas"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"boletos", "recorridos"},
+     *             @OA\Property(property="boletos", type="array", @OA\Items(
+     *                 @OA\Property(property="id_boleto", type="integer", example=1),
+     *                 @OA\Property(property="cantidad", type="integer", example=2)
+     *             )),
+     *             @OA\Property(property="recorridos", type="array", @OA\Items(
+     *                 @OA\Property(property="id_recorrido", type="integer", example=1),
+     *                 @OA\Property(property="id_horario_recorrido", type="integer", example=1),
+     *                 @OA\Property(property="cantidad", type="integer", example=2)
+     *             ))
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Venta procesada correctamente"),
+     *     @OA\Response(response=500, description="Error al procesar la venta")
+     * )
+     */
     public function guardar(Request $request)
     {
         $token = Str::uuid();
@@ -57,7 +86,7 @@ class VentaBoletosController
 
 
 
-            Mail::to($email)->send(new ReciboElectronico($boletos, $total, $fechaactual, $nombre, $email, $recorridos));
+            //Mail::to($email)->send(new ReciboElectronico($boletos, $total, $fechaactual, $nombre, $email, $recorridos));
 
             DB::commit();
 
