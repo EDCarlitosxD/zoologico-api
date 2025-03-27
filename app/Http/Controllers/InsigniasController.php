@@ -3,7 +3,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Insignias;
+use App\Models\VistaInsigniasUser;
+use App\Services\InsigniaService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @OA\Tag(
@@ -13,6 +17,12 @@ use Illuminate\Http\Response;
  */
 class InsigniasController
 {
+    protected $insigniaService;
+
+    public function __construct(InsigniaService $insigniaService)
+    {
+        $this->insigniaService = $insigniaService;
+    }
     /**
      * @OA\Get(
      *     path="/insignias",
@@ -70,7 +80,27 @@ class InsigniasController
      */
     public function getById($id)
     {
-        return response(Insignias::findOrFail($id), Response::HTTP_OK);
+        $buscar = Insignias::findOrFail($id);
+
+
+        if (!$buscar) {
+            throw new NotFoundHttpException('No existe');
+        } else {
+            $buscar->imagen = asset('storage') . '/' . ($buscar->imagen);
+            return response()->json($buscar);
+        }
+    }
+
+
+    public function getByUser($id)
+    {
+        DB::enableQueryLog(); // Habilita el log de consultas
+
+        $result = VistaInsigniasUser::where('id', $id)->get();
+
+        dd(DB::getQueryLog()); // Muestra la consulta generada
+
+        return response(VistaInsigniasUser::where('id', $id)->get(), Response::HTTP_OK);
     }
 
     /**
@@ -100,22 +130,16 @@ class InsigniasController
      */
     public function guardar(Request $request)
     {
-        $validatedData = $request->validate([
-            "nombre" => "required|max:255",
-            "imagen" => "required",
-            "cantidad" => "required|numeric"
-        ]);
 
         try {
-            $validatedData['estado'] = 1;
-            $insignia = Insignias::create($validatedData);
+            $insignia = $this->insigniaService->crearInsignia($request);
             return response()->json(['message' => 'Insignia guardada con éxito', 'Insignia' => $insignia], 201);
         } catch (\Exception $error) {
             return response()->json(['error' => 'Error al guardar la insignia: ' . $error->getMessage()], 400);
         }
     }
     
-       /**
+    /**
      * Actualizar una insignia por ID
      * 
      * @OA\Put(
@@ -149,16 +173,14 @@ class InsigniasController
      * )
      */
     public function actualizar(Request $request, $id) {
-        $request->validate([
-            "nombre" => "required|max:255",
-            "imagen" => "required",
-            "cantidad" => "required|numeric"
-        ]);
 
-        $insignia = Insignias::findOrFail($id);
-        $insignia->fill($request->all());
-        $insignia->update();
-        return response(["insignia" => $insignia], Response::HTTP_CREATED);
+        try {
+            $insignia = $this->insigniaService->actualizarInsignia($request, $id);
+            return response()->json(['message' => 'Insignia guardada con éxito', 'Insignia' => $insignia], 201);
+        } catch (\Exception $error) {
+            return response()->json(['error' => 'Error al guardar la insignia: ' . $error->getMessage()], 400);
+        }
+        
     }
 
     /**

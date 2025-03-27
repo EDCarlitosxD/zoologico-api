@@ -29,13 +29,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/user/{id}', function($id){
-
     $user = User::find($id);
-
     if(!$user){
         throw  new NotFoundHttpException("No se encontro el usuario");
     }
-
     return $user;
 });
 
@@ -161,7 +158,8 @@ Route::put('/horario/{id}', [RecorridoController::class, 'estado']);
 //!Insignias
 Route::get('/insignias', [InsigniasController::class,'getAll']); //*
 Route::get('/insignias/{id}', [InsigniasController::class,'getById']); //*
-Route::post('/insignias', [InsigniasController::class,'guardar']); //*
+Route::get('/insignias/user/{id}', [InsigniasController::class,'getByUser']); //*
+Route::post('/insignias/guardar', [InsigniasController::class,'guardar']); //*
 Route::put('/insignias/actualizar/{id}', [InsigniasController::class,'actualizar']); //*
 Route::put('insignias/eliminar/{id}', [InsigniasController::class, 'actualizarEstado']); //*
 

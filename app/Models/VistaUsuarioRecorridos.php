@@ -9,7 +9,7 @@ class VistaUsuarioRecorridos extends Model
     public $timestamps = false;
 
 
-    protected $table = 'compra_usuario_recorridos';
+    protected $table = 'compras_usuario_recorridos';
 
 
     protected $fillable = [

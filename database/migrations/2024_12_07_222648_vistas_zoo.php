@@ -7,17 +7,41 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-     /**
+    /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up(){
+    public function up()
+    {
 
     }
 
     //!CODIGO DE VISTAS COMENTADO
     // {
+            // DB::statement("
+        //     CREATE VIEW usuarios_insignias AS
+        //     SELECT 
+        //         c.id_usuario, 
+        //         SUM(c.cantidad) AS compras_totales, 
+        //         i.nombre AS insignia_obtenida, 
+        //         i.cantidad AS cantidad_insignia,
+        //         i.`id`,
+        //         i.`imagen`,
+        //         i.`estado`
+        //     FROM compras_usuario_recorridos AS c
+        //     JOIN insignias AS i 
+        //         ON i.cantidad = (
+        //             SELECT MAX(i2.cantidad)
+        //             FROM insignias i2
+        //             WHERE i2.cantidad <= (
+        //                 SELECT SUM(c2.cantidad) 
+        //                 FROM compras_usuario_recorridos c2 
+        //                 WHERE c2.id_usuario = c.id_usuario
+        //             ) AND i2.`estado` = 1
+        //         )
+        //     GROUP BY c.id_usuario, i.nombre, i.cantidad;
+        //  ");
     //     // Vista: historial_reservas
     //     DB::statement("
     //         CREATE VIEW historial_reservas AS
@@ -38,6 +62,8 @@ return new class extends Migration
     //         ORDER BY veces_vendido DESC;
     //     ");
 
+
+
     //     // Vista: compras_usuario_boletos
     //     DB::statement("
     //         CREATE VIEW compras_usuario_boletos AS
@@ -57,7 +83,7 @@ return new class extends Migration
     //             res.cantidad,
     //             res.precio_total,
     //             res.token
-                
+
     //         FROM
     //             recorridos rec
     //         INNER JOIN
@@ -164,10 +190,8 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down(){
+    public function down() {}
 
-    }
-    
     //!CODIGO DE VISTAS COMENTADO
     // {
     //     DB::statement("DROP VIEW IF EXISTS historial_reservas;");
@@ -185,4 +209,3 @@ return new class extends Migration
     //     DB::statement("DROP VIEW IF EXISTS recorridos_vendidos_year;");
     // }
 };
-
