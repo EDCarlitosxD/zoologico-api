@@ -94,13 +94,9 @@ class InsigniasController
 
     public function getByUser($id)
     {
-        DB::enableQueryLog(); // Habilita el log de consultas
-
-        $result = VistaInsigniasUser::where('id', $id)->get();
-
-        dd(DB::getQueryLog()); // Muestra la consulta generada
-
-        return response(VistaInsigniasUser::where('id', $id)->get(), Response::HTTP_OK);
+        $view = VistaInsigniasUser::findOrFail($id);
+        $view->imagen = asset('storage'). '/' . ($view->imagen);
+        return $view;
     }
 
     /**
