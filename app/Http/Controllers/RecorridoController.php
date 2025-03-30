@@ -36,28 +36,76 @@ class RecorridoController
  *     tags={"Recorridos"},
  *     @OA\RequestBody(
  *         required=true,
- *         @OA\JsonContent(
- *             required={"titulo", "precio", "duracion", "descripcion"},
- *             @OA\Property(property="titulo", type="string", example="Safari Nocturno"),
- *             @OA\Property(property="precio", type="number", format="float", example=49.99),
- *             @OA\Property(property="duracion", type="string", format="time", example="02:00:00"),
- *             @OA\Property(property="descripcion", type="string", example="Un recorrido emocionante por la selva."),
- *             @OA\Property(property="descripcion_incluye", type="string", example="Guía turístico, refrigerios."),
- *             @OA\Property(property="descripcion_importante_reservar", type="string", example="Reservar con 48 horas de anticipación."),
- *             @OA\Property(property="img_recorrido", type="string", example="https://example.com/safari.jpg")
+ *         description="Datos del recorrido",
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *                 type="object",
+ *                 required={"titulo", "precio", "duracion", "descripcion"},
+ *                 @OA\Property(
+ *                     property="titulo",
+ *                     type="string",
+ *                     example="Safari Nocturno"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="precio",
+ *                     type="number",
+ *                     format="float",  
+ *                     example=49.99
+ *                 ),
+ *                 @OA\Property(
+ *                     property="duracion",
+ *                     type="string",
+ *                     format="time",
+ *                     example="02:00:00"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="descripcion",
+ *                     type="string",
+ *                     example="Un recorrido emocionante por la selva."
+ *                 ),
+ *                 @OA\Property(
+ *                     property="descripcion_incluye",
+ *                     type="string",
+ *                     example="Guía turístico, refrigerios."
+ *                 ),
+ *                 @OA\Property(
+ *                     property="descripcion_importante_reservar",
+ *                     type="string",    
+ *                     example="Reservar con 48 horas de anticipación."
+ *                 ),
+ *                 @OA\Property(
+ *                     property="img_recorrido",
+ *                     type="file",
+ *                     format="binary",
+ *                     example="safari.jpg"
+ *                 )                
+ *             )
  *         )
  *     ),
  *     @OA\Response(
- *         response=201,
+ *         response=200,
  *         description="Recorrido creado exitosamente",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="recorrido y horarios agregados correctamente")
  *         )
  *     ),
- *     @OA\Response(response=401, description="No autorizado")
+ *     @OA\Response(
+ *         response=400,
+ *         description="Error en la validación",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="error", type="string", example="El campo 'img_recorrido' es requerido.")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error en el servidor",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="error", type="string", example="Error al guardar el recorrido.")
+ *         )
+ *     )
  * )
  */
-
     public function guardar(Request $request){
         DB::beginTransaction();
         try{
@@ -70,7 +118,9 @@ class RecorridoController
         }
     }
 
-    /**
+    
+
+/**
      * @OA\Put(
      *     path="/recorridos/actualizar/{id}",
      *     summary="Actualizar un recorrido",
@@ -85,46 +135,6 @@ class RecorridoController
      *     @OA\Response(response=500, description="Error en el servidor")
      * )
      */
-    // public function actualizar(Request $request, $id)
-    // {
-        
-    //     $validatedData = $request->validate([
-    //         'titulo' => 'sometimes|string|max:255',
-    //         'precio' => 'sometimes|numeric',
-    //         'duracion' => 'sometimes|string',
-    //         //'img_recorrido' => 'nullable',
-    //         'descripcion_incluye' => 'sometimes|string',
-    //         'descripcion_importante_reservar' => 'sometimes|string',
-    //         'descripcion' => 'sometimes|string',
-    //         'horarios' => 'sometimes|array'
-    //     ]);
-
-        
-    //     $recorrido = Recorrido::findOrFail($id);
-    //     $recorrido->fill($validatedData);
-
-    //     if ($request->hasFile('img_recorrido')) {
-    //         if ($recorrido->img_recorrido && Storage::exists($recorrido->img_recorrido)) {
-    //             Storage::delete($recorrido->img_recorrido);
-    //         }
-            
-    //         $path = $request->file('img_recorrido')->store('Recorridos', 'public');
-    //         $recorrido->img_recorrido = $path;
-    //     }
-    //     Log::alert("RECORRIDO: ".$recorrido);
-
-    //     $recorrido->save();
-
-    //     DB::beginTransaction();
-    //     try {
-    //         $update = $this->recorridoService->updateDatos($request, $id);
-    //         DB::commit();
-    //         return response()->json(["message" => "Recorrido actualizado correctamente"], 200);
-    //     } catch (Exception $e) {
-    //         DB::rollBack();
-    //         return response()->json(["error" => $e->getMessage()], 500);
-    //     }
-    // }
     public function actualizar(Request $request, $id)
     {
         
@@ -234,14 +244,14 @@ class RecorridoController
      * Cambiar el estado de un recorrido (activar/desactivar)
      * 
      * @OA\Put(
-     *     path="/recorridos/{id}",
+     *     path="/horario/{id}",
      *     tags={"Recorridos"},
-     *     summary="Cambia el estado de un recorrido",
+     *     summary="Cambia el estado de un horario de un recorrido",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID del recorrido",
+     *         description="ID del horario",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
@@ -267,5 +277,59 @@ class RecorridoController
         $registro->save();
 
         return response()->json(["message" => "actualizado correctamente"]);
+    }
+
+    /**
+     * Obtener recorridos reservados por mes
+     * @OA\Get(
+     *     path="/recorridosmes",
+     *     tags={"Recorridos"},
+     *     summary="Obtiene recorridos reservados por mes",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Recorridos reservados por mes obtenidos con éxito",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Recorrido"))
+     *     )
+     * )
+     */
+    public function recorridosReservadosMes(){
+        $recorridos = $this->recorridoService->rreservadosMes();
+        return response($recorridos, Response::HTTP_OK);
+    }
+
+    /**
+     * OA\Get(
+     *     path="/recorridossemana",
+     *     tags={"Recorridos"},
+     *     summary="Obtiene recorridos reservados por semana",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Recorridos reservados por semana obtenidos con éxito",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Recorrido"))
+     *     )
+     * )
+     */
+    public function recorridosReservadosSemana(){
+        $recorridos = $this->recorridoService->rreservadosSemana();
+        return response($recorridos, Response::HTTP_OK);
+
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/recorridosyear",
+     *     tags={"Recorridos"},
+     *     summary="Obtiene recorridos reservados por year",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Recorridos reservados por year obtenidos con éxito",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Recorrido"))
+     *     )
+     * )
+     */
+    public function recorridosReservadosYear(){
+        $recorridos = $this->recorridoService->rreservadosYear();
+        return response($recorridos, Response::HTTP_OK);
+
     }
 }

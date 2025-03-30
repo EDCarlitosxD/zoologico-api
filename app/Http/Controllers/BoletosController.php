@@ -6,6 +6,7 @@ use App\Models\boletos;
 use App\Http\Controllers\Controller;
 use App\Models\venta_boletos;
 use App\Services\BoletoService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,15 @@ class BoletosController
         $this->boletoService = $boletoService;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/boletos/usuario",
+     *     summary="Obtener boletos comprados por un usuario",
+     *     tags={"Boletos"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="Lista de boletos comprados obtenida correctamente")
+     *  )
+     */
      public function boletosUsuario()
      {
          $id_usuario = Auth::user()->id;
@@ -34,13 +44,6 @@ class BoletosController
 
          return response()->json($resultado);
      }
-
-
-
-
-
-
-
 
     /**
      * @OA\Get(
@@ -80,10 +83,19 @@ class BoletosController
     }
 
 
+    /**
+     * @OA\Get(
+     *     path="/boletos/{id}",
+     *     summary="Obtener un boleto por su ID",
+     *      tags={"Boletos"},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Boleto obtenido correctamente") 
+     *  )
+     */
     public function getById($id)
     {
         $boleto = boletos::findOrFail($id);
-        $boleto->imagen = asset('storage/' . $boleto->imagen);
+        $boleto->imagen = asset('storage') . '/' . ($boleto->imagen);
 
         return $boleto;
     }
@@ -96,58 +108,55 @@ class BoletosController
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"titulo", "descripcion", "precio", "imagen", "descripcion_card", "advertencias"},
-     *             @OA\Property(property="titulo", type="string", example="Boleto VIP"),
-     *             @OA\Property(property="descripcion", type="string", example="Acceso exclusivo"),
-     *             @OA\Property(property="precio", type="number", format="float", example=99.99),
-     *             @OA\Property(property="imagen", type="string", format="binary"),
-     *             @OA\Property(property="descripcion_card", type="string", example="Acceso VIP"),
-     *             @OA\Property(property="advertencias", type="string", example="No incluye alimentos"),
-     *         )
+     *         description="Datos del boleto a crear",
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"titulo", "descripcion", "precio", "imagen", "descripcion_card", "advertencias"},
+     *                 @OA\Property(property="titulo", type="string", example="Boleto VIP"),
+     *                 @OA\Property(property="descripcion", type="string", example="Acceso exclusivo"),
+     *                 @OA\Property(property="precio", type="number", format="float", example=99.99),
+     *                 @OA\Property(property="imagen", type="string", format="binary"),
+     *                 @OA\Property(property="descripcion_card", type="string", example="Acceso VIP"),
+     *                 @OA\Property(property="advertencias", type="string", example="No incluye alimentos"),
+     *             )
+     *         ),
      *     ),
-     *     @OA\Response(response=201, description="Boleto creado con éxito")
+     *     @OA\Response(response=201, description="Boleto creado con éxito"),
+     *     @OA\Response(response=400, description="Error al crear el boleto"),
+     *     @OA\Response(response=401, description="No autorizado")
      * )
      */
     public function save(Request $request)
     {
-        $request->validate([
-            'titulo' => 'required|max:80',
-            "descripcion" => 'required|max:45',
-            "precio" => 'required|numeric',
-            "imagen" => "required",
-            'descripcion_card' => 'required',
-            "advertencias" => 'required',
-        ]);
 
-        $datos = $request->all();
-        //        $datos['imagen']= $request->file('imagen')->store('Boletos', 'public');
-
-        $boleto = new boletos($datos);
-        $boleto->save();
-        $boleto->imagen = asset('storage/' . $boleto->imagen);
-        return response(["boleto" => $boleto], Response::HTTP_CREATED);
+        try {
+            $insignia = $this->boletoService->createBoleto($request);
+            return response()->json(['message' => 'Boleto guardada con éxito', 'Boleto' => $insignia], 201);
+        } catch (\Exception $error) {
+            return response()->json(['error' => 'Error al guardar el boleto: ' . $error->getMessage()], 400);
+        }
     }
 
     
 
-    // /**
-    //  * @OA\Put(
-    //  *     path="/boletos/eliminar/{id}",
-    //  *     summary="Eliminar un boleto (eliminación lógica)",
-    //  *     tags={"Boletos"},
-    //  *     security={{"bearerAuth":{}}},
-    //  *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-    //  *     @OA\RequestBody(
-    //  *         required=true,
-    //  *         @OA\JsonContent(
-    //  *             required={"estado"},
-    //  *             @OA\Property(property="estado", type="boolean", example=false)
-    //  *         )
-    //  *     ),
-    //  *     @OA\Response(response=200, description="Boleto eliminado correctamente")
-    //  * )
-    //  */
+     /**
+      * @OA\Put(
+      *     path="/boletos/eliminar/{id}",
+      *     summary="Eliminar un boleto (eliminación lógica)",
+      *     tags={"Boletos"},
+      *     security={{"bearerAuth":{}}},
+      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+      *     @OA\RequestBody(
+      *         required=true,
+      *         @OA\JsonContent(
+      *             required={"estado"},
+      *             @OA\Property(property="estado", type="boolean", example=false)
+      *         )
+      *     ),
+      *     @OA\Response(response=200, description="Boleto eliminado correctamente")
+      * )
+      */
      public function delete(Request $request, $id)
      {
          $request->validate([
@@ -186,10 +195,44 @@ class BoletosController
         return response()->json($ventas);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/boletos/actualizar/{id}",
+     *     summary="Actualizar un boleto",
+     *     tags={"Boletos"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Datos del boleto a actualizar",
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"titulo", "descripcion", "precio", "imagen", "descripcion_card", "advertencias"},  
+     *                 @OA\Property(property="titulo", type="string", example="Boleto VIP"),
+     *                 @OA\Property(property="descripcion_card", type="string", example="Acceso VIP"),
+     *                 @OA\Property(property="descripcion", type="string", example="Acceso exclusivo"),
+     *                 @OA\Property(property="advertencias", type="string", example="No incluye alimentos"),
+     *                 @OA\Property(property="precio", type="number", format="float", example=99.99),
+     *                 @OA\Property(property="imagen", type="string", format="binary"),
+     *             )
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="Boleto actualizado correctamente"),
+     *     @OA\Response(response=400, description="Error al actualizar el boleto"),
+     *     @OA\Response(response=401, description="No autorizado")     
+     * )
+     */
     public function actualizar(Request $request, $id)
     {
-        $boleto = boletos::findOrFail($id);
-        $boleto->update($request->all());
-        return response(['message' => 'Boleto actualizado con exito'], Response::HTTP_ACCEPTED);
+        try{
+            $update = $this->boletoService->updateBoleto($request, $id);
+            DB::commit();
+            return response()->json(["message" => "Boleto actualizado correctamente", "boleto" => $update], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(["error" => $e->getMessage()], 500);
+        }
+        
     }
 }

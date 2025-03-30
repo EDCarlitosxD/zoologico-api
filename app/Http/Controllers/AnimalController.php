@@ -1,5 +1,5 @@
 <?php
-
+//*DOCUMENTADO
 namespace App\Http\Controllers;
 
 use App\Models\Animal;

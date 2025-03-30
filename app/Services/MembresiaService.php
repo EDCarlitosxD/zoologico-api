@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Models\HorarioRecorrido;
-use App\Models\Insignias;
+use App\Models\Membresia;
+use App\Models\Membresias;
 use App\Models\Recorrido;
 use App\Models\VistaRecorridosReservadosMes;
 use App\Models\VistaRecorridosReservadosSemana;
@@ -16,15 +17,16 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class InsigniaService
+class MembresiaService
 {
 
-    public function crearInsignia($request)
+    public function crearMembresia($request)
     {
 
         $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
-            'cantidad' => 'required|numeric',
+            'precio' => 'required|numeric',
+            'descripcion' => 'required|string',
             'imagen' => 'required|string', // Puede ser Base64
         ]);
         if ($request->hasFile('imagen')) {
@@ -37,44 +39,44 @@ class InsigniaService
         // Procesar imagen Base64
         if (!empty($validatedData['imagen']) && str_starts_with($validatedData['imagen'], 'data:image')) {
             $imageData = explode(',', $validatedData['imagen'])[1];
-            $imagePath = 'imagenes/insignias/' . uniqid() . '.png';
+            $imagePath = 'imagenes/membresias/' . uniqid() . '.png';
             Storage::disk('public')->put($imagePath, base64_decode($imageData));
             $validatedData['imagen'] = $imagePath;
         }
 
-        $insignia = Insignias::create($validatedData);
-        return $insignia;
+        $Membresia = Membresia::create($validatedData);
+        return $Membresia;
     }
 
-    public function actualizarInsignia($request, $id)
+    public function actualizarMembresia($request, $id)
     {
 
         $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
-            'cantidad' => 'required|numeric',
-            'imagen' => 'required|string', // Puede ser Base64
+            'precio' => 'required|numeric',
+            'descripcion' => 'required|string',
+            'imagen' => 'nullable', // Puede ser Base64
         ]);
 
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen'); // Obtiene el archivo
             $imageData = base64_encode(file_get_contents($file->getRealPath())); // Convierte a Base64
             $mimeType = $file->getClientMimeType(); // Obtiene el tipo de archivo (image/png, image/jpeg, etc.)
-    
             $validatedData['imagen'] = "data:$mimeType;base64,$imageData"; // Guardar en Base64 en la BD
         }
-        // Procesar imagen Base64
+        // Procesar imX|agen Base64
         if (!empty($validatedData['imagen']) && str_starts_with($validatedData['imagen'], 'data:image')) {
             $imageData = explode(',', $validatedData['imagen'])[1];
-            $imagePath = 'imagenes/insignias/' . uniqid() . '.png';
+            $imagePath = 'imagenes/Membresias/' . uniqid() . '.png';
             Storage::disk('public')->put($imagePath, base64_decode($imageData));
             $validatedData['imagen'] = $imagePath;
         } else {
-            $validatedData['imagen'] = Insignias::findOrFail($id)->imagen;
+            $validatedData['imagen'] = Membresia::findOrFail($id)->imagen;
         }
 
-        $insignia = Insignias::findOrFail($id);
-        $insignia->update($validatedData);
-        return $insignia;
+        $membresia = Membresia::findOrFail($id);
+        $membresia->update($validatedData);
+        return $membresia;
     }
 
 
@@ -223,6 +225,7 @@ class InsigniaService
         $validatedData = $request->validate([
             'nombre' => 'sometimes|string|max:255',
             'cantidad' => 'sometimes|numeric',
+            'descripcion' => 'required|string',
             'imagen' => 'nullable|string', // Ahora puede recibir Base64
         ]);
 
@@ -234,7 +237,9 @@ class InsigniaService
             $validatedData['imagen'] = $imagePath;
         }
         if ($validatedData['imagen'] == null || $validatedData['imagen'] == "") {
-            $validatedData['imagen'] = Insignias::findOrFail($id)->imagen;
+            $validatedData['imagen'] = Membresia::findOrFail($id)->imagen;
+        } else {
+            $validatedData['imagen'] = Membresia::findOrFail($id)->imagen;
         }
 
         $recorrido = Recorrido::findOrFail($id);

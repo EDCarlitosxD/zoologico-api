@@ -2,8 +2,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Membresia;
+use App\Services\MembresiaService;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @OA\Tag(
@@ -13,6 +15,11 @@ use Illuminate\Http\Request;
  */
 class MembresiaController
 {
+    protected $membresiaService;
+    public function __construct(MembresiaService $membresiaService)
+    {
+        $this->membresiaService = $membresiaService;
+    }
     /**
      * Obtener todas las membresías (opcionalmente filtradas por estado)
      * 
@@ -72,7 +79,15 @@ class MembresiaController
      * )
      */
     public function getById($id){
-        return response(Membresia::findOrFail($id), Response::HTTP_OK);
+        $buscar = Membresia::findOrFail($id);
+
+
+        if (!$buscar) {
+            throw new NotFoundHttpException('No existe');
+        } else {
+            $buscar->imagen = asset('storage') . '/' . ($buscar->imagen);
+            return response($buscar, Response::HTTP_OK);
+        }
     }
 
     /**
@@ -104,18 +119,24 @@ class MembresiaController
      * )
      */
     public function guardar(Request $request){
-        $validatedData = $request->validate([
-            "nombre" => "required|max:255",
-            "precio" => "required|numeric",
-            "descripcion" => "required",
-            "imagen" => "required"
-        ]);
+        // $validatedData = $request->validate([
+        //     "nombre" => "required|max:255",
+        //     "precio" => "required|numeric",
+        //     "descripcion" => "required",
+        //     "imagen" => "required"
+        // ]);
 
+        // try {
+        //     $membresia = Membresia::create($validatedData);
+        //     return response()->json(['message' => 'Membresía guardada con éxito', 'Membresia' => $membresia], 201);
+        // } catch (\Exception $error) {
+        //     return response()->json(['error' => 'Error al guardar la membresía: ' . $error->getMessage()], 400);
+        // }
         try {
-            $membresia = Membresia::create($validatedData);
-            return response()->json(['message' => 'Membresía guardada con éxito', 'Membresia' => $membresia], 201);
+            $membresia = $this->membresiaService->crearMembresia($request);
+            return response()->json(['message' => 'Membresia guardada con éxito', 'Membresia' => $membresia], 201);
         } catch (\Exception $error) {
-            return response()->json(['error' => 'Error al guardar la membresía: ' . $error->getMessage()], 400);
+            return response()->json(['error' => 'Error al guardar la Membresia: ' . $error->getMessage()], 400);
         }
     }
 
@@ -154,18 +175,12 @@ class MembresiaController
      * )
      */
     public function actualizar(Request $request, $id){
-        $validatedData = $request->validate([
-            "nombre" => "required|max:255",
-            "precio" => "required|numeric",
-            "descripcion" => "required",
-            "imagen" => "required"
-        ]);
-
-        $membresia = Membresia::findOrFail($id);
-        $membresia->fill($validatedData);
-        $membresia->update();
-
-        return response($membresia, Response::HTTP_OK);
+        try {
+            $membresia = $this->membresiaService->actualizarMembresia($request, $id);
+            return response()->json(['message' => 'Membresia guardada con éxito', 'membresia' => $membresia], 201);
+        } catch (\Exception $error) {
+            return response()->json(['error' => 'Error al guardar la membresia: ' . $error->getMessage()], 400);
+        }
     }
 
     /**

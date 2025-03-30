@@ -625,18 +625,84 @@
                 }
             }
         },
+        "/cuenta": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Información de usuario autenticado",
+                "operationId": "8ac66eb29f3c49784232d1b9f2e9aed7",
+                "responses": {
+                    "200": {
+                        "description": "Información de usuario obtenida correctamente"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Editar perfil de usuario",
+                "description": "Permite a un usuario autenticado actualizar su información personal y foto de perfil.",
+                "operationId": "eb8cbf5f6046a7a1a74ed205e1477f99",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Alberto"
+                                    },
+                                    "apellido": {
+                                        "type": "string",
+                                        "example": "Gonzalez"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Datos actualizados con éxito"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/login": {
             "post": {
                 "tags": [
                     "Autenticación"
                 ],
                 "summary": "Autenticación de usuario",
-                "description": "Inicia sesión con un email y contraseña, y devuelve un token de acceso.",
+                "description": "Inicia sesión con email y contraseña y devuelve un token.",
                 "operationId": "2dd578ff7aba2721293dac66833b27d1",
                 "requestBody": {
+                    "description": "Datos de inicio de sesión",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "email",
@@ -661,23 +727,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Inicio de sesión exitoso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "token": {
-                                            "type": "string",
-                                            "example": "abcdef123456"
-                                        },
-                                        "user": {
-                                            "$ref": "#/components/schemas/User"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Inicio de sesión exitoso"
                     },
                     "401": {
                         "description": "Credenciales incorrectas"
@@ -697,9 +747,10 @@
                 "description": "Registra un nuevo usuario en la plataforma y envía un correo de verificación.",
                 "operationId": "0903f2e0df1a8857bee538fc055417f0",
                 "requestBody": {
+                    "description": "Datos del nuevo usuario",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "nombre_usuario",
@@ -758,6 +809,9 @@
                 "responses": {
                     "200": {
                         "description": "Tokens eliminados correctamente"
+                    },
+                    "405": {
+                        "description": "No autorizado"
                     }
                 },
                 "security": [
@@ -767,50 +821,16 @@
                 ]
             }
         },
-        "/cuenta": {
-            "put": {
+        "/boletos/usuario": {
+            "get": {
                 "tags": [
-                    "Autenticación"
+                    "Boletos"
                 ],
-                "summary": "Editar datos del usuario",
-                "description": "Permite a un usuario autenticado actualizar su información personal.",
-                "operationId": "eb8cbf5f6046a7a1a74ed205e1477f99",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nombre": {
-                                        "type": "string",
-                                        "example": "Alberto"
-                                    },
-                                    "apellido": {
-                                        "type": "string",
-                                        "example": "Gonzalez"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "password123"
-                                    },
-                                    "foto_perfil": {
-                                        "type": "file",
-                                        "format": "binary",
-                                        "example": "imagen.jpg"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
+                "summary": "Obtener boletos comprados por un usuario",
+                "operationId": "c20c4637016f78a63d1217f1bf92048b",
                 "responses": {
                     "200": {
-                        "description": "Datos actualizados con éxito"
-                    },
-                    "401": {
-                        "description": "No autorizado"
+                        "description": "Lista de boletos comprados obtenida correctamente"
                     }
                 },
                 "security": [
@@ -859,9 +879,10 @@
                 "summary": "Crear un nuevo boleto",
                 "operationId": "e31f6679cecae240d61be59325c67ea9",
                 "requestBody": {
+                    "description": "Datos del boleto a crear",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "titulo",
@@ -906,6 +927,84 @@
                 "responses": {
                     "201": {
                         "description": "Boleto creado con éxito"
+                    },
+                    "400": {
+                        "description": "Error al crear el boleto"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boletos/{id}": {
+            "get": {
+                "tags": [
+                    "Boletos"
+                ],
+                "summary": "Obtener un boleto por su ID",
+                "operationId": "c253e8608d133b1fba943189f953856f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Boleto obtenido correctamente"
+                    }
+                }
+            }
+        },
+        "/boletos/eliminar/{id}": {
+            "put": {
+                "tags": [
+                    "Boletos"
+                ],
+                "summary": "Eliminar un boleto (eliminación lógica)",
+                "operationId": "58120f0df797cab333a554e8036ada9a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "estado"
+                                ],
+                                "properties": {
+                                    "estado": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Boleto eliminado correctamente"
                     }
                 },
                 "security": [
@@ -929,6 +1028,87 @@
                 }
             }
         },
+        "/boletos/actualizar/{id}": {
+            "put": {
+                "tags": [
+                    "Boletos"
+                ],
+                "summary": "Actualizar un boleto",
+                "operationId": "e503a6d33af6bb34c66a390d4c73fe1a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos del boleto a actualizar",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "titulo",
+                                    "descripcion",
+                                    "precio",
+                                    "imagen",
+                                    "descripcion_card",
+                                    "advertencias"
+                                ],
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Boleto VIP"
+                                    },
+                                    "descripcion_card": {
+                                        "type": "string",
+                                        "example": "Acceso VIP"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Acceso exclusivo"
+                                    },
+                                    "advertencias": {
+                                        "type": "string",
+                                        "example": "No incluye alimentos"
+                                    },
+                                    "precio": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 99.99
+                                    },
+                                    "imagen": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Boleto actualizado correctamente"
+                    },
+                    "400": {
+                        "description": "Error al actualizar el boleto"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/donaciones/guardar": {
             "post": {
                 "tags": [
@@ -937,9 +1117,10 @@
                 "summary": "Registrar una nueva donación",
                 "operationId": "0ce1ee74e735d8ee96957afd35b672fa",
                 "requestBody": {
+                    "description": "Monto de la donación",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "monto"
@@ -969,6 +1150,158 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/donaciones/ultimaSemana": {
+            "get": {
+                "tags": [
+                    "Donaciones"
+                ],
+                "summary": "Obtener donaciones de la semana",
+                "operationId": "7409d982d9d1a7b059479404c7c930d5",
+                "responses": {
+                    "200": {
+                        "description": "Donaciones obtenidas correctamente"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/donaciones/ultimoMes": {
+            "get": {
+                "tags": [
+                    "Donaciones"
+                ],
+                "summary": "Obtener donaciones del mes",
+                "operationId": "61cb296f56e2c5b4c2e1077dac13322b",
+                "responses": {
+                    "200": {
+                        "description": "Donaciones obtenidas correctamente"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/donaciones/ultimoYear": {
+            "get": {
+                "tags": [
+                    "Donaciones"
+                ],
+                "summary": "Obtener donaciones del año",
+                "operationId": "2b48b31bc586caf7ba17654962db9303",
+                "responses": {
+                    "200": {
+                        "description": "Donaciones obtenidas correctamente"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/contacto": {
+            "post": {
+                "tags": [
+                    "Contacto"
+                ],
+                "summary": "Envia el mensaje al correo de contacto",
+                "description": "Envia el mensaje al correo de contacto",
+                "operationId": "37f65e3fd59422ab656d49f42081fcdb",
+                "requestBody": {
+                    "description": "Monto de la donación",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "telefono",
+                                    "email",
+                                    "mensaje"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "2VH2U@example.com"
+                                    },
+                                    "mensaje": {
+                                        "type": "string",
+                                        "example": "Hello, this is a test message."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mensaje enviado con exito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Mensaje enviado con exito"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error al enviar el mensaje",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error al enviar el mensaje"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No autorizado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/guias": {
@@ -1016,9 +1349,172 @@
                         "bearerAuth": []
                     }
                 ]
+            },
+            "post": {
+                "tags": [
+                    "Guias"
+                ],
+                "summary": "Registrar una nueva guía",
+                "operationId": "57803b88e69c73fb0220c8fc9212d90a",
+                "requestBody": {
+                    "description": "Datos de la guía",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "nombre_completo"
+                                ],
+                                "properties": {
+                                    "nombre_completo": {
+                                        "type": "string",
+                                        "example": "Juan Pérez"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Guía registrada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "guia": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre_completo": {
+                                                    "type": "string",
+                                                    "example": "Juan Pérez"
+                                                },
+                                                "estado": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "disponible": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error al registrar la guía",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error al registrar la guía"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No autorizado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/guias/{id}": {
+            "get": {
+                "tags": [
+                    "Guias"
+                ],
+                "summary": "Obtener una guía por su ID",
+                "operationId": "44827fd648c9927a52e5f0032c230e17",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la guía a obtener",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Guía obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nombre_completo": {
+                                            "type": "string",
+                                            "example": "Juan Pérez"
+                                        },
+                                        "estado": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "disponible": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Guía no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Guía no encontrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "put": {
                 "tags": [
                     "Guias"
@@ -1037,16 +1533,20 @@
                     }
                 ],
                 "requestBody": {
+                    "description": "Datos de la guía a actualizar",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
+                                "required": [
+                                    "nombre_completo"
+                                ],
                                 "properties": {
                                     "nombre_completo": {
                                         "type": "string",
-                                        "example": "Juan Pérez"
+                                        "example": "Juan Pérez"
                                     },
-                                    "estado": {
+                                    "disponible": {
                                         "type": "boolean",
                                         "example": true
                                     }
@@ -1058,14 +1558,55 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Guía actualizada correctamente"
+                        "description": "Guía actualizada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "guia": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre_completo": {
+                                                    "type": "string",
+                                                    "example": "Juan Pérez"
+                                                },
+                                                "estado": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "disponible": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error al actualizar la guía",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error al actualizar la guía"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/guias/eliminar/{id}": {
@@ -1106,12 +1647,137 @@
                     "200": {
                         "description": "Estado de la guía actualizado correctamente"
                     }
-                },
-                "security": [
+                }
+            }
+        },
+        "/api/recorridos/{id}/horarios": {
+            "get": {
+                "tags": [
+                    "Recorridos"
+                ],
+                "summary": "Obtener horarios agrupados por fecha para un recorrido específico",
+                "description": "Este endpoint devuelve los horarios disponibles para un recorrido específico, agrupados por fecha.",
+                "operationId": "getHorariosGroupByRecorridos",
+                "parameters": [
                     {
-                        "bearerAuth": []
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del recorrido para el cual se desean obtener los horarios",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Horarios agrupados por fecha",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "2023-10-01": [
+                                        {
+                                            "id": 1,
+                                            "horario_inicio": "09:00:00",
+                                            "horario_fin": "10:00:00",
+                                            "disponible": 1,
+                                            "fecha": "2023-10-01"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "horario_inicio": "11:00:00",
+                                            "horario_fin": "12:00:00",
+                                            "disponible": 1,
+                                            "fecha": "2023-10-01"
+                                        }
+                                    ],
+                                    "2023-10-02": [
+                                        {
+                                            "id": 3,
+                                            "horario_inicio": "10:00:00",
+                                            "horario_fin": "11:00:00",
+                                            "disponible": 1,
+                                            "fecha": "2023-10-02"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recorrido no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Recorrido no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/horarios/{id}": {
+            "get": {
+                "tags": [
+                    "Horarios"
+                ],
+                "summary": "Obtener horarios de un recorrido",
+                "description": "Este endpoint devuelve los horarios disponibles para un recorrido.",
+                "operationId": "getById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del recorrido para el cual se desean obtener los horarios",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Horarios disponibles",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/HorarioRecorrido"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recorrido no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Recorrido no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/insignias": {
@@ -1157,27 +1823,29 @@
                 "summary": "Crea una nueva insignia",
                 "operationId": "733d151b0ab6f32f979ee5e747eeee52",
                 "requestBody": {
+                    "description": "Datos de la insignia",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "nombre",
                                     "imagen",
+                                    "nombre",
                                     "cantidad"
                                 ],
                                 "properties": {
-                                    "nombre": {
-                                        "type": "string",
-                                        "example": "Explorador"
-                                    },
                                     "imagen": {
-                                        "type": "string",
-                                        "example": "url_de_imagen"
+                                        "description": "Imagen de la insignia",
+                                        "type": "file",
+                                        "format": "binary"
+                                    },
+                                    "nombre": {
+                                        "description": "Nombre de la insignia",
+                                        "type": "string"
                                     },
                                     "cantidad": {
-                                        "type": "integer",
-                                        "example": 10
+                                        "description": "Cantidad de insignias",
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -1237,6 +1905,41 @@
                 }
             }
         },
+        "/insignias/user/{id}": {
+            "get": {
+                "tags": [
+                    "Insignias"
+                ],
+                "summary": "Obtiene la insignia de un usuario",
+                "operationId": "0d11485fb7fc96da10711fd5f70217ae",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Insignia obtenida con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Insignia"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Insignia no encontrada"
+                    }
+                }
+            }
+        },
         "/insignias/actualizar/{id}": {
             "put": {
                 "tags": [
@@ -1257,27 +1960,29 @@
                     }
                 ],
                 "requestBody": {
+                    "description": "Datos de la insignia",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "nombre",
                                     "imagen",
+                                    "nombre",
                                     "cantidad"
                                 ],
                                 "properties": {
-                                    "nombre": {
-                                        "type": "string",
-                                        "example": "Aventurero"
-                                    },
                                     "imagen": {
-                                        "type": "string",
-                                        "example": "url_de_imagen"
+                                        "description": "Imagen de la insignia",
+                                        "type": "file",
+                                        "format": "binary"
+                                    },
+                                    "nombre": {
+                                        "description": "Nombre de la insignia",
+                                        "type": "string"
                                     },
                                     "cantidad": {
-                                        "type": "integer",
-                                        "example": 20
+                                        "description": "Cantidad de insignias",
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -1286,8 +1991,18 @@
                     }
                 },
                 "responses": {
-                    "201": {
-                        "description": "Insignia actualizada con éxito"
+                    "200": {
+                        "description": "Insignia actualizada con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Insignia"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en la validación o en la actualización"
                     },
                     "404": {
                         "description": "Insignia no encontrada"
@@ -1592,9 +2307,10 @@
                 "summary": "Crear un recorrido",
                 "operationId": "4afe2f40590e8cdf244c1199f16aa533",
                 "requestBody": {
+                    "description": "Datos del recorrido",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "titulo",
@@ -1630,8 +2346,9 @@
                                         "example": "Reservar con 48 horas de anticipación."
                                     },
                                     "img_recorrido": {
-                                        "type": "string",
-                                        "example": "https://example.com/safari.jpg"
+                                        "type": "file",
+                                        "format": "binary",
+                                        "example": "safari.jpg"
                                     }
                                 },
                                 "type": "object"
@@ -1640,7 +2357,7 @@
                     }
                 },
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Recorrido creado exitosamente",
                         "content": {
                             "application/json": {
@@ -1656,8 +2373,37 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "No autorizado"
+                    "400": {
+                        "description": "Error en la validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "El campo 'img_recorrido' es requerido."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error en el servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error al guardar el recorrido."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -1814,19 +2560,21 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/horario/{id}": {
             "put": {
                 "tags": [
                     "Recorridos"
                 ],
-                "summary": "Cambia el estado de un recorrido",
+                "summary": "Cambia el estado de un horario de un recorrido",
                 "description": "Cambiar el estado de un recorrido (activar/desactivar)",
-                "operationId": "ca97072ce195bb69eb600f1bbb2651be",
+                "operationId": "1c1160440d4477631d78fbd6933491ec",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID del recorrido",
+                        "description": "ID del horario",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1855,6 +2603,55 @@
                 "responses": {
                     "200": {
                         "description": "Estado actualizado correctamente"
+                    }
+                }
+            }
+        },
+        "/recorridosmes": {
+            "get": {
+                "tags": [
+                    "Recorridos"
+                ],
+                "summary": "Obtiene recorridos reservados por mes",
+                "description": "Obtener recorridos reservados por mes",
+                "operationId": "d35c5cb392a89df996d3c5feba460d05",
+                "responses": {
+                    "200": {
+                        "description": "Recorridos reservados por mes obtenidos con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Recorrido"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/recorridosyear": {
+            "get": {
+                "tags": [
+                    "Recorridos"
+                ],
+                "summary": "Obtiene recorridos reservados por year",
+                "operationId": "b1a296610d909baa9e236ec32c3a8519",
+                "responses": {
+                    "200": {
+                        "description": "Recorridos reservados por year obtenidos con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Recorrido"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1922,6 +2719,166 @@
                 ]
             }
         },
+        "/tarjeta": {
+            "post": {
+                "tags": [
+                    "Tarjetas"
+                ],
+                "summary": "Guardar tarjeta",
+                "operationId": "c6fecac1909fcd0ebe37e08a274bb790",
+                "requestBody": {
+                    "description": "Datos de la tarjeta",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "numero_tarjeta",
+                                    "fecha_vencimiento",
+                                    "cvv"
+                                ],
+                                "properties": {
+                                    "numero_tarjeta": {
+                                        "type": "string",
+                                        "example": "1234 5678 9012 3456"
+                                    },
+                                    "fecha_vencimiento": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-12-31"
+                                    },
+                                    "cvv": {
+                                        "type": "integer",
+                                        "example": 123
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tarjeta guardada conxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "numero_tarjeta": {
+                                            "type": "string",
+                                            "example": "1234 5678 9012 3456"
+                                        },
+                                        "fecha_vencimiento": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2023-12-31"
+                                        },
+                                        "cvv": {
+                                            "type": "integer",
+                                            "example": 123
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en la validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error en la validación"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tarjeta/{id}": {
+            "delete": {
+                "tags": [
+                    "Tarjetas"
+                ],
+                "summary": "Eliminar tarjeta",
+                "operationId": "ecfdff803a1ea8f8e95580b89a2b0738",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la tarjeta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tarjeta eliminada conxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tarjeta eliminada con exito"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tarjetas/{id}": {
+            "get": {
+                "tags": [
+                    "Tarjetas"
+                ],
+                "summary": "Obtener tarjetas",
+                "operationId": "1ce976f2cb67b5f8c83161b12d3652a2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tarjetas obtenidas conxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Tarjeta"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/venta": {
             "post": {
                 "tags": [
@@ -1930,6 +2887,7 @@
                 "summary": "Procesar una venta de boletos o recorridos",
                 "operationId": "2408693900433fa8958c8fc85610f617",
                 "requestBody": {
+                    "description": "Datos de la venta",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -1983,10 +2941,36 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Venta procesada correctamente"
+                        "description": "Venta procesada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Venta procesada correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Error al procesar la venta"
+                        "description": "Error al procesar la venta",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error al procesar la venta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -1994,6 +2978,261 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/ventas": {
+            "get": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Traer ventas de boletos",
+                "operationId": "802361f13a31f9c11a55b14ab334217b",
+                "responses": {
+                    "200": {
+                        "description": "Ventas obtenidas con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_venta": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "id_boleto": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "id_recorrido": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "id_usuario": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "cantidad_boletos": {
+                                                "type": "integer",
+                                                "example": 2
+                                            },
+                                            "cantidad_recorridos": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "total_boletos": {
+                                                "type": "integer",
+                                                "example": 20
+                                            },
+                                            "total_recorridos": {
+                                                "type": "integer",
+                                                "example": 10
+                                            },
+                                            "total_venta": {
+                                                "type": "integer",
+                                                "example": 30
+                                            },
+                                            "fecha_venta": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "2023-01-01"
+                                            },
+                                            "hora_venta": {
+                                                "type": "string",
+                                                "example": "10:00:00"
+                                            },
+                                            "token": {
+                                                "type": "string",
+                                                "example": "1234567890"
+                                            },
+                                            "token_boleto": {
+                                                "type": "string",
+                                                "example": "1234567890"
+                                            },
+                                            "token_recorrido": {
+                                                "type": "string",
+                                                "example": "1234567890"
+                                            },
+                                            "token_usuario": {
+                                                "type": "string",
+                                                "example": "1234567890"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/boletosvendidos": {
+            "get": {
+                "tags": [
+                    "Boletos Vendidos"
+                ],
+                "summary": "Traer boletos vendidos",
+                "operationId": "6678c27ba93863a27299f03d8be9f9dd",
+                "responses": {
+                    "200": {
+                        "description": "Boletos vendidos obtenidos con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_boleto": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "cantidad_boletos": {
+                                                "type": "integer",
+                                                "example": 2
+                                            },
+                                            "total_boletos": {
+                                                "type": "integer",
+                                                "example": 20
+                                            },
+                                            "token_boleto": {
+                                                "type": "string",
+                                                "example": "1234567890"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/boletosvendidossemana": {
+            "get": {
+                "tags": [
+                    "Boletos Vendidos"
+                ],
+                "summary": "Traer boletos vendidos de la semana",
+                "operationId": "041c297fb5e03b16ae4e6a50cac5e0fe",
+                "responses": {
+                    "200": {
+                        "description": "Boletos vendidos de la semana obtenidos con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_boleto": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "cantidad_boletos": {
+                                                "type": "integer",
+                                                "example": 2
+                                            },
+                                            "total_boletos": {
+                                                "type": "integer",
+                                                "example": 20
+                                            },
+                                            "token_boleto": {
+                                                "type": "string",
+                                                "example": "1234567890"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/boletosvendidosmes": {
+            "get": {
+                "tags": [
+                    "Boletos Vendidos"
+                ],
+                "summary": "Traer boletos vendidos del mes",
+                "operationId": "50afa731288d41cf02179cbc22689efd",
+                "responses": {
+                    "200": {
+                        "description": "Boletos vendidos del mes obtenidos con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_boleto": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "cantidad_boletos": {
+                                                "type": "integer",
+                                                "example": 2
+                                            },
+                                            "total_boletos": {
+                                                "type": "integer",
+                                                "example": 20
+                                            },
+                                            "token_boleto": {
+                                                "type": "string",
+                                                "example": "1234567890"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/boletosvendidosyear": {
+            "get": {
+                "tags": [
+                    "Boletos Vendidos"
+                ],
+                "summary": "Traer boletos vendidos del year",
+                "operationId": "25147f6be044a94cfe91c533fc880c33",
+                "responses": {
+                    "200": {
+                        "description": "Boletos vendidos del year obtenidos conxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_boleto": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "cantidad_boletos": {
+                                                "type": "integer",
+                                                "example": 2
+                                            },
+                                            "total_boletos": {
+                                                "type": "integer",
+                                                "example": 20
+                                            },
+                                            "token_boleto": {
+                                                "type": "string",
+                                                "example": "1234567890"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     },
@@ -2576,6 +3815,21 @@
                 "type": "object"
             }
         },
+        "responses": {
+            "200": {
+                "description": "Recorridos reservados por semana obtenidos con éxito",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/Recorrido"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
@@ -2602,6 +3856,14 @@
             "description": "APIs para la gestión de donaciones"
         },
         {
+            "name": "Contacto",
+            "description": "API para gestionar el formulario de contacto"
+        },
+        {
+            "name": "Horarios",
+            "description": "APIs para la gestión de horarios"
+        },
+        {
             "name": "Insignias",
             "description": "APIs para gestionar insignias"
         },
@@ -2624,6 +3886,14 @@
         {
             "name": "Guias",
             "description": "Guias"
+        },
+        {
+            "name": "Tarjetas",
+            "description": "Tarjetas"
+        },
+        {
+            "name": "Boletos Vendidos",
+            "description": "Boletos Vendidos"
         }
     ],
     "security": {

@@ -92,6 +92,29 @@ class InsigniasController
     }
 
 
+    /**
+     * @OA\Get(
+     *     path="/insignias/user/{id}",
+     *     tags={"Insignias"},
+     *     summary="Obtiene la insignia de un usuario",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del usuario",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Insignia obtenida con éxito",
+     *         @OA\JsonContent(ref="#/components/schemas/Insignia")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Insignia no encontrada"
+     *     )
+     * )
+     */
     public function getByUser($id)
     {
         $view = VistaInsigniasUser::findOrFail($id);
@@ -106,11 +129,29 @@ class InsigniasController
      *     summary="Crea una nueva insignia",
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"nombre", "imagen", "cantidad"},
-     *             @OA\Property(property="nombre", type="string", example="Explorador"),
-     *             @OA\Property(property="imagen", type="string", example="url_de_imagen"),
-     *             @OA\Property(property="cantidad", type="integer", example=10)
+     *         description="Datos de la insignia",
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"imagen", "nombre", "cantidad"},
+     *                 @OA\Property(
+     *                     property="imagen",
+     *                     type="file",
+     *                     format="binary",
+     *                     description="Imagen de la insignia"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="nombre",
+     *                     type="string",
+     *                     description="Nombre de la insignia"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="cantidad",
+     *                     type="integer",
+     *                     description="Cantidad de insignias"
+     *                 )
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -121,7 +162,7 @@ class InsigniasController
      *     @OA\Response(
      *         response=400,
      *         description="Error en la validación o en la creación"
-     *     )
+     *     ),
      * )
      */
     public function guardar(Request $request)
@@ -151,16 +192,39 @@ class InsigniasController
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"nombre", "imagen", "cantidad"},
-     *             @OA\Property(property="nombre", type="string", example="Aventurero"),
-     *             @OA\Property(property="imagen", type="string", example="url_de_imagen"),
-     *             @OA\Property(property="cantidad", type="integer", example=20)
+     *         description="Datos de la insignia",
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"imagen", "nombre", "cantidad"},
+     *                 @OA\Property(
+     *                     property="imagen",
+     *                     type="file",
+     *                     format="binary",
+     *                     description="Imagen de la insignia"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="nombre",
+     *                     type="string",
+     *                     description="Nombre de la insignia"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="cantidad",
+     *                     type="integer",
+     *                     description="Cantidad de insignias"
+     *                 )
+     *             )
      *         )
      *     ),
      *     @OA\Response(
-     *         response=201,
-     *         description="Insignia actualizada con éxito"
+     *         response=200,
+     *         description="Insignia actualizada con éxito",
+     *         @OA\JsonContent(ref="#/components/schemas/Insignia")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error en la validación o en la actualización"
      *     ),
      *     @OA\Response(
      *         response=404,

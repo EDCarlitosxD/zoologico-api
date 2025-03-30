@@ -24,9 +24,6 @@ use Illuminate\Support\Facades\Route;
 use Ramsey\Uuid\Type\Integer;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 Route::get('/user/{id}', function($id){
     $user = User::find($id);
@@ -38,10 +35,11 @@ Route::get('/user/{id}', function($id){
 
 
 
-
+//!AUTH
 Route::get('email/verify/{id}/{hash}', [VerificationEmailController::class, 'verify'])
-    ->name('verification.verify');
+->name('verification.verify');
 //Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
+Route::get('/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
 
 Route::post("/login", [AuthController::class,'login'])->name('login');
 Route::post("/register", [AuthController::class,'register']);
@@ -64,10 +62,11 @@ Route::put('/animales/actualizar/{id}', [AnimalController::class,'actualizar']);
 
 
 //! Horarrio
+//eliminado logico horario_recorrido
+Route::put('/horario/{id}', [RecorridoController::class, 'estado']);
 Route::get('horrario/recorrido/{id}', [HorarioRecorridoController::class,'getHorariosGroupByRecorridos']);
-
 Route::get('horarrios/{id}', [HorarioRecorridoController::class, 'getById']);
-Route::put('/horarios/estado/{id}', [HorarioRecorridoController::class,'updateEstadoHorario']);
+//Route::put('/horarios/estado/{id}', [HorarioRecorridoController::class,'updateEstadoHorario']);
 
 
 //!Tarjeta
@@ -152,8 +151,6 @@ Route::get('/donacionyear', [DonacionController::class,'donacionesYear'])->middl
 //Mensaje enviado por el usuario
 Route::post('/mensajeusuario', [FormularioContactoController::class, 'mensajeusuario']);
 
-//eliminado logico horario_recorrido
-Route::put('/horario/{id}', [RecorridoController::class, 'estado']);
 
 //!Insignias
 Route::get('/insignias', [InsigniasController::class,'getAll']); //*

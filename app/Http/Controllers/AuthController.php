@@ -1,5 +1,5 @@
 <?php
-
+//*DOCUMENTADO
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -28,37 +28,37 @@ class AuthController
     }
 
     /**
-     * Iniciar sesión
-     * 
+     * @OA\Get(   
+     *     path="/cuenta",
+     *     tags={"Autenticación"},
+     *     summary="Información de usuario autenticado",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="Información de usuario obtenida correctamente")
+     *)
+     */
+    public function user(Request $request) {return $request->user();}
+ 
+    /**
      * @OA\Post(
      *     path="/login",
      *     tags={"Autenticación"},
      *     summary="Autenticación de usuario",
-     *     description="Inicia sesión con un email y contraseña, y devuelve un token de acceso.",
+     *     description="Inicia sesión con email y contraseña y devuelve un token.",
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"email", "password"},
-     *             @OA\Property(property="email", type="string", format="email", example="usuario@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123")
-     *         )
+     *         description="Datos de inicio de sesión",
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"email", "password"}, 
+     *                 @OA\Property(property="email", type="string", format="email", example="usuario@example.com"),
+     *                 @OA\Property(property="password", type="string", format="password", example="password123")
+     *             )
+     *         ),
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Inicio de sesión exitoso",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="token", type="string", example="abcdef123456"),
-     *             @OA\Property(property="user", ref="#/components/schemas/User")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Credenciales incorrectas"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Usuario no encontrado"
-     *     )
+     *     @OA\Response(response=200, description="Inicio de sesión exitoso"),
+     *     @OA\Response(response=401, description="Credenciales incorrectas"),
+     *     @OA\Response(response=404, description="Usuario no encontrado")
      * )
      */
     public function login(Request $request)
@@ -93,13 +93,17 @@ class AuthController
      *     description="Registra un nuevo usuario en la plataforma y envía un correo de verificación.",
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"nombre_usuario", "apellido", "nombre", "email", "password"},
-     *             @OA\Property(property="nombre_usuario", type="string", example="johndoe"),
-     *             @OA\Property(property="apellido", type="string", example="Doe"),
-     *             @OA\Property(property="nombre", type="string", example="John"),
-     *             @OA\Property(property="email", type="string", format="email", example="johndoe@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123")
+     *         description="Datos del nuevo usuario",
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"nombre_usuario", "apellido", "nombre", "email", "password"},
+     *                 @OA\Property(property="nombre_usuario", type="string", example="johndoe"),
+     *                 @OA\Property(property="apellido", type="string", example="Doe"),
+     *                 @OA\Property(property="nombre", type="string", example="John"),
+     *                 @OA\Property(property="email", type="string", format="email", example="johndoe@example.com"),
+     *                 @OA\Property(property="password", type="string", format="password", example="password123"),
+     *            )
      *         )
      *     ),
      *     @OA\Response(
@@ -130,31 +134,8 @@ class AuthController
 
         $user->sendEmailVerificationNotification();
 
-        return response([], Response::HTTP_OK);
+        return response(["user" => $user], Response::HTTP_OK);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Cerrar sesión
      * 
@@ -168,6 +149,10 @@ class AuthController
      *         response=200,
      *         description="Tokens eliminados correctamente"
      *     )
+     * ,     @OA\Response(
+     *         response=405,
+     *         description="No autorizado"
+     *     )
      * )
      */
     public function logout(Request $request)
@@ -177,31 +162,25 @@ class AuthController
     }
 
     /**
-     * Editar datos del usuario autenticado
-     * 
      * @OA\Put(
      *     path="/cuenta",
      *     tags={"Autenticación"},
-     *     summary="Editar datos del usuario",
-     *     description="Permite a un usuario autenticado actualizar su información personal.",
-     *     security={{ "bearerAuth": {} }},
+     *     summary="Editar perfil de usuario",
+     *     description="Permite a un usuario autenticado actualizar su información personal y foto de perfil.",
+     *     security={{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="nombre", type="string", example="Alberto"),
-     *             @OA\Property(property="apellido", type="string", example="Gonzalez"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123"),
-     *             @OA\Property(property="foto_perfil", type="file", format="binary", example="imagen.jpg") 
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="nombre", type="string", example="Alberto"),
+     *                 @OA\Property(property="apellido", type="string", example="Gonzalez"),
+     *                 @OA\Property(property="password", type="string", format="password", example="password123"),
+     *             )
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Datos actualizados con éxito"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="No autorizado"
-     *     )
+     *     @OA\Response(response=200, description="Datos actualizados con éxito"),
+     *     @OA\Response(response=401, description="No autorizado")
      * )
      */
     public function EditarDatos(Request $request)
