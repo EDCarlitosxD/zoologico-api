@@ -7,6 +7,7 @@ use App\Models\Tarjeta;
 use App\Services\TarjetaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TarjetaController
 {
@@ -114,24 +115,21 @@ class TarjetaController
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Tarjeta eliminada conxito",
-     *         @OA\JsonContent(
-     *             @OA\Property(
-     *                 property="message",
-     *                 type="string",
-     *                 example="Tarjeta eliminada con exito"
-     *             )
-     *         )
+     *         description="Estado de la tarjeta actualizado con éxito"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Tarjeta no encontrada"
      *     )
      * )
      */
     public function eliminar($id){
-
-
-        $eliminartarjeta = $this->tarjetaService->eliminarTarjeta($id);
-
-        return $eliminartarjeta;
-
+        try{
+            $tarjeta = $this->tarjetaService->eliminarTarjeta($id);
+            return $tarjeta;
+        }  catch(\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 
     /**
@@ -156,7 +154,10 @@ class TarjetaController
      * )
      */
     public function getTarjetas($id){
-        return Tarjeta::where('id_usuario',$id)->get();
+        return Tarjeta::where('id_usuario', $id)
+                      ->where('estado', 1)
+                      ->get();
     }
+    
 
 }

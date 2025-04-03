@@ -6,6 +6,7 @@ use App\Models\HorarioRecorrido;
 use App\Models\Membresia;
 use App\Models\Membresias;
 use App\Models\Recorrido;
+use App\Models\User;
 use App\Models\VistaRecorridosReservadosMes;
 use App\Models\VistaRecorridosReservadosSemana;
 use App\Models\VistaRecorridosReservadosYear;
@@ -22,11 +23,23 @@ class MembresiaService
 
     public function crearMembresia($request)
     {
-
+        $user = User::all();
         $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric',
-            'descripcion' => 'required|string',
+            'entradas_ilimitadas' => 'required|boolean',
+            'descuento_alimentos_souvenirs' => 'required|numeric',
+            'acceso_eventos' => 'required|boolean',
+            'descuento_tours' => 'required|numeric', 
+            'experiencias_animales' => 'required|boolean',
+            'estacionamiento_preferencial' => 'required|boolean',
+            'detras_camaras' => 'required|boolean',
+            'recorrido_vip_gratuito' => 'required|boolean',
+            'programas_conservacion' => 'required|boolean',
+            'descuento_renta_espacios_eventos' => 'required|numeric',
+            'precio_especial_invitados' => 'required|numeric',
+            'regalo_bienvenida' => 'sometimes',
+            'charlas_educativas' => 'required|boolean',
             'imagen' => 'required|string', // Puede ser Base64
         ]);
         if ($request->hasFile('imagen')) {
@@ -54,8 +67,20 @@ class MembresiaService
         $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric',
-            'descripcion' => 'required|string',
-            'imagen' => 'nullable', // Puede ser Base64
+            'entradas_ilimitadas' => 'required|boolean',
+            'descuento_alimentos_souvenirs' => 'required|numeric',
+            'acceso_eventos' => 'required|boolean',
+            'descuento_tours' => 'required|numeric', 
+            'experiencias_animales' => 'required|boolean',
+            'estacionamiento_preferencial' => 'required|boolean',
+            'detras_camaras' => 'required|boolean',
+            'recorrido_vip_gratuito' => 'required|boolean',
+            'programas_conservacion' => 'required|boolean',
+            'descuento_renta_espacios_eventos' => 'required|numeric',
+            'precio_especial_invitados' => 'required|numeric',
+            'regalo_bienvenida' => 'sometimes',
+            'charlas_educativas' => 'required|boolean',
+            'imagen' => 'required|string', // Puede ser Base64
         ]);
 
         if ($request->hasFile('imagen')) {
@@ -223,10 +248,22 @@ class MembresiaService
     {
 
         $validatedData = $request->validate([
-            'nombre' => 'sometimes|string|max:255',
-            'cantidad' => 'sometimes|numeric',
-            'descripcion' => 'required|string',
-            'imagen' => 'nullable|string', // Ahora puede recibir Base64
+            'nombre' => 'required|string|max:255',
+            'precio' => 'required|numeric',
+            'entradas_ilimitadas' => 'required|boolean',
+            'descuento_alimentos_souvenirs' => 'required|numeric',
+            'acceso_eventos' => 'required|boolean',
+            'descuento_tours' => 'required|numeric', 
+            'experiencias_animales' => 'required|boolean',
+            'estacionamiento_preferencial' => 'required|boolean',
+            'detras_camaras' => 'required|boolean',
+            'recorrido_vip_gratuito' => 'required|boolean',
+            'programas_conservacion' => 'required|boolean',
+            'descuento_renta_espacios_eventos' => 'required|numeric',
+            'precio_especial_invitados' => 'required|numeric',
+            'regalo_bienvenida' => 'nullable|string',
+            'charlas_educativas' => 'required|boolean',
+            'imagen' => 'nullable|string', // Puede ser Base64
         ]);
 
         // Si la imagen es Base64, conviértela a archivo y guárdala
@@ -288,47 +325,5 @@ class MembresiaService
 
             return $rs;
         }
-    }
-
-    public function rreservadosSemana()
-    {
-        $recorridosSemana = VistaRecorridosReservadosSemana::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
-
-        $cantidad = VistaRecorridosReservadosSemana::sum('cantidad');
-
-        $datos = [
-            "VentaSemana" => $recorridosSemana,
-            "cantidad_total" => $cantidad
-        ];
-
-        return $datos;
-    }
-
-    public function rreservadosMes()
-    {
-        $recorridosMes = VistaRecorridosReservadosMes::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
-
-        $cantidad = VistaRecorridosReservadosMes::sum('cantidad');
-
-        $datos = [
-            "VentaMes" => $recorridosMes,
-            "cantidad_total" => $cantidad
-        ];
-
-        return $datos;
-    }
-
-    public function rreservadosYear()
-    {
-        $recorridosYear = VistaRecorridosReservadosYear::select('id', 'titulo', 'cantidad')->get()->groupBy('id');
-
-        $cantidad = VistaRecorridosReservadosYear::sum('cantidad');
-
-        $datos = [
-            "VentaYear" => $recorridosYear,
-            "cantidad_total" => $cantidad
-        ];
-
-        return $datos;
     }
 }

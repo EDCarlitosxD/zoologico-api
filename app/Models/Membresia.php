@@ -1,4 +1,5 @@
-<?php  
+<?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,5 +25,23 @@ class Membresia extends Model
 
     protected $table = "membresias";
 
-    protected $fillable = ['nombre', 'precio', 'descripcion', 'imagen', 'estado'];
+    protected $fillable = [
+        'nombre',
+        'precio',
+        'imagen',
+        'entradas_ilimitadas',
+        'descuento_alimentos_souvenirs',
+        'acceso_eventos',
+        'descuento_tours',
+        'experiencias_animales',
+        'estacionamiento_preferencial',
+        'detras_camaras',
+        'recorrido_vip_gratuito',
+        'programas_conservacion',
+        'descuento_renta_espacios_eventos',
+        'precio_especial_invitados',
+        'regalo_bienvenida',
+        'charlas_educativas',
+        'estado'
+    ];
 }

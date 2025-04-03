@@ -45,12 +45,21 @@ class MembresiaController
      *     )
      * )
      */
-    public function getAll(Request $request){
+    public function getAll(Request $request)
+    {
         $query = Membresia::query();
+        
         if ($request->has('estado')) {
             $query->where('estado', $request->input('estado'));
         }
-        return response($query->get(), Response::HTTP_OK);
+        
+        $membresias = $query->get();
+        
+        foreach ($membresias as $membresia) {
+            $membresia->imagen = asset('storage') . '/' . $membresia->imagen;
+        }
+        
+        return response($membresias, Response::HTTP_OK);
     }
 
     /**
@@ -80,8 +89,6 @@ class MembresiaController
      */
     public function getById($id){
         $buscar = Membresia::findOrFail($id);
-
-
         if (!$buscar) {
             throw new NotFoundHttpException('No existe');
         } else {
