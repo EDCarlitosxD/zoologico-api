@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal;
+use App\Models\User;
+use App\Notifications\NuevoAnimalAgregado;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -93,6 +95,8 @@ class AnimalController
 
     public function guardar(Request $request)
     {
+        $usuarios = User::all(); //*
+
         $validatedData = $request->validate(
             [
 
@@ -139,6 +143,11 @@ class AnimalController
             $validatedData['estado'] = 1;
             // Crear el slug basado en el nombre
             $validatedData['slug'] = Str::slug($request->nombre);
+
+
+            foreach ($usuarios as $usuario){
+                $usuario->notify(new NuevoAnimalAgregado($validatedData, $usuario));
+            }
 
             // Guardar en la base de datos
             $animal = Animal::create($validatedData);

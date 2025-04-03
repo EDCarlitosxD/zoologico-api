@@ -3,9 +3,11 @@ namespace App\Services;
 
 use App\Models\HorarioRecorrido;
 use App\Models\Recorrido;
+use App\Models\User;
 use App\Models\VistaRecorridosReservadosMes;
 use App\Models\VistaRecorridosReservadosSemana;
 use App\Models\VistaRecorridosReservadosYear;
+use App\Notifications\NuevoRecorridoAgregado;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -15,6 +17,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class RecorridoService{
 
     public function crearRecorrido($request){
+
+        $usuarios = User::all(); 
 
         $datos = $request->all();
 
@@ -47,8 +51,14 @@ class RecorridoService{
             'img_recorrido' => $datos['img_recorrido']
         ]);
 
+        foreach($usuarios as $usuario){
+            $usuario->notify(new NuevoRecorridoAgregado($recorrido, $usuario));
+        }
+
+
+
         if (isset($datos['horarios'])) {
-            $datos['horarios'] = json_decode($datos['horarios'], true);
+
             foreach($datos['horarios'] as $dato){
                 $validar = Validator::make($dato,[
                     'horario_inicio' => 'required|date_format:H:i:s',
