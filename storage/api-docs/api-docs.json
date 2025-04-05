@@ -2299,6 +2299,130 @@
                 }
             }
         },
+        "/venta/membresia": {
+            "post": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Procesar una venta de membresía",
+                "operationId": "2d197e140916e77691a1246023fdac42",
+                "requestBody": {
+                    "description": "Datos de la venta",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_membresia": {
+                                        "description": "ID de la membresía a comprar",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "id_usuario": {
+                                        "description": "ID del usuario que compra la membresía",
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "fecha_compra": {
+                                        "description": "Fecha de compra",
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-03-12"
+                                    },
+                                    "meses": {
+                                        "description": "Cantidad de meses que durará la membresía",
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "fecha_vencimiento": {
+                                        "description": "Fecha de vencimiento",
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-06-12"
+                                    },
+                                    "precio_total": {
+                                        "description": "Precio total",
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 1000.5
+                                    },
+                                    "token": {
+                                        "description": "Token del usuario",
+                                        "type": "string",
+                                        "example": "xyz789abc"
+                                    },
+                                    "email": {
+                                        "description": "Correo electrónico del usuario",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "usuario@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Venta procesada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Membresía vendida con éxito"
+                                        },
+                                        "Membresia": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error al procesar la venta",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error al procesar la venta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/recorridos/guardar": {
             "post": {
                 "tags": [
@@ -2826,20 +2950,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Tarjeta eliminada conxito",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Tarjeta eliminada con exito"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Estado de la tarjeta actualizado con éxito"
+                    },
+                    "404": {
+                        "description": "Tarjeta no encontrada"
                     }
                 }
             }
@@ -3549,6 +3663,61 @@
                     "estado": {
                         "type": "boolean",
                         "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "MembresiasUsuarios": {
+                "title": "MembresiasUsuarios",
+                "description": "Modelo de MembresiasUsuarios",
+                "required": [
+                    "id_membresia",
+                    "id_usuario",
+                    "fecha_compra",
+                    "meses",
+                    "fecha_vencimiento",
+                    "precio_total",
+                    "token",
+                    "email"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_membresia": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_usuario": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "fecha_compra": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-03-12"
+                    },
+                    "meses": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "fecha_vencimiento": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-06-12"
+                    },
+                    "precio_total": {
+                        "type": "integer",
+                        "example": 1000
+                    },
+                    "token": {
+                        "type": "string",
+                        "example": "xyz789abc"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "usuario@example.com"
                     }
                 },
                 "type": "object"

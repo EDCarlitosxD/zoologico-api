@@ -137,13 +137,13 @@ class VentaBoletosController
 
 
 
-            /*
+            
             $resultado = [
                 'boletos' => $boletosreturn,
                 'recorridos' => $recorridosreturn
             ];
 
-            return response()->json($resultado);*/
+            return response()->json($resultado);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' => $e->getMessage()], 500);
