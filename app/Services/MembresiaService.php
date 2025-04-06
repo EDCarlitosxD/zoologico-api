@@ -17,13 +17,13 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Notifications\NuevaMembresiaAgregada;
 
 class MembresiaService
 {
 
     public function crearMembresia($request)
     {
-        $user = User::all();
         $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric',
@@ -58,6 +58,13 @@ class MembresiaService
         }
 
         $Membresia = Membresia::create($validatedData);
+
+        $usuarios = User::all(); //*
+
+        foreach ($usuarios as $usuario){
+            $usuario->notify(new NuevoAnimalAgregado($validatedData, $usuario));
+        }
+
         return $Membresia;
     }
 
