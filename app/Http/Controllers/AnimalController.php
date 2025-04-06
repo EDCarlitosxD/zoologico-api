@@ -490,7 +490,7 @@ class AnimalController
 
     /**
      * @OA\Put(
-     *     path="/animales/{id}",
+     *     path="/animales/actualizar/{id}",
      *     summary="Actualiza un animal existente",
      *     description="Este endpoint permite actualizar la información de un animal existente, incluyendo sus imágenes y otros detalles.",
      *     operationId="actualizarAnimal",
@@ -509,17 +509,19 @@ class AnimalController
      *         required=true,
      *         description="Datos del animal a actualizar",
      *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
+     *             mediaType="application/json",
      *             @OA\Schema(
      *                 @OA\Property(
      *                     property="nombre",
      *                     type="string",
+     * example="Tigre de la selva",
      *                     maxLength=80,
      *                     description="Nombre común del animal"
      *                 ),
      *                 @OA\Property(
      *                     property="nombre_cientifico",
      *                     type="string",
+     * example="Panthera tigris",
      *                     maxLength=150,
      *                     description="Nombre científico del animal"
      *                 ),
@@ -527,71 +529,89 @@ class AnimalController
      *                     property="imagen_principal",
      *                     type="string",
      *                     format="binary",
+     *                     example="imagen.jpg",
      *                     description="Imagen principal del animal (opcional)"
      *                 ),
      *                 @OA\Property(
      *                     property="imagen_secundaria",
      *                     type="string",
+     *                     example="imagen_secundaria.jpg",
      *                     format="binary",
      *                     description="Imagen secundaria del animal (opcional)"
      *                 ),
      *                 @OA\Property(
      *                     property="caracteristicas_fisicas",
      *                     type="string",
+     *                     maxLength=255,
+     *                     example="Pesa 5kg y es carnívoro",
      *                     description="Características físicas del animal"
      *                 ),
      *                 @OA\Property(
      *                     property="dieta",
+     *                     example="Carnívoro",
      *                     type="string",
      *                     description="Dieta del animal"
      *                 ),
      *                 @OA\Property(
      *                     property="datos_curiosos",
+     *                     example="Puede correr hasta 80 km/h",
      *                     type="string",
      *                     description="Datos curiosos sobre el animal"
      *                 ),
      *                 @OA\Property(
      *                     property="comportamiento",
+     *                     example="Viven en manadas",
      *                     type="string",
      *                     description="Comportamiento del animal"
      *                 ),
      *                 @OA\Property(
      *                     property="peso",
      *                     type="string",
+     *                     format="float",
+     *                     example="5.5",
      *                     maxLength=45,
      *                     description="Peso del animal"
      *                 ),
      *                 @OA\Property(
      *                     property="altura",
      *                     type="string",
+     *                     format="float",
+     *                     example="2.5",
      *                     maxLength=45,
      *                     description="Altura del animal"
      *                 ),
      *                 @OA\Property(
      *                     property="tipo",
      *                     type="string",
+     *                     maxLength=255,
+     *                     example="Terrestre",
      *                     description="Tipo de animal"
      *                 ),
      *                 @OA\Property(
      *                     property="habitat",
      *                     type="string",
+     *                     example="Selva",
      *                     maxLength=255,
      *                     description="Hábitat del animal"
      *                 ),
      *                 @OA\Property(
      *                     property="descripcion",
      *                     type="string",
+     *                     maxLength=255,
+     *                     example="El tigre de la selva es un mamífero carnívoro de la familia de los felines.",
      *                     description="Descripción del animal"
      *                 ),
      *                 @OA\Property(
      *                     property="subtitulo",
      *                     type="string",
+     *                     example="El tigre de la selva es un mamífero carnívoro de la familia de los felines.",
      *                     maxLength=255,
      *                     description="Subtítulo del animal"
      *                 ),
      *                 @OA\Property(
      *                     property="img_ubicacion",
      *                     type="string",
+     *                     example="ubicacion.jpg",
      *                     format="binary",
      *                     description="Imagen de la ubicación del animal (opcional)"
      *                 )

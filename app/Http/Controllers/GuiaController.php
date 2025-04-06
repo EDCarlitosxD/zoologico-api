@@ -159,7 +159,7 @@ class GuiaController
      *         required=true,
      *         description="Datos de la guía a actualizar",
      *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
+     *             mediaType="application/json",
      *             @OA\Schema(
      *                 required={"nombre_completo"},
      *                 @OA\Property(property="nombre_completo", type="string", example="Juan Pérez"),

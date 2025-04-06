@@ -62,7 +62,7 @@ class DonacionController
 
     /**
      * @OA\Get(
-     *     path="/donaciones/ultimaSemana",
+     *     path="/donacionsemana",
      *     summary="Obtener donaciones de la semana",
      *     tags={"Donaciones"},
      *     security={{"bearerAuth":{}}},
@@ -77,7 +77,7 @@ class DonacionController
 
     /**
      * @OA\Get(
-     *     path="/donaciones/ultimoMes",
+     *     path="/donacionmes",
      *     summary="Obtener donaciones del mes",
      *     tags={"Donaciones"},
      *     security={{"bearerAuth":{}}},
@@ -92,7 +92,7 @@ class DonacionController
 
     /**
      * @OA\Get(
-     *     path="/donaciones/ultimoYear",
+     *     path="/donacionyear",
      *     summary="Obtener donaciones del año",
      *     tags={"Donaciones"},
      *     security={{"bearerAuth":{}}},

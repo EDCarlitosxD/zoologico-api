@@ -19,7 +19,7 @@ return new class extends Migration
 
     //!CODIGO DE VISTAS COMENTADO
     // {
-            // DB::statement("
+        // DB::statement("
         //     CREATE VIEW usuarios_insignias AS
         //     SELECT 
         //         c.id_usuario, 
