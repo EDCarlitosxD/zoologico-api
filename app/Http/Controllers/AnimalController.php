@@ -1,8 +1,10 @@
 <?php
-
+//*DOCUMENTADO
 namespace App\Http\Controllers;
 
 use App\Models\Animal;
+use App\Models\User;
+use App\Notifications\NuevoAnimalAgregado;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -10,18 +12,74 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use function PHPSTORM_META\type;
+
+/**
+ * @OA\Tag(
+ *     name="Animales",
+ *     description="APIs para gestionar Animales"
+ * )
+ */
+
+
 class AnimalController
 {
+    /**
+     * @OA\Get(
+     *     path="/animales/card/",
+     *     tags={"Animales"},
+     *     summary="Obtener la lista de animales con imágenes principales",
+     *     description="Obtiene una lista de animales, permitiendo búsqueda y filtrado por tipo. Se puede ordenar alfabéticamente.",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="datomin",
+     *         in="query",
+     *         description="Búsqueda parcial en el nombre, nombre científico o tipo.",
+     *         required=false,
+     *         @OA\Schema(type="string", example="Tigre")
+     *     ),
+     *     @OA\Parameter(
+     *         name="tipo",
+     *         in="query",
+     *         description="Filtrar por tipo de animal.",
+     *         required=false,
+     *         @OA\Schema(type="string", example="Mamífero")
+     *     ),
+     *     @OA\Parameter(
+     *         name="orden",
+     *         in="query",
+     *         description="Ordenar alfabéticamente (A-Z).",
+     *         required=false,
+     *         @OA\Schema(type="string", enum={"A-Z"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Cantidad de resultados por página.",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=12)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de animales obtenida correctamente",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="nombre", type="string", example="Tigre de Bengala"),
+     *                 @OA\Property(property="imagen_principal", type="string", example="https://example.com/tigre.jpg"),
+     *                 @OA\Property(property="tipo", type="string", example="Mamífero"),
+     *                 @OA\Property(property="peso", type="string", example="220kg"),
+     *                 @OA\Property(property="altura", type="string", example="1.1m"),
+     *                 @OA\Property(property="nombre_cientifico", type="string", example="Panthera tigris tigris"),
+     *                 @OA\Property(property="slug", type="string", example="tigre-de-bengala")
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function ImgAnimal(Request $request)
     {
-
-        // Crear un query base
-        $query = Animal::query();
-        $query = Animal::query();
-
-        // Obtener el parámetro 'dato' (búsqueda general)
-        $datomin = strtolower($request->input('datomin', ''));
-        // Obtener el parámetro 'dato' (búsqueda general)
+        $query = Animal::query()->where('estado', 1);
         $datomin = strtolower($request->input('datomin', ''));
 
         if (!empty($datomin)) {
@@ -32,7 +90,6 @@ class AnimalController
             });
         }
 
-        // Filtrar por tipo si el parámetro está presente
         if ($request->filled('tipo')) {
             $query->where('tipo', $request->input('tipo'));
         }
@@ -41,20 +98,48 @@ class AnimalController
             $query->orderBy('nombre', 'asc');
         }
 
-
-        // Aplicar paginación (10 por página por defecto)
         $animales = $query->select('nombre', 'imagen_principal', 'tipo', 'peso', 'altura', 'nombre_cientifico', 'slug')
             ->paginate($request->input('per_page', 12));
 
-
-
-        // Iteramos sobre los animales y agregamos la URL completa para las imágenes
         foreach ($animales as $animal) {
             $animal->imagen_principal = asset('storage') . '/' . ($animal->imagen_principal);
         }
 
         return response()->json($animales);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/animales/{slug}",
+     *     summary="Obtener información de un animal por su slug",
+     *     description="Retorna la información de un animal basado en su slug único.",
+     *     operationId="getAnimalBySlug",
+     *     tags={"Animales"},
+     *     @OA\Parameter(
+     *         name="slug",
+     *         in="path",
+     *         required=true,
+     *         description="Slug único del animal",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Datos del animal encontrados",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/Animal"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Animal no encontrado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="No existe")
+     *         )
+     *     )
+     * )
+     */
+
 
     public function animalslug($slug)
     {
@@ -71,13 +156,42 @@ class AnimalController
         }
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/animales",
+     *     summary="Obtiene todos los animales o filtra por nombre",
+     *     description="Devuelve una lista de animales. Si se proporciona un parámetro de búsqueda, filtra los resultados por el nombre del animal.",
+     *     operationId="getAllAnimales",
+     *     tags={"Animales"},
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de animales obtenida exitosamente",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 ref="#/components/schemas/Animal"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Parámetro de búsqueda incorrecto"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor"
+     *     )
+     * )
+     */
     public function getAll(Request $request)
     {
         $animales = [];
-        if(empty($request->input('buscar'))){
+        if (empty($request->input('buscar'))) {
             $animales = Animal::all();
-        }else{
-            $animales = Animal::where('nombre', 'LIKE','%'.$request->input('buscar'). '%')->get();
+        } else {
+            $animales = Animal::where('nombre', 'LIKE', '%' . $request->input('buscar') . '%')->get();
         }
 
 
@@ -90,9 +204,153 @@ class AnimalController
 
         return response()->json($animales);
     }
+    /**
+     * @OA\Post(
+     *     path="/animales",
+     *     summary="Guarda un nuevo animal en la base de datos",
+     *     description="Este endpoint permite guardar un nuevo animal en la base de datos con la información proporcionada, incluyendo imágenes y otros detalles.",
+     *     operationId="guardarAnimal",
+     *     tags={"Animales"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Datos del animal a guardar",
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"nombre", "nombre_cientifico", "imagen_principal", "imagen_secundaria", "caracteristicas_fisicas", "dieta", "datos_curiosos", "comportamiento", "peso", "altura", "tipo", "habitat", "descripcion", "subtitulo", "img_ubicacion"},
+     *                 @OA\Property(
+     *                     property="nombre",
+     *                     type="string",
+     *                     maxLength=80,
+     *                     description="Nombre común del animal",
+     *                     example="León"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="nombre_cientifico",
+     *                     type="string",
+     *                     maxLength=150,
+     *                     description="Nombre científico del animal",
+     *                     example="Panthera leo"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="imagen_principal",
+     *                     type="string",
+     *                     format="binary",
+     *                     description="Imagen principal del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="imagen_secundaria",
+     *                     type="string",
+     *                     format="binary",
+     *                     description="Imagen secundaria del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="caracteristicas_fisicas",
+     *                     type="string",
+     *                     description="Características físicas del animal",
+     *                     example="Gran felino con melena en los machos, cuerpo musculoso y pelaje amarillo dorado."
+     *                 ),
+     *                 @OA\Property(
+     *                     property="dieta",
+     *                     type="string",
+     *                     description="Dieta del animal",
+     *                     example="Carnívoro, se alimenta de cebras, antílopes y otros mamíferos."
+     *                 ),
+     *                 @OA\Property(
+     *                     property="datos_curiosos",
+     *                     type="string",
+     *                     description="Datos curiosos sobre el animal",
+     *                     example="Los leones pueden dormir hasta 20 horas al día."
+     *                 ),
+     *                 @OA\Property(
+     *                     property="comportamiento",
+     *                     type="string",
+     *                     description="Comportamiento del animal",
+     *                     example="Viven en manadas lideradas por hembras y un macho dominante."
+     *                 ),
+     *                 @OA\Property(
+     *                     property="peso",
+     *                     type="string",
+     *                     description="Peso del animal",
+     *                     example="190 kg (machos), 130 kg (hembras)"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="altura",
+     *                     type="string",
+     *                     description="Altura del animal",
+     *                     example="1.2 metros en la cruz"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="tipo",
+     *                     type="string",
+     *                     description="Tipo de animal",
+     *                     example="Terrestre"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="habitat",
+     *                     type="string",
+     *                     maxLength=255,
+     *                     description="Hábitat del animal",
+     *                     example="Sabana africana y pastizales abiertos."
+     *                 ),
+     *                 @OA\Property(
+     *                     property="descripcion",
+     *                     type="string",
+     *                     description="Descripción del animal",
+     *                     example="El león es uno de los felinos más grandes y poderosos, conocido por su melena y su vida en manada."
+     *                 ),
+     *                 @OA\Property(
+     *                     property="subtitulo",
+     *                     type="string",
+     *                     maxLength=255,
+     *                     description="Subtítulo del animal",
+     *                     example="El rey de la selva"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="img_ubicacion",
+     *                     type="string",
+     *                     format="binary",
+     *                     description="Imagen de la ubicación del animal"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Animal guardado con éxito",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Animal guardado con éxito"
+     *             ),
+     *             @OA\Property(
+     *                 property="animal",
+     *                 type="object",
+     *                 description="Datos del animal guardado"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error al guardar el animal",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="string",
+     *                 example="Error al guardar el animal: Mensaje de error"
+     *             )
+     *         )
+     *     )
+     * )
+     */
 
     public function guardar(Request $request)
     {
+        $usuarios = User::all(); //*
+
         $validatedData = $request->validate(
             [
 
@@ -111,22 +369,10 @@ class AnimalController
                 'habitat' => 'required|max:255',
                 'descripcion' => 'required',
                 'subtitulo' => 'required|max:255',
-                // 'qr'=> 'required|max:255',
-                // 'estado' => 'required|boolean',
+                //'qr'=> 'required|max:255',
+                //'estado' => 'required|boolean',
                 'img_ubicacion' => 'required',
 
-                /*
-            'nombre' => 'required|unique:animales|max:255',
-            'nombre_cientifico' => 'required|max:255',
-            'caracteristicas_fisicas' => 'required',
-            'dieta' => 'required',
-            'datos_curiosos' => 'required',
-            'comportamiento' => 'required',
-            'informacion' => 'required',
-            'imagen_principal' => 'required',
-            'imagen_secundaria' => 'required',
-            'activo' => 'required|boolean',
-            'tipo_animal_id' => 'required',*/
             ]
         );
 
@@ -140,6 +386,11 @@ class AnimalController
             // Crear el slug basado en el nombre
             $validatedData['slug'] = Str::slug($request->nombre);
 
+
+            foreach ($usuarios as $usuario){
+                $usuario->notify(new NuevoAnimalAgregado($validatedData, $usuario));
+            }
+
             // Guardar en la base de datos
             $animal = Animal::create($validatedData);
 
@@ -149,9 +400,83 @@ class AnimalController
         }
     }
 
-    public function actualizarEstado(Request $request, $id){
+
+    /**
+     * @OA\Put(
+     *     path="/animales/{id}/actualizar-estado",
+     *     summary="Actualiza el estado de un animal",
+     *     description="Este endpoint permite actualizar el estado (activo/inactivo) de un animal específico en la base de datos.",
+     *     operationId="actualizarEstadoAnimal",
+     *     tags={"Animales"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del animal cuyo estado se desea actualizar",
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Datos para actualizar el estado del animal",
+     *         @OA\JsonContent(
+     *             required={"estado"},
+     *             @OA\Property(
+     *                 property="estado",
+     *                 type="boolean",
+     *                 description="Nuevo estado del animal (true para activo, false para inactivo)"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Estado del animal actualizado con éxito",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="animal estado actualizado con exito"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Animal no encontrado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="string",
+     *                 example="Animal no encontrado"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="El campo estado es requerido."
+     *             ),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 example={"estado": {"El campo estado es requerido."}}
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function actualizarEstado(Request $request, $id)
+    {
         $request->validate([
-            'estado'=>'required|boolean',
+            'estado' => 'required|boolean',
         ]);
 
         $animal = Animal::findOrFail($id);
@@ -160,17 +485,196 @@ class AnimalController
         $animal->save();
 
         return response()->json(['message' => 'animal estado actualizado con exito']);
-
     }
+
+
+    /**
+     * @OA\Put(
+     *     path="/animales/actualizar/{id}",
+     *     summary="Actualiza un animal existente",
+     *     description="Este endpoint permite actualizar la información de un animal existente, incluyendo sus imágenes y otros detalles.",
+     *     operationId="actualizarAnimal",
+     *     tags={"Animales"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del animal que se desea actualizar",
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Datos del animal a actualizar",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="nombre",
+     *                     type="string",
+     * example="Tigre de la selva",
+     *                     maxLength=80,
+     *                     description="Nombre común del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="nombre_cientifico",
+     *                     type="string",
+     * example="Panthera tigris",
+     *                     maxLength=150,
+     *                     description="Nombre científico del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="imagen_principal",
+     *                     type="string",
+     *                     format="binary",
+     *                     example="imagen.jpg",
+     *                     description="Imagen principal del animal (opcional)"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="imagen_secundaria",
+     *                     type="string",
+     *                     example="imagen_secundaria.jpg",
+     *                     format="binary",
+     *                     description="Imagen secundaria del animal (opcional)"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="caracteristicas_fisicas",
+     *                     type="string",
+     *                     maxLength=255,
+     *                     example="Pesa 5kg y es carnívoro",
+     *                     description="Características físicas del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="dieta",
+     *                     example="Carnívoro",
+     *                     type="string",
+     *                     description="Dieta del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="datos_curiosos",
+     *                     example="Puede correr hasta 80 km/h",
+     *                     type="string",
+     *                     description="Datos curiosos sobre el animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="comportamiento",
+     *                     example="Viven en manadas",
+     *                     type="string",
+     *                     description="Comportamiento del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="peso",
+     *                     type="string",
+     *                     format="float",
+     *                     example="5.5",
+     *                     maxLength=45,
+     *                     description="Peso del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="altura",
+     *                     type="string",
+     *                     format="float",
+     *                     example="2.5",
+     *                     maxLength=45,
+     *                     description="Altura del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="tipo",
+     *                     type="string",
+     *                     maxLength=255,
+     *                     example="Terrestre",
+     *                     description="Tipo de animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="habitat",
+     *                     type="string",
+     *                     example="Selva",
+     *                     maxLength=255,
+     *                     description="Hábitat del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="descripcion",
+     *                     type="string",
+     *                     maxLength=255,
+     *                     example="El tigre de la selva es un mamífero carnívoro de la familia de los felines.",
+     *                     description="Descripción del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="subtitulo",
+     *                     type="string",
+     *                     example="El tigre de la selva es un mamífero carnívoro de la familia de los felines.",
+     *                     maxLength=255,
+     *                     description="Subtítulo del animal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="img_ubicacion",
+     *                     type="string",
+     *                     example="ubicacion.jpg",
+     *                     format="binary",
+     *                     description="Imagen de la ubicación del animal (opcional)"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Animal actualizado con éxito",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Animal actualizado con éxito"
+     *             ),
+     *             @OA\Property(
+     *                 property="animal",
+     *                 type="object",
+     *                 description="Datos del animal actualizado"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Animal no encontrado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="string",
+     *                 example="Animal no encontrado"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="El campo nombre es requerido."
+     *             ),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 example={"nombre": {"El campo nombre es requerido."}}
+     *             )
+     *         )
+     *     )
+     * )
+     */
+
     public function actualizar(Request $request, $id)
     {
         // Validar los datos del request
         $validatedData = $request->validate([
             'nombre' => 'required|unique:animales,nombre,' . $id . '|max:80',
             'nombre_cientifico' => 'required|max:150',
-            // 'slug' => 'required|max:255',
-            'imagen_principal' => 'nullable|mimes:jpg,jpeg,png|max:2048',
-            'imagen_secundaria' => 'nullable|mimes:jpg,jpeg,png|max:2048',
+            'imagen_principal' => 'nullable',
+            'imagen_secundaria' => 'nullable',
             'caracteristicas_fisicas' => 'required',
             'dieta' => 'required',
             'datos_curiosos' => 'required',
@@ -181,55 +685,45 @@ class AnimalController
             'habitat' => 'required|max:255',
             'descripcion' => 'required',
             'subtitulo' => 'required|max:255',
-            // 'qr' => 'required|max:255',
-            // 'estado' => 'required|boolean',
-            'img_ubicacion' => 'nullable|mimes:jpg,jpeg,png|max:2048',
+            'img_ubicacion' => 'nullable',
         ]);
-
+        
         // Buscar el animal
         $animal = Animal::findOrFail($id);
-        // $img_principal = $animal->imagen_principal;
-        // $img_secundaria = $animal->imagen_secundaria;
-        // $img_ubicacion = $animal->img_ubicacion;
+
+        // Asignar los valores validados
         $animal->fill($validatedData);
+        // Generar el slug a partir del nombre
+        $animal->slug = Str::slug($request->nombre);
 
-
-        // Manejar la imagen principal
-        if ($request->hasFile('imagen_principal')) {
-            // Eliminar la imagen anterior
+        if(is_string($request->imagen_principal)){
+            $animal->imagen_principal = Animal::findOrFail($id)->imagen_principal;
+        } else if ($request->hasFile('imagen_principal')) {
             if ($animal->imagen_principal && Storage::exists($animal->imagen_principal)) {
                 Storage::delete($animal->imagen_principal);
             }
-
-            // Guardar la nueva imagen
-            $path = $request->file('imagen_principal')->store('Animales','public');
-            $animal->imagen_principal = $path;
+            $animal->imagen_principal = $request->file('imagen_principal')->store('Animales', 'public');
         }
-
-        // Manejar la imagen secundaria
-        if ($request->hasFile('imagen_secundaria')) {
-            // Eliminar la imagen anterior
+        
+        if(is_string($request->imagen_secundaria)){
+            $animal->imagen_secundaria = Animal::findOrFail($id)->imagen_secundaria;
+        } else if ($request->hasFile('imagen_secundaria')) {
             if ($animal->imagen_secundaria && Storage::exists($animal->imagen_secundaria)) {
                 Storage::delete($animal->imagen_secundaria);
             }
-
-            // Guardar la nueva imagen
-            $path = $request->file('imagen_secundaria')->store('Animales','public');
-            $animal->imagen_secundaria = $path;
+            $animal->imagen_secundaria = $request->file('imagen_secundaria')->store('Animales', 'public');
         }
-
-        if ($request->hasFile('img_ubicacion')) {
-            // Eliminar la imagen anterior
+        
+        if(is_string($request->img_ubicacion)){
+            $animal->img_ubicacion = Animal::findOrFail($id)->img_ubicacion;
+        } else if ($request->hasFile('img_ubicacion')) {
             if ($animal->img_ubicacion && Storage::exists($animal->img_ubicacion)) {
                 Storage::delete($animal->img_ubicacion);
             }
-            // Guardar la nueva imagen
-            $path = $request->file('img_ubicacion')->store('Animales','public');
-            $animal->img_ubicacion = $path;
+            $animal->img_ubicacion = $request->file('img_ubicacion')->store('Animales', 'public');
         }
-
-        // Actualizar el resto de los datos
         $animal->save();
+        
 
         return response()->json(['message' => 'Animal actualizado con éxito', 'animal' => $animal]);
     }

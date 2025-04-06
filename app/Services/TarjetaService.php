@@ -38,14 +38,21 @@ class TarjetaService{
         return response()->json($tarjeta);
     }
 
+    // public function eliminarTarjeta($id){
+    //     $tarjeta = Tarjeta::find($id);
+
+    //     $tarjeta->delete();
+
+    //     return response()->json(['message' => 'Tarjeta eliminada con exito']);
+    // }
     public function eliminarTarjeta($id){
-        $tarjeta = Tarjeta::find($id);
 
-        $tarjeta->delete();
+        $tarjeta = Tarjeta::findOrFail($id);
+        $tarjeta->estado = 0;
+        $tarjeta->save();
 
-        return response()->json(['message' => 'Tarjeta eliminada con exito']);
+        return response()->json(['message' => 'Tarjeta estado actualizado con éxito']);
     }
-
 
 }
 

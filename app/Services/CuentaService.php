@@ -12,7 +12,7 @@ class CuentaService{
             "nombre" => 'required|max:255',
             "apellido" => 'required|max:255',
             "password" => 'required|max:255',
-            "foto_perfil" => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            "foto_perfil" => 'nullable'
         ]);
     
         $registro = User::findOrFail($idusuario);
