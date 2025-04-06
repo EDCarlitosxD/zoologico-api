@@ -215,7 +215,7 @@ class VentaBoletosController
 
     /**
      * @OA\Get(
-     *     path="/boletosvendidossemana",
+     *     path="/boletossemana",
      *     tags={"Boletos Vendidos"},
      *     summary="Traer boletos vendidos de la semana",
      *     @OA\Response(
@@ -241,7 +241,7 @@ class VentaBoletosController
 
     /**
      * @OA\Get(
-     *     path="/boletosvendidosmes",
+     *     path="/boletosmes",
      *     tags={"Boletos Vendidos"},
      *     summary="Traer boletos vendidos del mes",
      *     @OA\Response(
@@ -267,7 +267,7 @@ class VentaBoletosController
 
     /**
      * @OA\Get(
-     *     path="/boletosvendidosyear",
+     *     path="/boletosyear",
      *     tags={"Boletos Vendidos"},
      *     summary="Traer boletos vendidos del year",
      *     @OA\Response(

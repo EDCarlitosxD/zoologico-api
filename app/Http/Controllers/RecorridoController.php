@@ -280,6 +280,23 @@ class RecorridoController
     }
 
     /**
+     * @OA\Get(
+     *     path="/recorridosemana",
+     *     tags={"Recorridos"},
+     *     summary="Obtiene recorridos reservados por semana",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Recorridos reservados por semana obtenidos con éxito",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Recorrido"))
+     *     )
+     * )
+     */
+    public function recorridosReservadosSemana(){
+        $recorridos = $this->recorridoService->rreservadosSemana();
+        return response($recorridos, Response::HTTP_OK);
+
+    }
+    /**
      * Obtener recorridos reservados por mes
      * @OA\Get(
      *     path="/recorridosmes",
@@ -297,23 +314,6 @@ class RecorridoController
         return response($recorridos, Response::HTTP_OK);
     }
 
-    /**
-     * OA\Get(
-     *     path="/recorridossemana",
-     *     tags={"Recorridos"},
-     *     summary="Obtiene recorridos reservados por semana",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Recorridos reservados por semana obtenidos con éxito",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Recorrido"))
-     *     )
-     * )
-     */
-    public function recorridosReservadosSemana(){
-        $recorridos = $this->recorridoService->rreservadosSemana();
-        return response($recorridos, Response::HTTP_OK);
-
-    }
 
     /**
      * @OA\Get(

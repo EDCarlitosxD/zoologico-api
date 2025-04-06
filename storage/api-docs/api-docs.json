@@ -459,7 +459,7 @@
                 }
             }
         },
-        "/animales/{id}": {
+        "/animales/actualizar/{id}": {
             "put": {
                 "tags": [
                     "Animales"
@@ -483,77 +483,97 @@
                     "description": "Datos del animal a actualizar",
                     "required": true,
                     "content": {
-                        "multipart/form-data": {
+                        "application/json": {
                             "schema": {
                                 "properties": {
                                     "nombre": {
                                         "description": "Nombre común del animal",
                                         "type": "string",
-                                        "maxLength": 80
+                                        "maxLength": 80,
+                                        "example": "Tigre de la selva"
                                     },
                                     "nombre_cientifico": {
                                         "description": "Nombre científico del animal",
                                         "type": "string",
-                                        "maxLength": 150
+                                        "maxLength": 150,
+                                        "example": "Panthera tigris"
                                     },
                                     "imagen_principal": {
                                         "description": "Imagen principal del animal (opcional)",
                                         "type": "string",
-                                        "format": "binary"
+                                        "format": "binary",
+                                        "example": "imagen.jpg"
                                     },
                                     "imagen_secundaria": {
                                         "description": "Imagen secundaria del animal (opcional)",
                                         "type": "string",
-                                        "format": "binary"
+                                        "format": "binary",
+                                        "example": "imagen_secundaria.jpg"
                                     },
                                     "caracteristicas_fisicas": {
                                         "description": "Características físicas del animal",
-                                        "type": "string"
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Pesa 5kg y es carnívoro"
                                     },
                                     "dieta": {
                                         "description": "Dieta del animal",
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Carnívoro"
                                     },
                                     "datos_curiosos": {
                                         "description": "Datos curiosos sobre el animal",
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Puede correr hasta 80 km/h"
                                     },
                                     "comportamiento": {
                                         "description": "Comportamiento del animal",
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Viven en manadas"
                                     },
                                     "peso": {
                                         "description": "Peso del animal",
                                         "type": "string",
-                                        "maxLength": 45
+                                        "format": "float",
+                                        "maxLength": 45,
+                                        "example": "5.5"
                                     },
                                     "altura": {
                                         "description": "Altura del animal",
                                         "type": "string",
-                                        "maxLength": 45
+                                        "format": "float",
+                                        "maxLength": 45,
+                                        "example": "2.5"
                                     },
                                     "tipo": {
                                         "description": "Tipo de animal",
-                                        "type": "string"
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Terrestre"
                                     },
                                     "habitat": {
                                         "description": "Hábitat del animal",
                                         "type": "string",
-                                        "maxLength": 255
+                                        "maxLength": 255,
+                                        "example": "Selva"
                                     },
                                     "descripcion": {
                                         "description": "Descripción del animal",
-                                        "type": "string"
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "El tigre de la selva es un mamífero carnívoro de la familia de los felines."
                                     },
                                     "subtitulo": {
                                         "description": "Subtítulo del animal",
                                         "type": "string",
-                                        "maxLength": 255
+                                        "maxLength": 255,
+                                        "example": "El tigre de la selva es un mamífero carnívoro de la familia de los felines."
                                     },
                                     "img_ubicacion": {
                                         "description": "Imagen de la ubicación del animal (opcional)",
                                         "type": "string",
-                                        "format": "binary"
+                                        "format": "binary",
+                                        "example": "ubicacion.jpg"
                                     }
                                 },
                                 "type": "object"
@@ -625,62 +645,16 @@
                 }
             }
         },
-        "/cuenta": {
+        "/user": {
             "get": {
                 "tags": [
                     "Autenticación"
                 ],
                 "summary": "Información de usuario autenticado",
-                "operationId": "8ac66eb29f3c49784232d1b9f2e9aed7",
+                "operationId": "99e9c2c91427f6bf63c2f0ef765a768f",
                 "responses": {
                     "200": {
                         "description": "Información de usuario obtenida correctamente"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "put": {
-                "tags": [
-                    "Autenticación"
-                ],
-                "summary": "Editar perfil de usuario",
-                "description": "Permite a un usuario autenticado actualizar su información personal y foto de perfil.",
-                "operationId": "eb8cbf5f6046a7a1a74ed205e1477f99",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "nombre": {
-                                        "type": "string",
-                                        "example": "Alberto"
-                                    },
-                                    "apellido": {
-                                        "type": "string",
-                                        "example": "Gonzalez"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Datos actualizados con éxito"
-                    },
-                    "401": {
-                        "description": "No autorizado"
                     }
                 },
                 "security": [
@@ -821,13 +795,61 @@
                 ]
             }
         },
-        "/boletos/usuario": {
+        "/cuenta": {
+            "put": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Editar perfil de usuario",
+                "description": "Permite a un usuario autenticado actualizar su información personal y foto de perfil.",
+                "operationId": "eb8cbf5f6046a7a1a74ed205e1477f99",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Alberto"
+                                    },
+                                    "apellido": {
+                                        "type": "string",
+                                        "example": "Gonzalez"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Datos actualizados con éxito"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boletos/obtener": {
             "get": {
                 "tags": [
                     "Boletos"
                 ],
                 "summary": "Obtener boletos comprados por un usuario",
-                "operationId": "c20c4637016f78a63d1217f1bf92048b",
+                "operationId": "5b6ab347f73baccb88ecf582b2c842ad",
                 "responses": {
                     "200": {
                         "description": "Lista de boletos comprados obtenida correctamente"
@@ -1049,7 +1071,7 @@
                     "description": "Datos del boleto a actualizar",
                     "required": true,
                     "content": {
-                        "multipart/form-data": {
+                        "application/json": {
                             "schema": {
                                 "required": [
                                     "titulo",
@@ -1083,7 +1105,8 @@
                                     },
                                     "imagen": {
                                         "type": "string",
-                                        "format": "binary"
+                                        "format": "binary",
+                                        "example": "imagen.jpg"
                                     }
                                 },
                                 "type": "object"
@@ -1152,13 +1175,13 @@
                 ]
             }
         },
-        "/donaciones/ultimaSemana": {
+        "/donacionsemana": {
             "get": {
                 "tags": [
                     "Donaciones"
                 ],
                 "summary": "Obtener donaciones de la semana",
-                "operationId": "7409d982d9d1a7b059479404c7c930d5",
+                "operationId": "50b1c047481a5c4d8c4d4708a7b2aa82",
                 "responses": {
                     "200": {
                         "description": "Donaciones obtenidas correctamente"
@@ -1171,13 +1194,13 @@
                 ]
             }
         },
-        "/donaciones/ultimoMes": {
+        "/donacionmes": {
             "get": {
                 "tags": [
                     "Donaciones"
                 ],
                 "summary": "Obtener donaciones del mes",
-                "operationId": "61cb296f56e2c5b4c2e1077dac13322b",
+                "operationId": "f0fbe2c208559e5f4c975aa24dc9f492",
                 "responses": {
                     "200": {
                         "description": "Donaciones obtenidas correctamente"
@@ -1190,13 +1213,13 @@
                 ]
             }
         },
-        "/donaciones/ultimoYear": {
+        "/donacionyear": {
             "get": {
                 "tags": [
                     "Donaciones"
                 ],
                 "summary": "Obtener donaciones del año",
-                "operationId": "2b48b31bc586caf7ba17654962db9303",
+                "operationId": "15c2159ea5874d18117c0be4db39bd6c",
                 "responses": {
                     "200": {
                         "description": "Donaciones obtenidas correctamente"
@@ -1209,14 +1232,14 @@
                 ]
             }
         },
-        "/contacto": {
+        "/mensajeusuario": {
             "post": {
                 "tags": [
                     "Contacto"
                 ],
                 "summary": "Envia el mensaje al correo de contacto",
                 "description": "Envia el mensaje al correo de contacto",
-                "operationId": "37f65e3fd59422ab656d49f42081fcdb",
+                "operationId": "a129c3e5dba1f2ee1bf24491915ea68d",
                 "requestBody": {
                     "description": "Monto de la donación",
                     "required": true,
@@ -1536,7 +1559,7 @@
                     "description": "Datos de la guía a actualizar",
                     "required": true,
                     "content": {
-                        "multipart/form-data": {
+                        "application/json": {
                             "schema": {
                                 "required": [
                                     "nombre_completo"
@@ -1650,7 +1673,7 @@
                 }
             }
         },
-        "/api/recorridos/{id}/horarios": {
+        "/horrarios/recorrido/{id}": {
             "get": {
                 "tags": [
                     "Recorridos"
@@ -1727,7 +1750,7 @@
                 }
             }
         },
-        "/api/horarios/{id}": {
+        "/horarrios/{id}": {
             "get": {
                 "tags": [
                     "Horarios"
@@ -1815,59 +1838,6 @@
                         }
                     }
                 }
-            },
-            "post": {
-                "tags": [
-                    "Insignias"
-                ],
-                "summary": "Crea una nueva insignia",
-                "operationId": "733d151b0ab6f32f979ee5e747eeee52",
-                "requestBody": {
-                    "description": "Datos de la insignia",
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "imagen",
-                                    "nombre",
-                                    "cantidad"
-                                ],
-                                "properties": {
-                                    "imagen": {
-                                        "description": "Imagen de la insignia",
-                                        "type": "file",
-                                        "format": "binary"
-                                    },
-                                    "nombre": {
-                                        "description": "Nombre de la insignia",
-                                        "type": "string"
-                                    },
-                                    "cantidad": {
-                                        "description": "Cantidad de insignias",
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Insignia creada con éxito",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Insignia"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Error en la validación o en la creación"
-                    }
-                }
             }
         },
         "/insignias/{id}": {
@@ -1940,25 +1910,13 @@
                 }
             }
         },
-        "/insignias/actualizar/{id}": {
-            "put": {
+        "/insignias/guardar": {
+            "post": {
                 "tags": [
                     "Insignias"
                 ],
-                "summary": "Actualiza los datos de una insignia existente",
-                "description": "Actualizar una insignia por ID",
-                "operationId": "de2eb3cc5332bcc90da529430fd85ff3",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID de la insignia",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
+                "summary": "Crea una nueva insignia",
+                "operationId": "33ce354373754218ef8c83ff91eac4a1",
                 "requestBody": {
                     "description": "Datos de la insignia",
                     "required": true,
@@ -1983,6 +1941,76 @@
                                     "cantidad": {
                                         "description": "Cantidad de insignias",
                                         "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Insignia creada con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Insignia"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en la validación o en la creación"
+                    }
+                }
+            }
+        },
+        "/insignias/actualizar/{id}": {
+            "put": {
+                "tags": [
+                    "Insignias"
+                ],
+                "summary": "Actualiza los datos de una insignia existente",
+                "description": "Actualizar una insignia por ID",
+                "operationId": "de2eb3cc5332bcc90da529430fd85ff3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la insignia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos de la insignia",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "imagen",
+                                    "nombre",
+                                    "cantidad"
+                                ],
+                                "properties": {
+                                    "imagen": {
+                                        "description": "Imagen de la insignia",
+                                        "type": "file",
+                                        "format": "binary",
+                                        "example": "imagen.jpg"
+                                    },
+                                    "nombre": {
+                                        "description": "Nombre de la insignia",
+                                        "type": "string",
+                                        "example": "Insignia 1"
+                                    },
+                                    "cantidad": {
+                                        "description": "Cantidad de insignias",
+                                        "type": "integer",
+                                        "example": "10"
                                     }
                                 },
                                 "type": "object"
@@ -2423,6 +2451,76 @@
                 ]
             }
         },
+        "/user/membership/{userId}": {
+            "get": {
+                "tags": [
+                    "Membresias"
+                ],
+                "summary": "Obtener la membresía activa de un usuario",
+                "description": "Obtener la membresía activa de un usuario",
+                "operationId": "47554da8c53f24a60c43ea15d4697622",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Membresía obtenida con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Membresia"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Usuario no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/recorridos/guardar": {
             "post": {
                 "tags": [
@@ -2731,6 +2829,30 @@
                 }
             }
         },
+        "/recorridosemana": {
+            "get": {
+                "tags": [
+                    "Recorridos"
+                ],
+                "summary": "Obtiene recorridos reservados por semana",
+                "operationId": "2705f7c0badd2d09c377d1e28c6488c7",
+                "responses": {
+                    "200": {
+                        "description": "Recorridos reservados por semana obtenidos con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Recorrido"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/recorridosmes": {
             "get": {
                 "tags": [
@@ -2930,13 +3052,13 @@
                 }
             }
         },
-        "/tarjeta/{id}": {
+        "/tarjeta/eliminar/{id}": {
             "delete": {
                 "tags": [
                     "Tarjetas"
                 ],
                 "summary": "Eliminar tarjeta",
-                "operationId": "ecfdff803a1ea8f8e95580b89a2b0738",
+                "operationId": "ac2a9a938a6209c9e8a3c1244d4ced2f",
                 "parameters": [
                     {
                         "name": "id",
@@ -2958,13 +3080,13 @@
                 }
             }
         },
-        "/tarjetas/{id}": {
+        "/tarjeta/{id}": {
             "get": {
                 "tags": [
                     "Tarjetas"
                 ],
                 "summary": "Obtener tarjetas",
-                "operationId": "1ce976f2cb67b5f8c83161b12d3652a2",
+                "operationId": "59c63de6f105b14d29c53f4dd0c95ac5",
                 "parameters": [
                     {
                         "name": "id",
@@ -3223,13 +3345,13 @@
                 }
             }
         },
-        "/boletosvendidossemana": {
+        "/boletossemana": {
             "get": {
                 "tags": [
                     "Boletos Vendidos"
                 ],
                 "summary": "Traer boletos vendidos de la semana",
-                "operationId": "041c297fb5e03b16ae4e6a50cac5e0fe",
+                "operationId": "927c65b8e400e0bb5647a2260df9f519",
                 "responses": {
                     "200": {
                         "description": "Boletos vendidos de la semana obtenidos con éxito",
@@ -3265,13 +3387,13 @@
                 }
             }
         },
-        "/boletosvendidosmes": {
+        "/boletosmes": {
             "get": {
                 "tags": [
                     "Boletos Vendidos"
                 ],
                 "summary": "Traer boletos vendidos del mes",
-                "operationId": "50afa731288d41cf02179cbc22689efd",
+                "operationId": "9403b127bae2e5968595c8f412ac6de7",
                 "responses": {
                     "200": {
                         "description": "Boletos vendidos del mes obtenidos con éxito",
@@ -3307,13 +3429,13 @@
                 }
             }
         },
-        "/boletosvendidosyear": {
+        "/boletosyear": {
             "get": {
                 "tags": [
                     "Boletos Vendidos"
                 ],
                 "summary": "Traer boletos vendidos del year",
-                "operationId": "25147f6be044a94cfe91c533fc880c33",
+                "operationId": "a0f39f5449e8fda3c673c77a62261244",
                 "responses": {
                     "200": {
                         "description": "Boletos vendidos del year obtenidos conxito",
@@ -3342,6 +3464,70 @@
                                         },
                                         "type": "object"
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/email/verify/{id}/{hash}": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Verificación de correo electrónico",
+                "description": "Verifica el correo electrónico de un usuario.",
+                "operationId": "906e7a38988762810706377f552015ed",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "description": "Hash de verificación",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Verificación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Verificación fallida",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No se encontró el usuario"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -3982,21 +4168,6 @@
                     }
                 },
                 "type": "object"
-            }
-        },
-        "responses": {
-            "200": {
-                "description": "Recorridos reservados por semana obtenidos con éxito",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/components/schemas/Recorrido"
-                            }
-                        }
-                    }
-                }
             }
         },
         "securitySchemes": {

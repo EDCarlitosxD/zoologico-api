@@ -130,6 +130,42 @@ class MembresiasUsuariosController
         }
     }
 
+    /**
+     * Obtener la membresía activa de un usuario
+     * 
+     * @OA\Get(
+     *     path="/user/membership/{userId}",
+     *     summary="Obtener la membresía activa de un usuario",
+     *     tags={"Membresias"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="userId",
+     *         in="path",
+     *         description="ID del usuario",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Membresía obtenida con éxito",
+     *         @OA\JsonContent(ref="#/components/schemas/Membresia")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Usuario no encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Usuario no encontrado")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Usuario no autenticado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Unauthenticated")
+     *         )
+     *     )
+     * )
+     */
     public function getUserMembership($userId)
     {
         // Verificar si el usuario existe

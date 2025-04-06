@@ -21,7 +21,7 @@ class FormularioContactoController
     /**
      * Envia el mensaje al correo de contacto
      * @OA\Post(
-     *     path="/contacto",
+     *     path="/mensajeusuario",
      *     summary="Envia el mensaje al correo de contacto",
      *     description="Envia el mensaje al correo de contacto",
      *     tags={"Contacto"},

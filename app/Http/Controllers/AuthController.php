@@ -29,7 +29,7 @@ class AuthController
 
     /**
      * @OA\Get(   
-     *     path="/cuenta",
+     *     path="/user",
      *     tags={"Autenticación"},
      *     summary="Información de usuario autenticado",
      *     security={{"bearerAuth":{}}},
@@ -171,7 +171,7 @@ class AuthController
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
+     *             mediaType="application/json",
      *             @OA\Schema(
      *                 @OA\Property(property="nombre", type="string", example="Alberto"),
      *                 @OA\Property(property="apellido", type="string", example="Gonzalez"),
