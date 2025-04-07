@@ -21,7 +21,7 @@ class TarjetaController
 
     /**
      * @OA\Post(
-     *     path="/tarjeta", 
+     *     path="/tarjeta",
      *     tags={"Tarjetas"},
      *     summary="Guardar tarjeta",
      *     @OA\RequestBody(
@@ -34,7 +34,7 @@ class TarjetaController
      *                 required={"numero_tarjeta", "fecha_vencimiento", "cvv"},
      *                 @OA\Property(
      *                     property="numero_tarjeta",
-     *                     type="string",   
+     *                     type="string",
      *                     example="1234 5678 9012 3456"
      *                 ),
      *                 @OA\Property(
@@ -68,7 +68,7 @@ class TarjetaController
      *             @OA\Property(
      *                 property="fecha_vencimiento",
      *                 type="string",
-     *                 format="date",     
+     *                 format="date",
      *                 example="2023-12-31"
      *             ),
      *             @OA\Property(
@@ -84,7 +84,7 @@ class TarjetaController
      *         @OA\JsonContent(
      *             @OA\Property(
      *                 property="error",
-     *                 type="string",   
+     *                 type="string",
      *                 example="Error en la validación"
      *             )
      *         )
@@ -102,7 +102,7 @@ class TarjetaController
     }
 
     /**
-     * @OA\Delete(
+     * @OA\PUT(
      *     path="/tarjeta/eliminar/{id}",
      *     tags={"Tarjetas"},
      *     summary="Eliminar tarjeta",
@@ -158,6 +158,6 @@ class TarjetaController
                       ->where('estado', 1)
                       ->get();
     }
-    
+
 
 }

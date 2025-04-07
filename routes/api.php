@@ -140,7 +140,7 @@ Route::put('/guias/eliminar/{id}', [GuiaController::class, 'actualizarEstado']);
 
 //!Tarjeta
 Route::post('/tarjeta', [TarjetaController::class, 'guardar'])->middleware('auth:sanctum');
-Route::delete('/tarjeta/eliminar/{id}', [TarjetaController::class, 'eliminar'])->middleware('auth:sanctum');
+Route::put('/tarjeta/eliminar/{id}', [TarjetaController::class, 'eliminar'])->middleware('auth:sanctum');
 Route::get('/tarjeta/{id}', [TarjetaController::class,'getTarjetas']);
 
 //!Reportes FECHAS
