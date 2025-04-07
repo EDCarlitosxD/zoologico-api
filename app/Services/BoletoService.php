@@ -75,7 +75,7 @@ class BoletoService {
             $file = $request->file('imagen'); // Obtiene el archivo
             $imageData = base64_encode(file_get_contents($file->getRealPath())); // Convierte a Base64
             $mimeType = $file->getClientMimeType(); // Obtiene el tipo de archivo (image/png, image/jpeg, etc.)
-    
+
             $validatedData['imagen'] = "data:$mimeType;base64,$imageData"; // Guardar en Base64 en la BD
         }
         // Procesar imagen Base64
@@ -87,7 +87,7 @@ class BoletoService {
         }
 
         $boleto = Boletos::create($validatedData);
-        return $boleto;        
+        return $boleto;
     }
 
 

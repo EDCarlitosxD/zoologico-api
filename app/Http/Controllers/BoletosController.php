@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\boletos;
+use App\Models\Boletos;
 use App\Http\Controllers\Controller;
 use App\Models\venta_boletos;
 use App\Services\BoletoService;
@@ -72,7 +72,7 @@ class BoletosController
      */
     public function all(Request $request)
     {
-        $query = boletos::query()->where('estado', 1);
+        $query = Boletos::query()->where('estado', 1);
 
 
 
@@ -89,12 +89,12 @@ class BoletosController
      *     summary="Obtener un boleto por su ID",
      *      tags={"Boletos"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="Boleto obtenido correctamente") 
+     *     @OA\Response(response=200, description="Boleto obtenido correctamente")
      *  )
      */
     public function getById($id)
     {
-        $boleto = boletos::findOrFail($id);
+        $boleto = Boletos::findOrFail($id);
         $boleto->imagen = asset('storage') . '/' . ($boleto->imagen);
 
         return $boleto;
@@ -138,7 +138,7 @@ class BoletosController
         }
     }
 
-    
+
 
      /**
       * @OA\Put(
@@ -208,7 +208,7 @@ class BoletosController
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 required={"titulo", "descripcion", "precio", "imagen", "descripcion_card", "advertencias"},  
+     *                 required={"titulo", "descripcion", "precio", "imagen", "descripcion_card", "advertencias"},
      *                 @OA\Property(property="titulo", type="string", example="Boleto VIP"),
      *                 @OA\Property(property="descripcion_card", type="string", example="Acceso VIP"),
      *                 @OA\Property(property="descripcion", type="string", example="Acceso exclusivo"),
@@ -220,7 +220,7 @@ class BoletosController
      *     ),
      *     @OA\Response(response=200, description="Boleto actualizado correctamente"),
      *     @OA\Response(response=400, description="Error al actualizar el boleto"),
-     *     @OA\Response(response=401, description="No autorizado")     
+     *     @OA\Response(response=401, description="No autorizado")
      * )
      */
     public function actualizar(Request $request, $id)
@@ -233,6 +233,6 @@ class BoletosController
             DB::rollBack();
             return response()->json(["error" => $e->getMessage()], 500);
         }
-        
+
     }
 }
