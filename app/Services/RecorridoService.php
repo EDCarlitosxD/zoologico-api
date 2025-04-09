@@ -52,7 +52,7 @@ class RecorridoService{
 
         //! AGREGAR DATOS DE LOS HORARIOS
         if (isset($datos['horarios'])) {
-            $datos['horarios'] = json_decode($datos['horarios'], true);
+
             foreach($datos['horarios'] as $dato){
                 $validar = Validator::make($dato,[
                     'horario_inicio' => 'required|date_format:H:i:s',
