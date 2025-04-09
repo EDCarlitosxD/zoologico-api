@@ -15,11 +15,11 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'storage/*'],
+    'paths' => ['*'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*', 'https://api.zoologic.fun', 'https://app.zoologic.fun'],
+    'allowed_origins' => ['https://app.zoologic.fun'],
 
     'allowed_origins_patterns' => [],
 
