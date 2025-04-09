@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -117,8 +118,8 @@ class InsigniasController
      */
     public function getByUser($id)
     {
-        $view = VistaInsigniasUser::findOrFail($id);
-        $view->imagen = asset('storage'). '/' . ($view->imagen);
+        $view = VistaInsigniasUser::where('id_usuario', $id)->firstOrFail();
+        $view->imagen = asset('storage') . '/' . ($view->imagen);
         return $view;
     }
 
@@ -175,7 +176,7 @@ class InsigniasController
             return response()->json(['error' => 'Error al guardar la insignia: ' . $error->getMessage()], 400);
         }
     }
-    
+
     /**
      * Actualizar una insignia por ID
      * 
@@ -235,7 +236,8 @@ class InsigniasController
      *     )
      * )
      */
-    public function actualizar(Request $request, $id) {
+    public function actualizar(Request $request, $id)
+    {
 
         try {
             $insignia = $this->insigniaService->actualizarInsignia($request, $id);
@@ -243,7 +245,6 @@ class InsigniasController
         } catch (\Exception $error) {
             return response()->json(['error' => 'Error al guardar la insignia: ' . $error->getMessage()], 400);
         }
-        
     }
 
     /**
@@ -277,7 +278,8 @@ class InsigniasController
      *     )
      * )
      */
-    public function actualizarEstado(Request $request, $id) {
+    public function actualizarEstado(Request $request, $id)
+    {
         $request->validate([
             'estado' => 'required|boolean',
         ]);
