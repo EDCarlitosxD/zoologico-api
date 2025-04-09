@@ -167,18 +167,6 @@ return new class extends Migration
 
     //!CODIGO DE VISTAS COMENTADO
      {
-         DB::statement("DROP VIEW IF EXISTS historial_reservas;");
-         DB::statement("DROP VIEW IF EXISTS recorridos_mas_vendidos;");
-         DB::statement("DROP VIEW IF EXISTS compras_usuario_boletos;");
-         DB::statement("DROP VIEW IF EXISTS compras_usuario_recorridos");
-         DB::statement("DROP VIEW IF EXISTS recorridos_usuario;");
-         DB::statement("DROP VIEW IF EXISTS ventas_generales;");
-         DB::statement("DROP VIEW IF EXISTS boletos_vendidos_general;");
-         DB::statement("DROP VIEW IF EXISTS boletos_vendidos_semana;");
-         DB::statement("DROP VIEW IF EXISTS boletos_vendidos_mes;");
-         DB::statement("DROP VIEW IF EXISTS boletos_vendidos_year;");
-         DB::statement("DROP VIEW IF EXISTS recorridos_vendidos_semana;");
-         DB::statement("DROP VIEW IF EXISTS recorridos_vendidos_mes;");
-         DB::statement("DROP VIEW IF EXISTS recorridos_vendidos_year;");
+        
      }
 };
