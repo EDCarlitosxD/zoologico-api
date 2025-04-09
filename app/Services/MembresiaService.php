@@ -66,7 +66,7 @@ class MembresiaService
 
         $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
-            'precio' => 'required|numeric',
+            'precio' => 'required',
             'entradas_ilimitadas' => 'required|boolean',
             'descuento_alimentos_souvenirs' => 'required|numeric',
             'acceso_eventos' => 'required|boolean',
@@ -78,7 +78,7 @@ class MembresiaService
             'programas_conservacion' => 'required|boolean',
             'descuento_renta_espacios_eventos' => 'required|numeric',
             'precio_especial_invitados' => 'required|numeric',
-            'regalo_bienvenida' => 'sometimes',
+            'regalo_bienvenida' => 'sometimes|string',
             'charlas_educativas' => 'required|boolean',
             'imagen' => 'required|string', // Puede ser Base64
         ]);
