@@ -19,6 +19,8 @@ return new class extends Migration
             $table->char("nombre_tarjeta",255)->nullable(false);
             $table->char("ccv",5)->nullable(false);
             $table->char("tipo_tarjeta",255)->nullable(false);
+            $table->boolean('estado')->nullable(false)->default(true);
+         
 
             $table->unsignedBigInteger('id_usuario')->nullable(false);
             $table->foreign('id_usuario')

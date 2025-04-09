@@ -27,8 +27,8 @@ return new class extends Migration
             $table->boolean('programas_conservacion')->nullable(true);
             $table->unsignedTinyInteger('descuento_renta_espacios_eventos')->nullable(true);
             $table->unsignedTinyInteger('precio_especial_invitados')->nullable(true);
-            $table->boolean('regalo_bienvenida')->nullable(true);
-            $table->string('charlas_educativas', length: 255)->nullable(true);
+            $table->string('regalo_bienvenida', length: 255)->nullable(true);
+            $table->boolean('charlas_educativas')->nullable(true);
             $table->boolean('estado')->nullable(false)->default(1);
 
             $table->timestamps();
