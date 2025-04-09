@@ -103,7 +103,7 @@ class TarjetaController
 
     /**
      * @OA\Delete(
-     *     path="/tarjeta/{id}",
+     *     path="/tarjeta/eliminar/{id}",
      *     tags={"Tarjetas"},
      *     summary="Eliminar tarjeta",
      *     @OA\Parameter(
@@ -134,7 +134,7 @@ class TarjetaController
 
     /**
      * @OA\Get(
-     *     path="/tarjetas/{id}",
+     *     path="/tarjeta/{id}",
      *     tags={"Tarjetas"},
      *     summary="Obtener tarjetas",
      *     @OA\Parameter(

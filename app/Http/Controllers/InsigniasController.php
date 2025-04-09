@@ -124,7 +124,7 @@ class InsigniasController
 
     /**
      * @OA\Post(
-     *     path="/insignias",
+     *     path="/insignias/guardar",
      *     tags={"Insignias"},
      *     summary="Crea una nueva insignia",
      *     @OA\RequestBody(
@@ -194,7 +194,7 @@ class InsigniasController
      *         required=true,
      *         description="Datos de la insignia",
      *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
+     *             mediaType="application/json",
      *             @OA\Schema(
      *                 type="object",
      *                 required={"imagen", "nombre", "cantidad"},
@@ -202,16 +202,19 @@ class InsigniasController
      *                     property="imagen",
      *                     type="file",
      *                     format="binary",
+     * example="imagen.jpg",
      *                     description="Imagen de la insignia"
      *                 ),
      *                 @OA\Property(
      *                     property="nombre",
      *                     type="string",
+     *                     example="Insignia 1",
      *                     description="Nombre de la insignia"
      *                 ),
      *                 @OA\Property(
      *                     property="cantidad",
      *                     type="integer",
+     *                     example="10",
      *                     description="Cantidad de insignias"
      *                 )
      *             )

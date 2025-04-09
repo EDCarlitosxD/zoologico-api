@@ -38,7 +38,7 @@ class HorarioRecorridoController
 
     /**
      * @OA\Get(
-     *     path="/api/recorridos/{id}/horarios",
+     *     path="/horrarios/recorrido/{id}",
      *     summary="Obtener horarios agrupados por fecha para un recorrido específico",
      *     description="Este endpoint devuelve los horarios disponibles para un recorrido específico, agrupados por fecha.",
      *     operationId="getHorariosGroupByRecorridos",
@@ -143,7 +143,7 @@ class HorarioRecorridoController
 
     /**
      * @OA\Get(
-     *     path="/api/horarios/{id}",
+     *     path="/horarrios/{id}",
      *     summary="Obtener horarios de un recorrido",
      *     description="Este endpoint devuelve los horarios disponibles para un recorrido.",
      *     operationId="getById",

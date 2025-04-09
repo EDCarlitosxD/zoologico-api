@@ -36,7 +36,7 @@ class BoletoService {
             'descripcion_card' => 'sometimes',
             'descripcion' => 'sometimes|string',
             'advertencias' => 'nullable|string', // Ahora puede recibir Base64
-            'precio' => 'sometimes|string',
+            'precio' => 'sometimes|numeric',
             'imagen' => 'nullable|string',
         ]);
         if ($request->hasFile('imagen')) {
@@ -64,7 +64,7 @@ class BoletoService {
     public function createBoleto($request){
         $validatedData = $request->validate([
             'titulo' => 'required|max:80',
-            "descripcion" => 'required|max:45',
+            "descripcion" => 'required|string',
             "precio" => 'required|numeric',
             "imagen" => "required",
             'descripcion_card' => 'sometimes|string',

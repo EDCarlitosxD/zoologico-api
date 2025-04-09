@@ -29,7 +29,7 @@ class BoletosController
 
     /**
      * @OA\Get(
-     *     path="/boletos/usuario",
+     *     path="/boletos/obtener",
      *     summary="Obtener boletos comprados por un usuario",
      *     tags={"Boletos"},
      *     security={{"bearerAuth":{}}},
@@ -206,7 +206,7 @@ class BoletosController
      *         required=true,
      *         description="Datos del boleto a actualizar",
      *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
+     *             mediaType="application/json",
      *             @OA\Schema(
      *                 required={"titulo", "descripcion", "precio", "imagen", "descripcion_card", "advertencias"},  
      *                 @OA\Property(property="titulo", type="string", example="Boleto VIP"),
@@ -214,7 +214,7 @@ class BoletosController
      *                 @OA\Property(property="descripcion", type="string", example="Acceso exclusivo"),
      *                 @OA\Property(property="advertencias", type="string", example="No incluye alimentos"),
      *                 @OA\Property(property="precio", type="number", format="float", example=99.99),
-     *                 @OA\Property(property="imagen", type="string", format="binary"),
+     *                 @OA\Property(property="imagen", type="string", format="binary", example="imagen.jpg"),
      *             )
      *         ),
      *     ),

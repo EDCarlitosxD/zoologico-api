@@ -126,19 +126,6 @@ class MembresiaController
      * )
      */
     public function guardar(Request $request){
-        // $validatedData = $request->validate([
-        //     "nombre" => "required|max:255",
-        //     "precio" => "required|numeric",
-        //     "descripcion" => "required",
-        //     "imagen" => "required"
-        // ]);
-
-        // try {
-        //     $membresia = Membresia::create($validatedData);
-        //     return response()->json(['message' => 'Membresía guardada con éxito', 'Membresia' => $membresia], 201);
-        // } catch (\Exception $error) {
-        //     return response()->json(['error' => 'Error al guardar la membresía: ' . $error->getMessage()], 400);
-        // }
         try {
             $membresia = $this->membresiaService->crearMembresia($request);
             return response()->json(['message' => 'Membresia guardada con éxito', 'Membresia' => $membresia], 201);
