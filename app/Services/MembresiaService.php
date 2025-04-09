@@ -78,7 +78,7 @@ class MembresiaService
             'programas_conservacion' => 'required|boolean',
             'descuento_renta_espacios_eventos' => 'required|numeric',
             'precio_especial_invitados' => 'required|numeric',
-            'regalo_bienvenida' => 'sometimes|string',
+            'regalo_bienvenida' => 'sometimes',
             'charlas_educativas' => 'required|boolean',
             'imagen' => 'required|string', // Puede ser Base64
         ]);
