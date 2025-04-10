@@ -17,7 +17,7 @@ return new class extends Migration
              SELECT 
                  c.id_usuario, 
                  SUM(c.cantidad) AS compras_totales, 
-                 i.nombre AS insignia_obtenida, 
+                 i.nombre AS nombre, 
                  i.cantidad AS cantidad_insignia,
                  i.`id`,
                  i.`imagen`,
