@@ -12,7 +12,54 @@ return new class extends Migration
      */
     public function up(): void
     {
-     
+     DB::statement("
+             CREATE VIEW usuarios_insignias AS
+             SELECT 
+                 c.id_usuario, 
+                 SUM(c.cantidad) AS compras_totales, 
+                 i.nombre AS nombre, 
+                 i.cantidad AS cantidad_insignia,
+                 i.`id`,
+                 i.`imagen`,
+                 i.`estado`
+             FROM compras_usuario_recorridos AS c
+             JOIN insignias AS i 
+                 ON i.cantidad = (
+                     SELECT MAX(i2.cantidad)
+                     FROM insignias i2
+                     WHERE i2.cantidad <= (
+                         SELECT SUM(c2.cantidad) 
+                         FROM compras_usuario_recorridos c2 
+                         WHERE c2.id_usuario = c.id_usuario
+                     ) AND i2.`estado` = 1
+                 )
+             GROUP BY c.id_usuario, i.nombre, i.cantidad;
+          ");
+
+          DB::statement("
+             CREATE VIEW usuarios_insignias AS
+             SELECT 
+                 c.id_usuario, 
+                 SUM(c.cantidad) AS compras_totales, 
+                 i.nombre AS insignia_obtenida, 
+                 i.cantidad AS cantidad_insignia,
+                 i.`id`,
+                 i.`imagen`,
+                 i.`estado`
+             FROM compras_usuario_recorridos AS c
+             JOIN insignias AS i 
+                 ON i.cantidad = (
+                     SELECT MAX(i2.cantidad)
+                     FROM insignias i2
+                     WHERE i2.cantidad <= (
+                         SELECT SUM(c2.cantidad) 
+                         FROM compras_usuario_recorridos c2 
+                         WHERE c2.id_usuario = c.id_usuario
+                     ) AND i2.`estado` = 1
+                 )
+             GROUP BY c.id_usuario, i.nombre, i.cantidad;
+          ");
+          //Vista: historial_reservas
          DB::statement("
              CREATE VIEW historial_reservas AS
              SELECT re.titulo, re.duracion, r.cantidad
